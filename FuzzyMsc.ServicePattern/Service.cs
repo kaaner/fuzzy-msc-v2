@@ -49,6 +49,13 @@ namespace FuzzyMsc.ServicePattern
 
         public virtual void Delete(TEntity entity) { _repository.Delete(entity); }
 
+        public virtual void BulkInsertRange(IEnumerable<TEntity> entities) { _repository.BulkInsertRange(entities); }
+        public virtual void BulkDeleteRange(IEnumerable<TEntity> entities) { _repository.BulkDeleteRange(entities); }
+        public virtual void BulkUpdateRange(IEnumerable<TEntity> entities) { _repository.BulkUpdateRange(entities); }
+        public virtual void BulkInsert(TEntity entity) { _repository.BulkInsert(entity); }
+        public virtual void BulkUpdate(TEntity entity) { _repository.BulkUpdate(entity); }
+        public virtual void BulkDelete(TEntity entity) { _repository.BulkDelete(entity); }
+
         public IQueryFluent<TEntity> Query() { return _repository.Query(); }
 
         public virtual IQueryFluent<TEntity> Query(IQueryObject<TEntity> queryObject) { return _repository.Query(queryObject); }

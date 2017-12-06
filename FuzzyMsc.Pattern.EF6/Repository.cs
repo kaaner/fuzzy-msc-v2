@@ -246,5 +246,43 @@ namespace FuzzyMsc.Pattern.EF6
                     SyncObjectGraph(item);
             }
         }
+
+
+
+        public void BulkInsertRange(IEnumerable<TEntity> entities)
+        {
+            _context.BulkInsertRange(entities);
+        }
+
+        public void BulkDeleteRange(IEnumerable<TEntity> entities)
+        {
+            _context.BulkDeleteRange(entities);
+
+        }
+
+        public void BulkUpdateRange(IEnumerable<TEntity> entities)
+        {
+            _context.BulkUpdateRange(entities);
+
+        }
+
+        public void BulkInsert(TEntity entity)
+        {
+            List<TEntity> _entities = new List<TEntity>();
+            _entities.Add(entity);
+            _context.BulkInsertRange(_entities);
+        }
+        public void BulkUpdate(TEntity entity)
+        {
+            List<TEntity> _entities = new List<TEntity>();
+            _entities.Add(entity);
+            _context.BulkUpdateRange(_entities);
+        }
+        public void BulkDelete(TEntity entity)
+        {
+            List<TEntity> _entities = new List<TEntity>();
+            _entities.Add(entity);
+            _context.BulkDeleteRange(_entities);
+        }
     }
 }

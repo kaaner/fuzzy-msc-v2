@@ -5,21 +5,21 @@ VisualStudioVersion = 15.0.27004.2009
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuzzyMsc.MVC", "FuzzyMsc\FuzzyMsc.MVC.csproj", "{4BF4EC70-2890-4E35-872E-DBBC11AC9ABA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuzzyMsc.Bll", "Proje.BL\FuzzyMsc.Bll.csproj", "{88234739-A24B-4307-B626-26C737BFA348}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuzzyMsc.Bll", "FuzzyMsc.Bll\FuzzyMsc.Bll.csproj", "{88234739-A24B-4307-B626-26C737BFA348}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuzzyMsc.Core", "Proje.CORE\FuzzyMsc.Core.csproj", "{AEC38032-6320-40FE-8329-6E83862B9866}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuzzyMsc.Core", "FuzzyMsc.Core\FuzzyMsc.Core.csproj", "{AEC38032-6320-40FE-8329-6E83862B9866}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuzzyMsc.Dto", "Proje.DTO\FuzzyMsc.Dto.csproj", "{5421ED6F-EF9E-476E-9290-D07F193CC6D8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuzzyMsc.Entity", "Proje.Entity\FuzzyMsc.Entity.csproj", "{9CAEC49A-F361-49E3-891D-3939BDF30BAC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuzzyMsc.Entity", "FuzzyMsc.Entity\FuzzyMsc.Entity.csproj", "{9CAEC49A-F361-49E3-891D-3939BDF30BAC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuzzyMsc.Pattern", "Proje.Pattern\FuzzyMsc.Pattern.csproj", "{FA2D36D8-1780-4C53-B53D-AE353DE2ED95}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuzzyMsc.Pattern", "FuzzyMsc.Pattern\FuzzyMsc.Pattern.csproj", "{FA2D36D8-1780-4C53-B53D-AE353DE2ED95}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuzzyMsc.Pattern.EF6", "Proje.Pattern.EF6\FuzzyMsc.Pattern.EF6.csproj", "{1C327385-25F1-4F1F-96BA-359D5C76358F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuzzyMsc.Pattern.EF6", "FuzzyMsc.Pattern.EF6\FuzzyMsc.Pattern.EF6.csproj", "{1C327385-25F1-4F1F-96BA-359D5C76358F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuzzyMsc.Service", "Proje.Service\FuzzyMsc.Service.csproj", "{D4042124-7F34-491E-AA64-87644FC13DCE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuzzyMsc.Service", "FuzzyMsc.Service\FuzzyMsc.Service.csproj", "{D4042124-7F34-491E-AA64-87644FC13DCE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuzzyMsc.ServicePattern", "Proje.ServicePattern\FuzzyMsc.ServicePattern.csproj", "{21667D28-8C06-419D-B725-3CD0A810F4F9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuzzyMsc.ServicePattern", "FuzzyMsc.ServicePattern\FuzzyMsc.ServicePattern.csproj", "{21667D28-8C06-419D-B725-3CD0A810F4F9}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Framework", "Framework", "{58564025-1ABC-4F29-9A5B-366B2285C2F1}"
 EndProject

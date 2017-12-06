@@ -78,7 +78,7 @@
       <Project>{21667d28-8c06-419d-b725-3cd0a810f4f9}</Project>
       <Name>FuzzyMsc.ServicePattern</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Proje.Service\FuzzyMsc.Service.csproj">
+    <ProjectReference Include="..\FuzzyMsc.Service\FuzzyMsc.Service.csproj">
       <Project>{D4042124-7F34-491E-AA64-87644FC13DCE}</Project>
       <Name>FuzzyMsc.Service</Name>
     </ProjectReference>

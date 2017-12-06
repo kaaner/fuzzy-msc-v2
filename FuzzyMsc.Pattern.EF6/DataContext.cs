@@ -157,5 +157,19 @@ namespace FuzzyMsc.Pattern.EF6
 
             base.Dispose(disposing);
         }
+
+
+        public void BulkInsertRange<TEntity>(IEnumerable<TEntity> entity) where TEntity : class
+        {
+            this.BulkInsert(entity);
+        }
+        public void BulkDeleteRange<TEntity>(IEnumerable<TEntity> entity) where TEntity : class
+        {
+            this.BulkDelete(entity);
+        }
+        public void BulkUpdateRange<TEntity>(IEnumerable<TEntity> entity) where TEntity : class
+        {
+            this.BulkUpdate(entity);
+        }
     }
 }

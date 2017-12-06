@@ -15,6 +15,14 @@ namespace FuzzyMsc
             AreaRegistration.RegisterAllAreas();
             RouteConfig.RegisterRoutes(RouteTable.Routes);
 
+            Z.EntityFramework.Extensions.LicenseManager.AddLicense("37;300-LIVECYCLE", "79413390F5310156A2D165AC444631AF");
+            Z.EntityFramework.Extensions.LicenseManager.AddLicense("6;100-LIVECYCLE", "20028999CE1021FF66CD379917DF51AE");
+
+            var cfg2 = (System.Web.Configuration.CompilationSection)System.Configuration.ConfigurationManager.GetSection("system.web/compilation");
+            if (cfg2.Debug)
+                if (!Z.EntityFramework.Extensions.LicenseManager.ValidateLicense())
+                    throw new Exception("Invalid License z.entityframework lisans kontrol et!");
+
         }
     }
 }
