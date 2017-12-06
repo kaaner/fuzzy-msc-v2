@@ -58,7 +58,7 @@
       <Project>{aec38032-6320-40fe-8329-6e83862b9866}</Project>
       <Name>FuzzyMsc.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Proje.DTO\FuzzyMsc.Dto.csproj">
+    <ProjectReference Include="..\FuzzyMsc.Dto\FuzzyMsc.Dto.csproj">
       <Project>{5421ed6f-ef9e-476e-9290-d07f193cc6d8}</Project>
       <Name>FuzzyMsc.Dto</Name>
     </ProjectReference>
