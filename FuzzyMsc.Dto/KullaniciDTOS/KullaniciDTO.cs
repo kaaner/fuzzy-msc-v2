@@ -1,4 +1,4 @@
-﻿namespace FuzzyMsc.DTO.KullaniciDTOS
+﻿namespace FuzzyMsc.Dto.KullaniciDTOS
 {
     public class KullaniciDTO
     {

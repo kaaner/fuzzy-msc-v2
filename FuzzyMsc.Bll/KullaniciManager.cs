@@ -1,4 +1,4 @@
-﻿using FuzzyMsc.DTO;
+﻿using FuzzyMsc.Dto;
 using FuzzyMsc.Service;
 using FuzzyMsc.Bll.Interface;
 using FuzzyMsc.Pattern.UnitOfWork;

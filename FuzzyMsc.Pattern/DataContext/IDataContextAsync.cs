@@ -11,5 +11,8 @@ namespace FuzzyMsc.Pattern.DataContext
     {
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);
         Task<int> SaveChangesAsync();
+        void BulkInsertRange<TEntity>(IEnumerable<TEntity> entity) where TEntity : class;
+        void BulkDeleteRange<TEntity>(IEnumerable<TEntity> entity) where TEntity : class;
+        void BulkUpdateRange<TEntity>(IEnumerable<TEntity> entity) where TEntity : class;
     }
 }

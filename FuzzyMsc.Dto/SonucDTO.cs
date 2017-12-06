@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace FuzzyMsc.DTO
+namespace FuzzyMsc.Dto
 {
     public class SonucDTO
     {

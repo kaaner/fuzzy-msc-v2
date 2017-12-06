@@ -19,6 +19,12 @@ namespace FuzzyMsc.Pattern.Repositories
         void Update(TEntity entity);
         void Delete(object id);
         void Delete(TEntity entity);
+        void BulkInsertRange(IEnumerable<TEntity> entities);
+        void BulkDeleteRange(IEnumerable<TEntity> entities);
+        void BulkUpdateRange(IEnumerable<TEntity> entities);
+        void BulkInsert(TEntity entity);
+        void BulkUpdate(TEntity entity);
+        void BulkDelete(TEntity entity);
         IQueryFluent<TEntity> Query(IQueryObject<TEntity> queryObject);
         IQueryFluent<TEntity> Query(Expression<Func<TEntity, bool>> query);
         IQueryFluent<TEntity> Query();

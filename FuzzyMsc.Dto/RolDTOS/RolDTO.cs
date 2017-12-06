@@ -1,4 +1,4 @@
-﻿namespace FuzzyMsc.DTO.RolDTOS
+﻿namespace FuzzyMsc.Dto.RolDTOS
 {
     public class RolDTO
     {
