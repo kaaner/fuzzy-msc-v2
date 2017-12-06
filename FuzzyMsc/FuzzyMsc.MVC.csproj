@@ -153,11 +153,11 @@
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Proje.BL\FuzzyMsc.Bll.csproj">
+    <ProjectReference Include="..\FuzzyMsc.Bll\FuzzyMsc.Bll.csproj">
       <Project>{88234739-a24b-4307-b626-26c737bfa348}</Project>
       <Name>FuzzyMsc.Bll</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Proje.CORE\FuzzyMsc.Core.csproj">
+    <ProjectReference Include="..\FuzzyMsc.Core\FuzzyMsc.Core.csproj">
       <Project>{aec38032-6320-40fe-8329-6e83862b9866}</Project>
       <Name>FuzzyMsc.Core</Name>
     </ProjectReference>
@@ -165,23 +165,23 @@
       <Project>{5421ed6f-ef9e-476e-9290-d07f193cc6d8}</Project>
       <Name>FuzzyMsc.Dto</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Proje.Entity\FuzzyMsc.Entity.csproj">
+    <ProjectReference Include="..\FuzzyMsc.Entity\FuzzyMsc.Entity.csproj">
       <Project>{9caec49a-f361-49e3-891d-3939bdf30bac}</Project>
       <Name>FuzzyMsc.Entity</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Proje.Pattern.EF6\FuzzyMsc.Pattern.EF6.csproj">
+    <ProjectReference Include="..\FuzzyMsc.Pattern.EF6\FuzzyMsc.Pattern.EF6.csproj">
       <Project>{1c327385-25f1-4f1f-96ba-359d5c76358f}</Project>
       <Name>FuzzyMsc.Pattern.EF6</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Proje.Pattern\FuzzyMsc.Pattern.csproj">
+    <ProjectReference Include="..\FuzzyMsc.Pattern\FuzzyMsc.Pattern.csproj">
       <Project>{fa2d36d8-1780-4c53-b53d-ae353de2ed95}</Project>
       <Name>FuzzyMsc.Pattern</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Proje.ServicePattern\FuzzyMsc.ServicePattern.csproj">
+    <ProjectReference Include="..\FuzzyMsc.ServicePattern\FuzzyMsc.ServicePattern.csproj">
       <Project>{21667d28-8c06-419d-b725-3cd0a810f4f9}</Project>
       <Name>FuzzyMsc.ServicePattern</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Proje.Service\FuzzyMsc.Service.csproj">
+    <ProjectReference Include="..\FuzzyMsc.Service\FuzzyMsc.Service.csproj">
       <Project>{d4042124-7f34-491e-aa64-87644fc13dce}</Project>
       <Name>FuzzyMsc.Service</Name>
     </ProjectReference>

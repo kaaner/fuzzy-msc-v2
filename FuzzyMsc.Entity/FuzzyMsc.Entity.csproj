@@ -65,11 +65,11 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Proje.Pattern.EF6\FuzzyMsc.Pattern.EF6.csproj">
+    <ProjectReference Include="..\FuzzyMsc.Pattern.EF6\FuzzyMsc.Pattern.EF6.csproj">
       <Project>{1c327385-25f1-4f1f-96ba-359d5c76358f}</Project>
       <Name>FuzzyMsc.Pattern.EF6</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Proje.Pattern\FuzzyMsc.Pattern.csproj">
+    <ProjectReference Include="..\FuzzyMsc.Pattern\FuzzyMsc.Pattern.csproj">
       <Project>{fa2d36d8-1780-4c53-b53d-ae353de2ed95}</Project>
       <Name>FuzzyMsc.Pattern</Name>
     </ProjectReference>

@@ -46,19 +46,19 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Proje.Entity\FuzzyMsc.Entity.csproj">
+    <ProjectReference Include="..\FuzzyMsc.Entity\FuzzyMsc.Entity.csproj">
       <Project>{9CAEC49A-F361-49E3-891D-3939BDF30BAC}</Project>
       <Name>FuzzyMsc.Entity</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Proje.Pattern.EF6\FuzzyMsc.Pattern.EF6.csproj">
+    <ProjectReference Include="..\FuzzyMsc.Pattern.EF6\FuzzyMsc.Pattern.EF6.csproj">
       <Project>{1c327385-25f1-4f1f-96ba-359d5c76358f}</Project>
       <Name>FuzzyMsc.Pattern.EF6</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Proje.Pattern\FuzzyMsc.Pattern.csproj">
+    <ProjectReference Include="..\FuzzyMsc.Pattern\FuzzyMsc.Pattern.csproj">
       <Project>{FA2D36D8-1780-4C53-B53D-AE353DE2ED95}</Project>
       <Name>FuzzyMsc.Pattern</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Proje.ServicePattern\FuzzyMsc.ServicePattern.csproj">
+    <ProjectReference Include="..\FuzzyMsc.ServicePattern\FuzzyMsc.ServicePattern.csproj">
       <Project>{21667D28-8C06-419D-B725-3CD0A810F4F9}</Project>
       <Name>FuzzyMsc.ServicePattern</Name>
     </ProjectReference>

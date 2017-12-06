@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuzzyMsc.Bll", "FuzzyMsc.Bl
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuzzyMsc.Core", "FuzzyMsc.Core\FuzzyMsc.Core.csproj", "{AEC38032-6320-40FE-8329-6E83862B9866}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuzzyMsc.Dto", "Proje.DTO\FuzzyMsc.Dto.csproj", "{5421ED6F-EF9E-476E-9290-D07F193CC6D8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuzzyMsc.Dto", "FuzzyMsc.Dto\FuzzyMsc.Dto.csproj", "{5421ED6F-EF9E-476E-9290-D07F193CC6D8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuzzyMsc.Entity", "FuzzyMsc.Entity\FuzzyMsc.Entity.csproj", "{9CAEC49A-F361-49E3-891D-3939BDF30BAC}"
 EndProject
