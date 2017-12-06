@@ -1,5 +1,5 @@
-﻿using Proje.Pattern.Infrastructure;
-using Proje.Pattern.Repositories;
+﻿using FuzzyMsc.Pattern.Infrastructure;
+using FuzzyMsc.Pattern.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Proje.ServicePattern
+namespace FuzzyMsc.ServicePattern
 {
     public interface IService<TEntity> where TEntity : IObjectState
     {

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Proje.Pattern.Infrastructure
+namespace FuzzyMsc.Pattern.Infrastructure
 {
     public enum ObjectState
     {

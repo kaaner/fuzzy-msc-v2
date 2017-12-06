@@ -1,4 +1,4 @@
-﻿using Proje.Pattern.Infrastructure;
+﻿using FuzzyMsc.Pattern.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Proje.Pattern.EF6
+namespace FuzzyMsc.Pattern.EF6
 {
     public class StateHelper
     {

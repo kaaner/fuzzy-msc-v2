@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Proje.ServicePattern
+namespace FuzzyMsc.ServicePattern
 {
     [Serializable]
     public class PagedList<T> : List<T>, IPagedList<T>

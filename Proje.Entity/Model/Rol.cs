@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Proje.Entity.Model
+namespace FuzzyMsc.Entity.Model
 {
     public partial class Rol
     {

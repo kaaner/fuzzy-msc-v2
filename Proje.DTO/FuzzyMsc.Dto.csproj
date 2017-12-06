@@ -7,8 +7,8 @@
     <ProjectGuid>{5421ED6F-EF9E-476E-9290-D07F193CC6D8}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Proje.DTO</RootNamespace>
-    <AssemblyName>Proje.DTO</AssemblyName>
+    <RootNamespace>FuzzyMsc.Dto</RootNamespace>
+    <AssemblyName>FuzzyMsc.Dto</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

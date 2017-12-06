@@ -44,10 +44,19 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Autofac, Version=4.6.2.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.4.6.2\lib\net45\Autofac.dll</HintPath>
+    </Reference>
+    <Reference Include="Autofac.Integration.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.Mvc5.4.0.2\lib\net45\Autofac.Integration.Mvc.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.7\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.IO.Compression.FileSystem" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -105,6 +114,7 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_Start\AutofacConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
@@ -132,6 +142,40 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Models\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Proje.BL\FuzzyMsc.Bll.csproj">
+      <Project>{88234739-a24b-4307-b626-26c737bfa348}</Project>
+      <Name>FuzzyMsc.Bll</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Proje.CORE\FuzzyMsc.Core.csproj">
+      <Project>{aec38032-6320-40fe-8329-6e83862b9866}</Project>
+      <Name>FuzzyMsc.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Proje.DTO\FuzzyMsc.Dto.csproj">
+      <Project>{5421ed6f-ef9e-476e-9290-d07f193cc6d8}</Project>
+      <Name>FuzzyMsc.Dto</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Proje.Entity\FuzzyMsc.Entity.csproj">
+      <Project>{9caec49a-f361-49e3-891d-3939bdf30bac}</Project>
+      <Name>FuzzyMsc.Entity</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Proje.Pattern.EF6\FuzzyMsc.Pattern.EF6.csproj">
+      <Project>{1c327385-25f1-4f1f-96ba-359d5c76358f}</Project>
+      <Name>FuzzyMsc.Pattern.EF6</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Proje.Pattern\FuzzyMsc.Pattern.csproj">
+      <Project>{fa2d36d8-1780-4c53-b53d-ae353de2ed95}</Project>
+      <Name>FuzzyMsc.Pattern</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Proje.ServicePattern\FuzzyMsc.ServicePattern.csproj">
+      <Project>{21667d28-8c06-419d-b725-3cd0a810f4f9}</Project>
+      <Name>FuzzyMsc.ServicePattern</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Proje.Service\FuzzyMsc.Service.csproj">
+      <Project>{d4042124-7f34-491e-aa64-87644fc13dce}</Project>
+      <Name>FuzzyMsc.Service</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

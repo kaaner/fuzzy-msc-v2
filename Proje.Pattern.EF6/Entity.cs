@@ -1,5 +1,5 @@
-﻿using Proje.Pattern.DataContext;
-using Proje.Pattern.Infrastructure;
+﻿using FuzzyMsc.Pattern.DataContext;
+using FuzzyMsc.Pattern.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Proje.Pattern.EF6
+namespace FuzzyMsc.Pattern.EF6
 {
     public abstract class Entity : IObjectState
     {

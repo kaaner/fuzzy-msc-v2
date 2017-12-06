@@ -1,4 +1,4 @@
-﻿using Proje.Pattern.Infrastructure;
+﻿using FuzzyMsc.Pattern.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +6,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Proje.Pattern.Repositories
+namespace FuzzyMsc.Pattern.Repositories
 {
     public interface IQueryFluent<TEntity> where TEntity : IObjectState
     {

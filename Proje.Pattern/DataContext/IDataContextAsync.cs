@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Proje.Pattern.DataContext
+namespace FuzzyMsc.Pattern.DataContext
 {
     public interface IDataContextAsync : IDataContext
     {

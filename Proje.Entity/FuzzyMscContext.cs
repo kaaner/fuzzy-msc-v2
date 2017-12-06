@@ -1,6 +1,6 @@
-﻿using Proje.Entity.Map;
-using Proje.Entity.Model;
-using Proje.Pattern.EF6;
+﻿using FuzzyMsc.Entity.Map;
+using FuzzyMsc.Entity.Model;
+using FuzzyMsc.Pattern.EF6;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -9,11 +9,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Proje.Entity
+namespace FuzzyMsc.Entity
 {
-    public class ProjeContext : DataContext
+    public class FuzzyMscContext : DataContext
     {
-        public ProjeContext() : base("name=ProjeContext")
+        public FuzzyMscContext() : base("name=ProjeContext")
         {
 
         }

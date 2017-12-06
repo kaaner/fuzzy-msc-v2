@@ -1,4 +1,4 @@
-﻿using Proje.Pattern.Infrastructure;
+﻿using FuzzyMsc.Pattern.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Proje.Pattern.Repositories
+namespace FuzzyMsc.Pattern.Repositories
 {
     public interface IRepositoryAsync<TEntity> : IRepository<TEntity> where TEntity : class, IObjectState
     {

@@ -1,14 +1,14 @@
-﻿using Proje.Pattern.Infrastructure;
-using Proje.Pattern.Repositories;
+﻿using FuzzyMsc.Pattern.Infrastructure;
+using FuzzyMsc.Pattern.Repositories;
+using FuzzyMsc.ServicePattern;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Proje.ServicePattern
+namespace FuzzyMsc.ServicePattern
 {
     public abstract class Service<TEntity> : IService<TEntity> where TEntity : class, IObjectState
     {

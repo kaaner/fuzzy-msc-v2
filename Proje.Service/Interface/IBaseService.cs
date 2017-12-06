@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Proje.Service.Interface
+namespace FuzzyMsc.Service.Interface
 {
     public interface IBaseService
     {

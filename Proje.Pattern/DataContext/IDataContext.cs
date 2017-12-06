@@ -1,11 +1,11 @@
-﻿using Proje.Pattern.Infrastructure;
+﻿using FuzzyMsc.Pattern.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Proje.Pattern.DataContext
+namespace FuzzyMsc.Pattern.DataContext
 {
     public interface IDataContext : IDisposable
     {

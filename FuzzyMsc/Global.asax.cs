@@ -11,8 +11,10 @@ namespace FuzzyMsc
     {
         protected void Application_Start()
         {
+            AutofacConfig.Register();
             AreaRegistration.RegisterAllAreas();
             RouteConfig.RegisterRoutes(RouteTable.Routes);
+
         }
     }
 }

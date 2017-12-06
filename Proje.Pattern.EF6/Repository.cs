@@ -1,7 +1,7 @@
-﻿using Proje.Pattern.DataContext;
-using Proje.Pattern.Infrastructure;
-using Proje.Pattern.Repositories;
-using Proje.Pattern.UnitOfWork;
+﻿using FuzzyMsc.Pattern.DataContext;
+using FuzzyMsc.Pattern.Infrastructure;
+using FuzzyMsc.Pattern.Repositories;
+using FuzzyMsc.Pattern.UnitOfWork;
 using System;
 using System.Diagnostics;
 using System.Collections.Generic;
@@ -13,7 +13,7 @@ using LinqKit;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Proje.Pattern.EF6
+namespace FuzzyMsc.Pattern.EF6
 {
     public class Repository<TEntity> : IRepositoryAsync<TEntity> where TEntity : class, IObjectState
     {

@@ -7,8 +7,8 @@
     <ProjectGuid>{D4042124-7F34-491E-AA64-87644FC13DCE}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Proje.Service</RootNamespace>
-    <AssemblyName>Proje.Service</AssemblyName>
+    <RootNamespace>FuzzyMsc.Service</RootNamespace>
+    <AssemblyName>FuzzyMsc.Service</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

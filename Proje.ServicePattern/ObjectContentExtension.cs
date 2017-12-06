@@ -6,7 +6,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Proje.ServicePattern
+namespace FuzzyMsc.ServicePattern
 {
     public static class ObjectContextExtensions
     {

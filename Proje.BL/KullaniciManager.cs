@@ -1,21 +1,11 @@
-﻿using Proje.BL.Interface;
-using Proje.DTO;
-using Proje.Entity;
-using Proje.Entity.Model;
-using Proje.Pattern.DataContext;
-using Proje.Pattern.EF6;
-using Proje.Pattern.Repositories;
-using Proje.Pattern.UnitOfWork;
-using Proje.Service;
-using Proje.ServicePattern;
+﻿using FuzzyMsc.DTO;
+using FuzzyMsc.Service;
+using FuzzyMsc.Bll.Interface;
+using FuzzyMsc.Pattern.UnitOfWork;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Net.Sockets;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Proje.BL
+namespace FuzzyMsc.Bll
 {
     public interface IKullaniciManager : IBaseManager
     {

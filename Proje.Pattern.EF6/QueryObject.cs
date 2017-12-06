@@ -1,5 +1,5 @@
 ﻿using LinqKit;
-using Proje.Pattern.Repositories;
+using FuzzyMsc.Pattern.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +7,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Proje.Pattern.EF6
+namespace FuzzyMsc.Pattern.EF6
 {
     public abstract class QueryObject<TEntity> : IQueryObject<TEntity>
     {

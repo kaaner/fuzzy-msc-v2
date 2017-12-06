@@ -1,14 +1,9 @@
-﻿using Proje.Entity.Model;
-using Proje.Pattern.Repositories;
-using Proje.Service.Interface;
-using Proje.ServicePattern;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using FuzzyMsc.Service.Interface;
+using FuzzyMsc.Entity.Model;
+using FuzzyMsc.Pattern.Repositories;
+using FuzzyMsc.ServicePattern;
 
-namespace Proje.Service
+namespace FuzzyMsc.Service
 {
     public class KullaniciService : Service<Kullanici>, IKullaniciService
     {
@@ -21,7 +16,6 @@ namespace Proje.Service
 
     public interface IKullaniciService : IService<Kullanici>, IBaseService
     {
-
 
     }
 }

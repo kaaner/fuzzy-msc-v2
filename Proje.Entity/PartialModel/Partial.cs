@@ -5,17 +5,17 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-namespace Proje.Entity.Model
+namespace FuzzyMsc.Entity.Model
 {
-    public partial class Kullanici : Proje.Pattern.EF6.Entity
+    public partial class Kullanici : FuzzyMsc.Pattern.EF6.Entity
     {
 
     }
-    public partial class KullaniciRolMntm : Proje.Pattern.EF6.Entity
+    public partial class KullaniciRolMntm : FuzzyMsc.Pattern.EF6.Entity
     {
 
     }
-    public partial class Rol : Proje.Pattern.EF6.Entity
+    public partial class Rol : FuzzyMsc.Pattern.EF6.Entity
     {
 
     }

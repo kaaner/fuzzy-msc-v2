@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Proje.Pattern.Repositories
+namespace FuzzyMsc.Pattern.Repositories
 {
     public interface IQueryObject<TEntity>
     {

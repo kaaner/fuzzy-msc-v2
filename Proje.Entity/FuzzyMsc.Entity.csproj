@@ -7,8 +7,8 @@
     <ProjectGuid>{9CAEC49A-F361-49E3-891D-3939BDF30BAC}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Proje.Entity</RootNamespace>
-    <AssemblyName>Proje.Entity</AssemblyName>
+    <RootNamespace>FuzzyMsc.Entity</RootNamespace>
+    <AssemblyName>FuzzyMsc.Entity</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -57,7 +57,7 @@
     <Compile Include="Model\KullaniciRolMntm.cs" />
     <Compile Include="Model\Rol.cs" />
     <Compile Include="PartialModel\Partial.cs" />
-    <Compile Include="ProjeContext.cs" />
+    <Compile Include="FuzzyMscContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
