@@ -41,6 +41,8 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -49,15 +51,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Map\KullaniciMap.cs" />
-    <Compile Include="Map\KullaniciRolMntmMap.cs" />
-    <Compile Include="Map\RolMap.cs" />
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Model\FuzzyMscContext.cs" />
     <Compile Include="Model\Kullanici.cs" />
-    <Compile Include="Model\KullaniciRolMntm.cs" />
+    <Compile Include="Model\KullaniciRol.cs" />
     <Compile Include="Model\Rol.cs" />
     <Compile Include="PartialModel\Partial.cs" />
-    <Compile Include="FuzzyMscContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -73,6 +72,9 @@
       <Project>{fa2d36d8-1780-4c53-b53d-ae353de2ed95}</Project>
       <Name>FuzzyMsc.Pattern</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Map\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

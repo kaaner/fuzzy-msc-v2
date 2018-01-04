@@ -65,7 +65,7 @@ namespace FuzzyMsc.Bll
             {
                 //işlemler yapılıyor...
                 sonuc.Mesaj = "İşlem Başarılı";
-                sonuc.Nesne = _kullaniciService.Queryable().FirstOrDefault().Ad;
+                sonuc.Nesne = _kullaniciService.Queryable().FirstOrDefault().Adi;
                 sonuc.Sonuc = true;
             }
             catch (Exception ex)

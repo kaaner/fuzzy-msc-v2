@@ -5,14 +5,14 @@ namespace FuzzyMsc.Entity.Migrations
     using System.Data.Entity.Migrations;
     using System.Linq;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<FuzzyMsc.Entity.FuzzyMscContext>
+    internal sealed class Configuration : DbMigrationsConfiguration<FuzzyMsc.Entity.Model.FuzzyMscContext>
     {
         public Configuration()
         {
             AutomaticMigrationsEnabled = true;
         }
 
-        protected override void Seed(FuzzyMsc.Entity.FuzzyMscContext context)
+        protected override void Seed(FuzzyMsc.Entity.Model.FuzzyMscContext context)
         {
             //  This method will be called after migrating to the latest version.
 

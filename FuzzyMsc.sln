@@ -27,6 +27,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Library", "Library", "{97E5
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{6E9927E2-905B-4301-9626-C3D7F0CC7ACD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuzzyMsc.FuzzyLibrary", "FuzzyMsc.FuzzyLibrary\FuzzyMsc.FuzzyLibrary.csproj", "{5E119F90-4E53-43DA-93E4-CC255020F16E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -69,6 +71,10 @@ Global
 		{21667D28-8C06-419D-B725-3CD0A810F4F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{21667D28-8C06-419D-B725-3CD0A810F4F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{21667D28-8C06-419D-B725-3CD0A810F4F9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5E119F90-4E53-43DA-93E4-CC255020F16E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5E119F90-4E53-43DA-93E4-CC255020F16E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5E119F90-4E53-43DA-93E4-CC255020F16E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5E119F90-4E53-43DA-93E4-CC255020F16E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -83,6 +89,7 @@ Global
 		{1C327385-25F1-4F1F-96BA-359D5C76358F} = {58564025-1ABC-4F29-9A5B-366B2285C2F1}
 		{D4042124-7F34-491E-AA64-87644FC13DCE} = {97E52418-F7B9-4257-9E2E-772F88059CB5}
 		{21667D28-8C06-419D-B725-3CD0A810F4F9} = {58564025-1ABC-4F29-9A5B-366B2285C2F1}
+		{5E119F90-4E53-43DA-93E4-CC255020F16E} = {97E52418-F7B9-4257-9E2E-772F88059CB5}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8667E666-187A-475E-8E01-FEBC9534BB99}

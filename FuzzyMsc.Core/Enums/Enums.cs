@@ -6,5 +6,11 @@
         {
             Admin = 1
         }
+
+        public enum Operator
+        {
+            And = 1,
+            Or = 2
+        }
     }
 }

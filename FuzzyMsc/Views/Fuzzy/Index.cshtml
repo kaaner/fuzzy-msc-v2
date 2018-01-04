@@ -1,0 +1,108 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div ng-controller="fuzzycontroller">
+    <div id="panelPortlet1" class="panel panel-primary">
+        <div class="panel-heading">
+            <span>Ekleme Sayfası</span>
+            <paneltool tool-collapse="tool-collapse"></paneltool>
+        </div>
+        <div collapse="panelPortlet1" class="panel-wrapper">
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="col-sm-6 control-label">Özdirenç</label>
+                            <div class="col-sm-6">
+                                <input type="number" name="ozdirenc" class="form-control" ng-model="zeminBilgisi.ozdirenc" min="1" max="100" prevent-typing-greater />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="col-sm-5 control-label">Mukavemet</label>
+                            <div class="col-sm-7">
+                                <input type="number" name="mukavemet" class="form-control" ng-model="zeminBilgisi.mukavemet" min="1" max="1000" prevent-typing-greater />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">Doygunluk</label>
+                            <div class="col-sm-8">
+                                <input type="number" name="doygunluk" class="form-control" ng-model="zeminBilgisi.doygunluk" min="1" max="10" prevent-typing-greater/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <button type="button" class="btn btn-labeled btn-success pull-right" style="margin-left: 10px;" ng-click="Ekle(zeminBilgisi)">
+                            <span class="btn-label">
+                                <i class="fa fa-check"></i>
+                            </span>Ekle
+                        </button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="table table-hover" ng-show="zeminBilgileri.length > 0">
+                            <thead>
+                                <tr>
+                                    <th>Özdirenç</th>
+                                    <th>Mukavemet</th>
+                                    <th>Doygunluk</th>
+                                    <th>İşlem</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="item in zeminBilgileri">
+                                    <td>{{item.ozdirenc}}</td>
+                                    <td>{{item.mukavemet}}</td>
+                                    <td>{{item.doygunluk}}</td>
+                                    <td>
+                                        <button type="button" class="btn btn-labeled btn-danger pull-right" ng-click="Sil($index)">
+                                            <span class="btn-label">
+                                                <i class="fa fa-check"></i>
+                                            </span>Sil
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="table table-hover" ng-show="sonucDegerleri.length > 0">
+                            <thead>
+                                <tr>
+                                    <th>Sonuçlar</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="item in sonucDegerleri">
+                                    <td>Sonuç {{$index}}: {{item.Sonuc}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+            <div class="panel-footer">
+                <div class="row">
+                    <div class="col-md-12">
+                        <button type="button" class="btn btn-labeled btn-success pull-right" style="margin-left: 10px;" ng-click="Sonuclar(zeminBilgileri)">
+                            <span class="btn-label">
+                                <i class="fa fa-check"></i>
+                            </span>Gönder
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -1,7 +1,7 @@
 using Autofac;
 using Autofac.Integration.Mvc;
 using FuzzyMsc.Bll.Interface;
-using FuzzyMsc.Entity;
+using FuzzyMsc.Entity.Model;
 using FuzzyMsc.Pattern.DataContext;
 using FuzzyMsc.Pattern.EF6;
 using FuzzyMsc.Pattern.Repositories;

@@ -1,26 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace FuzzyMsc.Entity.Model
 {
+    using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
+
+    [Table("Rol")]
     public partial class Rol
     {
-
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Rol()
         {
-            this.RolunKullanicilariMntm = new List<KullaniciRolMntm>();
+            KullaniciRols = new HashSet<KullaniciRol>();
         }
 
         public int RolID { get; set; }
 
+        [StringLength(10)]
         public string RolAdi { get; set; }
 
-
-        //Virtaul
-
-        public ICollection<KullaniciRolMntm> RolunKullanicilariMntm { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<KullaniciRol> KullaniciRols { get; set; }
     }
 }

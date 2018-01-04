@@ -1,39 +1,33 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace FuzzyMsc.Entity.Model
 {
+    using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
+
+    [Table("Kullanici")]
     public partial class Kullanici
     {
-
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Kullanici()
         {
-            this.KullanicininRolleriMntm = new List<KullaniciRolMntm>();
+            KullaniciRols = new HashSet<KullaniciRol>();
         }
 
-        public long KullaniciID { get; set; }
+        public int KullaniciID { get; set; }
 
-        public string Guid { get; set; }
+        [StringLength(50)]
+        public string Adi { get; set; }
 
-        public string Ad { get; set; }
+        [StringLength(50)]
+        public string Soyadi { get; set; }
 
-        public string Soyad { get; set; }
+        [StringLength(50)]
+        public string Username { get; set; }
 
-        public string TcNo { get; set; }
+        [StringLength(50)]
+        public string Password { get; set; }
 
-        public string Sifre { get; set; }
-
-        public string Eposta { get; set; }
-
-        public string Telefon { get; set; }
-
-
-        //Virtual
-        public ICollection<KullaniciRolMntm> KullanicininRolleriMntm { get; set; }
-
-
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<KullaniciRol> KullaniciRols { get; set; }
     }
 }

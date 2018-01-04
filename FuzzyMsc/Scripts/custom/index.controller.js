@@ -1,10 +1,11 @@
-﻿angular.module("mainfuzzy", [])
+﻿angular.module("mainfuzzy")
     .controller("indexcontroller", function ($http, $scope) {
         $scope.Selam = function () {
             $http.get('/Home/Kaydet').then(function successCallback(response) {
                     if (response.data.Sonuc) {
                         debugger;
-                        window.location.pathname = 'Mazeret/AktifMazeretlerim';
+                        alert(response.data);
+                        //window.location.pathname = 'Mazeret/AktifMazeretlerim';
                     }
                     else {
                         $scope.hataMesajlari = [];
