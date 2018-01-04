@@ -1,9 +1,11 @@
 ﻿using FuzzyMsc.Bll.Interface;
 using FuzzyMsc.Core.Enums;
 using FuzzyMsc.Dto.FuzzyDTOS;
+using FuzzyMsc.Entity.Model;
 using FuzzyMsc.FuzzyLibrary;
 using FuzzyMsc.Pattern.UnitOfWork;
 using FuzzyMsc.Service;
+using System;
 using System.Collections.Generic;
 
 namespace FuzzyMsc.Bll
@@ -14,15 +16,18 @@ namespace FuzzyMsc.Bll
         IUnitOfWorkAsync _unitOfWork;
         IOrtakManager _ortakManager;
         IKullaniciService _kullaniciService;
+        IKuralService _kuralService;
 
         public FuzzyManager(
             IUnitOfWorkAsync unitOfWork,
             IKullaniciService kullaniciService,
-            IOrtakManager ortakManager)
+            IOrtakManager ortakManager,
+            IKuralService kuralService)
         {
             _unitOfWork = unitOfWork;
             _ortakManager = ortakManager;
             _kullaniciService = kullaniciService;
+            _kuralService = kuralService;
         }
 
         public void KumeKaydet(KuralKumeDTO kuralKume)
@@ -70,10 +75,22 @@ namespace FuzzyMsc.Bll
             {
                 string ruleText = KuralOlustur(KuralListItem) + " then (Toprak is " + KuralListItem.Sonuc + ")";
                 kurallar.Add(ruleText);
-            } 
+            }
             #endregion
 
             #region Database Kayit Islemleri
+            Kural kural = new Kural
+            {
+                KuralAdi = kuralKume.KumeAdi,
+                AktifMi = true,
+                EklenmeTarihi = DateTime.Now
+            };
+            _kuralService.BulkInsert(kural);
+
+            Degisken degisken = new Degisken {
+                
+            };
+
 
             #endregion
         }

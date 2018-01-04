@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DegiskenItemService.cs" />
     <Compile Include="DegiskenService.cs" />
     <Compile Include="Interface\IBaseService.cs" />
     <Compile Include="KullaniciService.cs" />

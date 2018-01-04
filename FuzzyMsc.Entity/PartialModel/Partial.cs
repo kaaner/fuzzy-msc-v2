@@ -32,5 +32,9 @@
     {
 
     }
+    public partial class DegiskenItem : FuzzyMsc.Pattern.EF6.Entity
+    {
+
+    }
 
 }

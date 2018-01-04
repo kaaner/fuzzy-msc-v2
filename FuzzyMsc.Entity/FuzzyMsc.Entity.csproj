@@ -53,6 +53,8 @@
   <ItemGroup>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\Degisken.cs" />
+    <Compile Include="Model\DegiskenItem.cs" />
+    <Compile Include="Model\DegiskenTip.cs" />
     <Compile Include="Model\FuzzyMscContext.cs" />
     <Compile Include="Model\Kullanici.cs" />
     <Compile Include="Model\KullaniciRol.cs" />

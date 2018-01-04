@@ -13,6 +13,8 @@ namespace FuzzyMsc.Entity.Model
         }
 
         public virtual DbSet<Degisken> Degiskens { get; set; }
+        public virtual DbSet<DegiskenItem> DegiskenItems { get; set; }
+        public virtual DbSet<DegiskenTip> DegiskenTips { get; set; }
         public virtual DbSet<Kullanici> Kullanicis { get; set; }
         public virtual DbSet<Kural> Kurals { get; set; }
         public virtual DbSet<KuralList> KuralLists { get; set; }
@@ -24,9 +26,19 @@ namespace FuzzyMsc.Entity.Model
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Degisken>()
+                .HasMany(e => e.DegiskenItems)
+                .WithRequired(e => e.Degisken)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Degisken>()
                 .HasMany(e => e.KuralLists)
                 .WithOptional(e => e.Degisken)
                 .HasForeignKey(e => e.SonucDegiskenID);
+
+            modelBuilder.Entity<DegiskenTip>()
+                .HasMany(e => e.Degiskens)
+                .WithRequired(e => e.DegiskenTip)
+                .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Kullanici>()
                 .HasMany(e => e.KullaniciRols)

@@ -29,5 +29,11 @@ namespace FuzzyMsc.ServicePattern
         Task<bool> DeleteAsync(params object[] keyValues);
         Task<bool> DeleteAsync(CancellationToken cancellationToken, params object[] keyValues);
         IQueryable<TEntity> Queryable();
+        void BulkInsertRange(IEnumerable<TEntity> entities);
+        void BulkDeleteRange(IEnumerable<TEntity> entities);
+        void BulkUpdateRange(IEnumerable<TEntity> entities);
+        void BulkInsert(TEntity entity);
+        void BulkUpdate(TEntity entity);
+        void BulkDelete(TEntity entity);
     }
 }
