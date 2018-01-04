@@ -41,8 +41,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DegiskenService.cs" />
     <Compile Include="Interface\IBaseService.cs" />
     <Compile Include="KullaniciService.cs" />
+    <Compile Include="KuralListItemService.cs" />
+    <Compile Include="KuralListService.cs" />
+    <Compile Include="KuralListTextService.cs" />
+    <Compile Include="KuralService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

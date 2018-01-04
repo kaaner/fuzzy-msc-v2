@@ -52,9 +52,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Model\Degisken.cs" />
     <Compile Include="Model\FuzzyMscContext.cs" />
     <Compile Include="Model\Kullanici.cs" />
     <Compile Include="Model\KullaniciRol.cs" />
+    <Compile Include="Model\Kural.cs" />
+    <Compile Include="Model\KuralList.cs" />
+    <Compile Include="Model\KuralListItem.cs" />
+    <Compile Include="Model\KuralListText.cs" />
     <Compile Include="Model\Rol.cs" />
     <Compile Include="PartialModel\Partial.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -25,6 +25,59 @@ namespace FuzzyMsc.Bll
             _kullaniciService = kullaniciService;
         }
 
+        public void KumeKaydet(KuralKumeDTO kuralKume)
+        {
+            #region Fuzzy Islemleri
+            var ozdirenc = GorunenAdDuzenle(kuralKume.OzdirencList);
+            var toprak = GorunenAdDuzenle(kuralKume.ToprakList);
+
+            MamdaniFuzzySystem fsToprak = new MamdaniFuzzySystem();
+
+            #region Inputs
+            FuzzyVariable fvOzdirenc = new FuzzyVariable("Ozdirenc", 0.0, 1000.0);
+            foreach (var item in ozdirenc)
+            {
+                fvOzdirenc.Terms.Add(new FuzzyTerm(item.Adi, new TriangularMembershipFunction(item.MinDeger, (item.MinDeger + item.MaxDeger) / 2, item.MaxDeger)));
+            }
+            fsToprak.Input.Add(fvOzdirenc);
+
+            FuzzyVariable fvMukavemet = new FuzzyVariable("Mukavemet", 0.0, 1000.0);
+            foreach (var item in _ortakManager.Mukavemet)
+            {
+                fvMukavemet.Terms.Add(new FuzzyTerm(item.Adi, new TriangularMembershipFunction(item.MinDeger, (item.MinDeger + item.MaxDeger) / 2, item.MaxDeger)));
+            }
+            fsToprak.Input.Add(fvMukavemet);
+
+            FuzzyVariable fvDoygunluk = new FuzzyVariable("Doygunluk", 0.0, 10.0);
+            foreach (var item in _ortakManager.Doygunluk)
+            {
+                fvDoygunluk.Terms.Add(new FuzzyTerm(item.Adi, new TriangularMembershipFunction(item.MinDeger, (item.MinDeger + item.MaxDeger) / 2, item.MaxDeger)));
+            }
+            fsToprak.Input.Add(fvDoygunluk);
+            #endregion
+
+            #region Output
+            FuzzyVariable fvToprak = new FuzzyVariable("Toprak", 0.0, 1000.0);
+            foreach (var item in toprak)
+            {
+                fvToprak.Terms.Add(new FuzzyTerm(item.Adi, new TriangularMembershipFunction(item.MinDeger, (item.MinDeger + item.MaxDeger) / 2, item.MaxDeger)));
+            }
+            fsToprak.Output.Add(fvToprak);
+            #endregion
+            List<string> kurallar = new List<string>();
+
+            foreach (var KuralListItem in kuralKume.KuralList)
+            {
+                string ruleText = KuralOlustur(KuralListItem) + " then (Toprak is " + KuralListItem.Sonuc + ")";
+                kurallar.Add(ruleText);
+            } 
+            #endregion
+
+            #region Database Kayit Islemleri
+
+            #endregion
+        }
+
         public void KurallariOlusturFLL(KuralKumeDTO kuralKume)
         {
             var ozdirenc = GorunenAdDuzenle(kuralKume.OzdirencList);
@@ -71,9 +124,7 @@ namespace FuzzyMsc.Bll
                 kurallar.Add(ruleText);
             }
 
-
-
-            throw new System.NotImplementedException();
+            
         }
 
         public void KurallariOlusturFLS(KuralKumeDTO kuralKume)
@@ -228,5 +279,7 @@ namespace FuzzyMsc.Bll
         void KurallariOlusturFLS(KuralKumeDTO kuralKume);
 
         void KurallariOlusturFLL(KuralKumeDTO kuralKume);
+
+        void KumeKaydet(KuralKumeDTO kuralKume);
     }
 }

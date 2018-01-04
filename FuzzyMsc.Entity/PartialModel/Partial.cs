@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-
-namespace FuzzyMsc.Entity.Model
+﻿namespace FuzzyMsc.Entity.Model
 {
     public partial class Kullanici : FuzzyMsc.Pattern.EF6.Entity
     {
@@ -19,4 +12,25 @@ namespace FuzzyMsc.Entity.Model
     {
 
     }
+    public partial class Kural : FuzzyMsc.Pattern.EF6.Entity
+    {
+
+    }
+    public partial class Degisken : FuzzyMsc.Pattern.EF6.Entity
+    {
+
+    }
+    public partial class KuralListText : FuzzyMsc.Pattern.EF6.Entity
+    {
+
+    }
+    public partial class KuralList : FuzzyMsc.Pattern.EF6.Entity
+    {
+
+    }
+    public partial class KuralListItem : FuzzyMsc.Pattern.EF6.Entity
+    {
+
+    }
+
 }
