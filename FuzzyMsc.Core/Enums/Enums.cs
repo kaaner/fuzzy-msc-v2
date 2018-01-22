@@ -12,5 +12,11 @@
             And = 1,
             Or = 2
         }
+
+        public enum DegiskenTip
+        {
+            Input = 1,
+            Output = 2
+        }
     }
 }

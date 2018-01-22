@@ -122,6 +122,7 @@
     <Content Include="Scripts\custom\fuzzy.constant.js" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\custom\directives\limittomax.directive.js" />
+    <Content Include="Scripts\custom\fuzzy.old.controller.js" />
     <Content Include="Scripts\custom\mainfuzzy.controller.js" />
     <Content Include="Scripts\custom\directives\preventtypinggreater.directive.js" />
     <Content Include="Scripts\custom\fuzzy.controller.js" />
@@ -153,6 +154,7 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
     <Content Include="Views\Fuzzy\Index.cshtml" />
     <Content Include="Views\Fuzzy\Kume.cshtml" />
+    <Content Include="Views\Fuzzy\KumeOld.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

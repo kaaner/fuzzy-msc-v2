@@ -71,7 +71,7 @@
                 });
         }
 
-        //Ozdirenc Kodları
+        //Ozdirenc Islemleri START
         $scope.OzdirencEkle = function (item) {
             $scope.ozdirencList.push({
                 adi: item.adi,
@@ -111,9 +111,9 @@
         $scope.OzdirencKaydet = function (ozdirencList) {
             $scope.panelToprak = true;
         }
-        //Ozdirenc Kodları
+        //Ozdirenc Islemleri END
 
-        //Toprak Kodları
+        //Toprak Islemleri START
         $scope.ToprakEkle = function (item) {
             $scope.toprakList.push({
                 adi: item.adi,
@@ -153,10 +153,9 @@
         $scope.ToprakKaydet = function (toprakList) {
             $scope.panelKurallar = true;
         }
-        //Toprak Kodları
+        //Toprak Islemleri END
 
         $scope.OperatorIleBagla = function (kural, operator) {
-            debugger;
             var text = "";
             var preKuralItem = { text: "", kural: {}};
 

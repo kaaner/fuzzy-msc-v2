@@ -13,15 +13,17 @@ namespace FuzzyMsc.Entity.Model
 
         public long DegiskenID { get; set; }
 
+        [Required]
         [StringLength(250)]
         public string DegiskenItemAdi { get; set; }
 
+        [Required]
         [StringLength(250)]
         public string DegiskenItemGorunenAdi { get; set; }
 
-        public int? MinDeger { get; set; }
+        public double MinDeger { get; set; }
 
-        public int? MaxDeger { get; set; }
+        public double MaxDeger { get; set; }
 
         public virtual Degisken Degisken { get; set; }
     }

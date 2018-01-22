@@ -9,6 +9,12 @@ namespace FuzzyMsc.Entity.Model
     [Table("KuralList")]
     public partial class KuralList
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public KuralList()
+        {
+            KuralListItem = new HashSet<KuralListItem>();
+        }
+
         public long KuralListID { get; set; }
 
         public long KuralID { get; set; }
@@ -18,5 +24,8 @@ namespace FuzzyMsc.Entity.Model
         public virtual Degisken Degisken { get; set; }
 
         public virtual Kural Kural { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<KuralListItem> KuralListItem { get; set; }
     }
 }

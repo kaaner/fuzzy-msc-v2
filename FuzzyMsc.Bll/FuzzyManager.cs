@@ -7,6 +7,7 @@ using FuzzyMsc.Pattern.UnitOfWork;
 using FuzzyMsc.Service;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace FuzzyMsc.Bll
 {
@@ -17,17 +18,29 @@ namespace FuzzyMsc.Bll
         IOrtakManager _ortakManager;
         IKullaniciService _kullaniciService;
         IKuralService _kuralService;
+        IKuralListService _kuralListService;
+        IKuralListTextService _kuralListTextService;
+        IDegiskenService _degiskenService;
+        IDegiskenItemService _degiskenItemService;
 
         public FuzzyManager(
             IUnitOfWorkAsync unitOfWork,
             IKullaniciService kullaniciService,
             IOrtakManager ortakManager,
-            IKuralService kuralService)
+            IKuralService kuralService,
+            IKuralListService kuralListService,
+            IKuralListTextService kuralListTextService,
+            IDegiskenService degiskenService,
+            IDegiskenItemService degiskenItemService)
         {
             _unitOfWork = unitOfWork;
             _ortakManager = ortakManager;
             _kullaniciService = kullaniciService;
             _kuralService = kuralService;
+            _kuralListService = kuralListService;
+            _kuralListTextService = kuralListTextService;
+            _degiskenService = degiskenService;
+            _degiskenItemService = degiskenItemService;
         }
 
         public void KumeKaydet(KuralKumeDTO kuralKume)
@@ -79,6 +92,7 @@ namespace FuzzyMsc.Bll
             #endregion
 
             #region Database Kayit Islemleri
+            #region Kural
             Kural kural = new Kural
             {
                 KuralAdi = kuralKume.KumeAdi,
@@ -86,10 +100,56 @@ namespace FuzzyMsc.Bll
                 EklenmeTarihi = DateTime.Now
             };
             _kuralService.BulkInsert(kural);
+            #endregion
 
-            Degisken degisken = new Degisken {
-                
+            #region Input Degisken
+            Degisken ozdirencDegisken = new Degisken
+            {
+                KuralID = kural.KuralID,
+                DegiskenTipID = (byte)Enums.DegiskenTip.Input,
+                DegiskenAdi = "Özdirenç",
+                DegiskenGorunenAdi = "Ozdirenc"
             };
+            _degiskenService.BulkInsert(ozdirencDegisken);
+            var ozdirencItem = (from a in ozdirenc
+                                select new DegiskenItem()
+                                {
+                                    DegiskenID = ozdirencDegisken.DegiskenID,
+                                    DegiskenItemAdi = a.Adi,
+                                    DegiskenItemGorunenAdi = a.GorunenAdi,
+                                    MinDeger = a.MinDeger,
+                                    MaxDeger = a.MaxDeger
+                                });
+            _degiskenItemService.BulkInsertRange(ozdirencItem);
+            #endregion
+
+            #region Output Degisken
+            Degisken toprakDegisken = new Degisken
+            {
+                KuralID = kural.KuralID,
+                DegiskenTipID = (byte)Enums.DegiskenTip.Output,
+                DegiskenAdi = "Toprak",
+                DegiskenGorunenAdi = "Toprak"
+            };
+            _degiskenService.BulkInsert(toprakDegisken);
+            var toprakItem = (from a in toprak
+                              select new DegiskenItem()
+                              {
+                                  DegiskenID = toprakDegisken.DegiskenID,
+                                  DegiskenItemAdi = a.Adi,
+                                  DegiskenItemGorunenAdi = a.GorunenAdi,
+                                  MinDeger = a.MinDeger,
+                                  MaxDeger = a.MaxDeger
+                              });
+            _degiskenItemService.BulkInsertRange(toprakItem);
+            #endregion
+
+            var kuralList = (from a in kuralKume.KuralList
+                             select new KuralList()
+                             {
+                                 KuralID = kural.KuralID,
+                                 SonucDegiskenID = _degiskenItemService.Queryable().FirstOrDefault(d=>d.DegiskenItemAdi == a.Sonuc && d.Degisken.KuralID == kural.KuralID).DegiskenItemID
+                             });
 
 
             #endregion

@@ -25,5 +25,7 @@ namespace FuzzyMsc.Entity.Model
         public long? Esitlik { get; set; }
 
         public virtual Degisken Degisken { get; set; }
+
+        public virtual KuralList KuralList { get; set; }
     }
 }

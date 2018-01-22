@@ -12,7 +12,7 @@ namespace FuzzyMsc.Entity.Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public DegiskenTip()
         {
-            Degiskens = new HashSet<Degisken>();
+            Degisken = new HashSet<Degisken>();
         }
 
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -23,6 +23,6 @@ namespace FuzzyMsc.Entity.Model
         public string DegiskenTipAdi { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Degisken> Degiskens { get; set; }
+        public virtual ICollection<Degisken> Degisken { get; set; }
     }
 }

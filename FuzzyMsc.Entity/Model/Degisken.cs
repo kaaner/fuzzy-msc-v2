@@ -12,9 +12,9 @@ namespace FuzzyMsc.Entity.Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Degisken()
         {
-            DegiskenItems = new HashSet<DegiskenItem>();
-            KuralLists = new HashSet<KuralList>();
-            KuralListItems = new HashSet<KuralListItem>();
+            DegiskenItem = new HashSet<DegiskenItem>();
+            KuralList = new HashSet<KuralList>();
+            KuralListItem = new HashSet<KuralListItem>();
         }
 
         public long DegiskenID { get; set; }
@@ -34,12 +34,12 @@ namespace FuzzyMsc.Entity.Model
         public virtual Kural Kural { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<DegiskenItem> DegiskenItems { get; set; }
+        public virtual ICollection<DegiskenItem> DegiskenItem { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<KuralList> KuralLists { get; set; }
+        public virtual ICollection<KuralList> KuralList { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<KuralListItem> KuralListItems { get; set; }
+        public virtual ICollection<KuralListItem> KuralListItem { get; set; }
     }
 }
