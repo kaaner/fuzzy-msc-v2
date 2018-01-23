@@ -1,5 +1,6 @@
 ﻿using FuzzyMsc.Bll.Interface;
 using FuzzyMsc.Core.Enums;
+using FuzzyMsc.Dto;
 using FuzzyMsc.Dto.FuzzyDTOS;
 using FuzzyMsc.Entity.Model;
 using FuzzyMsc.FuzzyLibrary;
@@ -7,7 +8,9 @@ using FuzzyMsc.Pattern.UnitOfWork;
 using FuzzyMsc.Service;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Text;
 
 namespace FuzzyMsc.Bll
 {
@@ -19,6 +22,7 @@ namespace FuzzyMsc.Bll
         IKullaniciService _kullaniciService;
         IKuralService _kuralService;
         IKuralListService _kuralListService;
+        IKuralListItemService _kuralListItemService;
         IKuralListTextService _kuralListTextService;
         IDegiskenService _degiskenService;
         IDegiskenItemService _degiskenItemService;
@@ -29,6 +33,7 @@ namespace FuzzyMsc.Bll
             IOrtakManager ortakManager,
             IKuralService kuralService,
             IKuralListService kuralListService,
+            IKuralListItemService kuralListItemService,
             IKuralListTextService kuralListTextService,
             IDegiskenService degiskenService,
             IDegiskenItemService degiskenItemService)
@@ -41,10 +46,12 @@ namespace FuzzyMsc.Bll
             _kuralListTextService = kuralListTextService;
             _degiskenService = degiskenService;
             _degiskenItemService = degiskenItemService;
+            _kuralListItemService = kuralListItemService;
         }
 
-        public void KumeKaydet(KuralKumeDTO kuralKume)
+        public SonucDTO KumeKaydet(KuralKumeDTO kuralKume)
         {
+            SonucDTO sonuc = new SonucDTO();
             #region Fuzzy Islemleri
             var ozdirenc = GorunenAdDuzenle(kuralKume.OzdirencList);
             var toprak = GorunenAdDuzenle(kuralKume.ToprakList);
@@ -82,75 +89,112 @@ namespace FuzzyMsc.Bll
             }
             fsToprak.Output.Add(fvToprak);
             #endregion
-            List<string> kurallar = new List<string>();
 
-            foreach (var KuralListItem in kuralKume.KuralList)
-            {
-                string ruleText = KuralOlustur(KuralListItem) + " then (Toprak is " + KuralListItem.Sonuc + ")";
-                kurallar.Add(ruleText);
-            }
             #endregion
 
             #region Database Kayit Islemleri
-            #region Kural
-            Kural kural = new Kural
+
+            try
             {
-                KuralAdi = kuralKume.KumeAdi,
-                AktifMi = true,
-                EklenmeTarihi = DateTime.Now
-            };
-            _kuralService.BulkInsert(kural);
-            #endregion
+                _unitOfWork.BeginTransaction(System.Data.IsolationLevel.ReadUncommitted);
 
-            #region Input Degisken
-            Degisken ozdirencDegisken = new Degisken
+                #region Kural
+                Kural kural = new Kural
+                {
+                    KuralAdi = kuralKume.KumeAdi,
+                    AktifMi = true,
+                    EklenmeTarihi = DateTime.Now
+                };
+                _kuralService.BulkInsert(kural);
+                #endregion
+
+                #region KuralListText
+                List<KuralListText> kurallar = new List<KuralListText>();
+                foreach (var KuralListItem in kuralKume.KuralList)
+                {
+                    string ruleText = KuralOlustur(KuralListItem);
+                    kurallar.Add(new KuralListText { KuralID = kural.KuralID, KuralText = ruleText });
+                }
+                _kuralListTextService.BulkInsertRange(kurallar);
+                #endregion
+                
+                #region Input Degisken
+                Degisken ozdirencDegisken = new Degisken
+                {
+                    KuralID = kural.KuralID,
+                    DegiskenTipID = (byte)Enums.DegiskenTip.Input,
+                    DegiskenAdi = "Özdirenç",
+                    DegiskenGorunenAdi = "Ozdirenc"
+                };
+                _degiskenService.BulkInsert(ozdirencDegisken);
+                var ozdirencItem = (from a in ozdirenc
+                                    select new DegiskenItem()
+                                    {
+                                        DegiskenID = ozdirencDegisken.DegiskenID,
+                                        DegiskenItemAdi = a.Adi,
+                                        DegiskenItemGorunenAdi = a.GorunenAdi,
+                                        MinDeger = a.MinDeger,
+                                        MaxDeger = a.MaxDeger
+                                    });
+                _degiskenItemService.BulkInsertRange(ozdirencItem);
+                #endregion
+
+                #region Output Degisken
+                Degisken toprakDegisken = new Degisken
+                {
+                    KuralID = kural.KuralID,
+                    DegiskenTipID = (byte)Enums.DegiskenTip.Output,
+                    DegiskenAdi = "Toprak",
+                    DegiskenGorunenAdi = "Toprak"
+                };
+                _degiskenService.BulkInsert(toprakDegisken);
+                var toprakItem = (from a in toprak
+                                  select new DegiskenItem()
+                                  {
+                                      DegiskenID = toprakDegisken.DegiskenID,
+                                      DegiskenItemAdi = a.Adi,
+                                      DegiskenItemGorunenAdi = a.GorunenAdi,
+                                      MinDeger = a.MinDeger,
+                                      MaxDeger = a.MaxDeger
+                                  });
+                _degiskenItemService.BulkInsertRange(toprakItem);
+                #endregion
+
+
+
+                #region KuralList
+                List<KuralListItem> kuralListItem = new List<KuralListItem>();
+                for (int i = 0; i < kuralKume.KuralList.Count; i++)
+                {
+                    var kuralList = (new KuralList { KuralID = kural.KuralID, SiraNo = (byte)(i + 1) });
+                    _kuralListService.BulkInsert(kuralList);
+
+                    foreach (var item in kuralKume.KuralList)
+                    {
+                        var InputDegiskenID = _degiskenItemService.Queryable().FirstOrDefault(d => d.Degisken.DegiskenTipID == (byte)Enums.DegiskenTip.Input && d.DegiskenItemGorunenAdi == item.Kural.Ozdirenc).DegiskenItemID;
+                        kuralListItem.Add(new KuralListItem { KuralListID = kuralList.KuralListID, DegiskenItemID = InputDegiskenID });
+
+                        var OutputDegiskenID = _degiskenItemService.Queryable().FirstOrDefault(d => d.Degisken.DegiskenTipID == (byte)Enums.DegiskenTip.Output && d.DegiskenItemGorunenAdi == item.Kural.Toprak).DegiskenItemID;
+                        kuralListItem.Add(new KuralListItem { KuralListID = kuralList.KuralListID, DegiskenItemID = InputDegiskenID });
+                    }
+                }
+                _kuralListItemService.BulkInsertRange(kuralListItem);
+                #endregion
+                
+                _unitOfWork.Commit();
+                sonuc.Sonuc = true;
+                sonuc.Mesaj = "Kural Kümesi Başarı İle Kaydedildi.";
+                sonuc.Nesne = null;
+                return sonuc;
+            }
+            catch (Exception ex)
             {
-                KuralID = kural.KuralID,
-                DegiskenTipID = (byte)Enums.DegiskenTip.Input,
-                DegiskenAdi = "Özdirenç",
-                DegiskenGorunenAdi = "Ozdirenc"
-            };
-            _degiskenService.BulkInsert(ozdirencDegisken);
-            var ozdirencItem = (from a in ozdirenc
-                                select new DegiskenItem()
-                                {
-                                    DegiskenID = ozdirencDegisken.DegiskenID,
-                                    DegiskenItemAdi = a.Adi,
-                                    DegiskenItemGorunenAdi = a.GorunenAdi,
-                                    MinDeger = a.MinDeger,
-                                    MaxDeger = a.MaxDeger
-                                });
-            _degiskenItemService.BulkInsertRange(ozdirencItem);
-            #endregion
-
-            #region Output Degisken
-            Degisken toprakDegisken = new Degisken
-            {
-                KuralID = kural.KuralID,
-                DegiskenTipID = (byte)Enums.DegiskenTip.Output,
-                DegiskenAdi = "Toprak",
-                DegiskenGorunenAdi = "Toprak"
-            };
-            _degiskenService.BulkInsert(toprakDegisken);
-            var toprakItem = (from a in toprak
-                              select new DegiskenItem()
-                              {
-                                  DegiskenID = toprakDegisken.DegiskenID,
-                                  DegiskenItemAdi = a.Adi,
-                                  DegiskenItemGorunenAdi = a.GorunenAdi,
-                                  MinDeger = a.MinDeger,
-                                  MaxDeger = a.MaxDeger
-                              });
-            _degiskenItemService.BulkInsertRange(toprakItem);
-            #endregion
-
-            var kuralList = (from a in kuralKume.KuralList
-                             select new KuralList()
-                             {
-                                 KuralID = kural.KuralID,
-                                 SonucDegiskenID = _degiskenItemService.Queryable().FirstOrDefault(d=>d.DegiskenItemAdi == a.Sonuc && d.Degisken.KuralID == kural.KuralID).DegiskenItemID
-                             });
-
+                _unitOfWork.Rollback();
+                sonuc.Sonuc = false;
+                sonuc.Mesaj = "Kural Kümesi Kaydedilirken Hata Oluştu. Hata Açıklaması: " + ex.Message;
+                sonuc.Nesne = null;
+                return sonuc;
+            }
 
             #endregion
         }
@@ -195,13 +239,13 @@ namespace FuzzyMsc.Bll
             #endregion
             List<string> kurallar = new List<string>();
 
-            foreach (var KuralListItem in kuralKume.KuralList)
-            {
-                string ruleText = KuralOlustur(KuralListItem) + " then (Toprak is " + KuralListItem.Sonuc + ")";
-                kurallar.Add(ruleText);
-            }
+            //foreach (var KuralListItem in kuralKume.KuralList)
+            //{
+            //    string ruleText = KuralOlustur(KuralListItem) + " then (Toprak is " + KuralListItem.Sonuc + ")";
+            //    kurallar.Add(ruleText);
+            //}
 
-            
+
         }
 
         public void KurallariOlusturFLS(KuralKumeDTO kuralKume)
@@ -261,7 +305,7 @@ namespace FuzzyMsc.Bll
 
         public double Test(double deger1, double deger2, double deger3)
         {
-            
+
             //#region Inputs
             //var Ozdirenc = new LinguisticVariable("Ozdirenc");
             //var Kil = Ozdirenc.MembershipFunctions.AddRectangle("Kil", 0, 30);
@@ -317,35 +361,17 @@ namespace FuzzyMsc.Bll
                 item.Adi = item.Adi.Replace(" ", "");
                 for (int i = 0; i < TrChar.Length; i++)
                 {
-                    item.Adi.Replace(TrChar[i], EnChar[i]);
+                    item.Adi = item.Adi.Replace(TrChar[i], EnChar[i]);
                 }
+        //        var unaccentedText = String.Join("", item.Adi.Normalize(NormalizationForm.FormD)
+        //.Where(c => char.GetUnicodeCategory(c) != UnicodeCategory.NonSpacingMark));
             }
             return degisken;
         }
 
-        private string KuralOlustur(FuzzyKuralListDTO kuralList)
+        private string KuralOlustur(KuralListDTO kuralList)
         {
-            string ruleText = "if ";
-            foreach (var item in kuralList.Kurallar)
-            {
-                if (item.Operator !=null)
-                {
-                    ruleText = ruleText + ((int)item.Operator == (int)Enums.Operator.And ? " and " : " or ");
-                }
-                if (item.Ozdirenc != null)
-                {
-                    ruleText = ruleText + "(Ozdirenc" + (_ortakManager.OperatorList[(int)item.Esitlik - 1].Text) + item.Ozdirenc + ")";
-                }
-                else if (item.Mukavemet != null)
-                {
-                    ruleText = ruleText + "(Mukavemet" + (_ortakManager.OperatorList[(int)item.Esitlik - 1].Text) + _ortakManager.MukavemetList[(int)item.Mukavemet - 1].Text + ")";
-                }
-                else if (item.Doygunluk != null)
-                {
-                    ruleText = ruleText + "(Mukavemet" + (_ortakManager.OperatorList[(int)item.Esitlik - 1].Text) + _ortakManager.DoygunlukList[(int)item.Doygunluk - 1].Text + ")";
-                }
-            }
-            return ruleText;
+            return "if (Ozdirenc is " + kuralList.Kural.Ozdirenc + ") then (Toprak is " + kuralList.Kural.Toprak + ")";
         }
     }
 
@@ -357,6 +383,6 @@ namespace FuzzyMsc.Bll
 
         void KurallariOlusturFLL(KuralKumeDTO kuralKume);
 
-        void KumeKaydet(KuralKumeDTO kuralKume);
+        SonucDTO KumeKaydet(KuralKumeDTO kuralKume);
     }
 }

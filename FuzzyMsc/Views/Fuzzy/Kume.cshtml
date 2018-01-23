@@ -37,7 +37,7 @@
 
                         <div id="panelPortlet1" class="panel panel-default">
                             <div class="panel-heading">
-                                <span>Özdirenç Zemin Tipi Ve Aralıklarını Giriniz</span>
+                                <span>Özdirenç Değeri Ve Aralıklarını Giriniz</span>
                                 <paneltool tool-collapse="tool-collapse"></paneltool>
                             </div>
                             <div collapse="panelPortlet1" class="panel-wrapper">
@@ -45,7 +45,7 @@
                                     <div class="row">
                                         <div class="col-md-3">
                                             <div class="form-group">
-                                                <label class="col-sm-6 control-label">Zemin Tipi</label>
+                                                <label class="col-sm-6 control-label">Değer</label>
                                                 <div class="col-sm-6">
                                                     <input type="text" name="ozdirenc" class="form-control" ng-model="ozdirenc.adi" />
                                                 </div>
@@ -69,22 +69,22 @@
                                         </div>
                                         <div class="col-md-3">
                                             <div class="col-md-12">
+                                                <button type="button" class="btn btn-labeled btn-info" style="margin-left: 10px;" ng-click="OzdirencGuncelle(ozdirenc)" ng-show="ozdirencButonGuncelle">
+                                                    <span class="btn-label">
+                                                        <i class="fa fa-check"></i>
+                                                    </span>Güncelle
+                                                </button>
+                                                <button type="button" class="btn btn-labeled btn-success" style="margin-left: 10px;" ng-click="OzdirencEkle(ozdirenc)" ng-show="ozdirencButonKaydet">
+                                                    <span class="btn-label">
+                                                        <i class="fa fa-check"></i>
+                                                    </span>Ekle
+                                                </button>
+                                                <button type="button" class="btn btn-labeled btn-danger" style="margin-left: 10px;" ng-click="OzdirencIptal()" ng-show="ozdirencButonIptal">
+                                                    <span class="btn-label">
+                                                        <i class="fa fa-check"></i>
+                                                    </span>İptal
+                                                </button>
                                             </div>
-                                            <button type="button" class="btn btn-labeled btn-info" style="margin-left: 10px;" ng-click="OzdirencGuncelle(ozdirenc)" ng-show="ozdirencButonGuncelle">
-                                                <span class="btn-label">
-                                                    <i class="fa fa-check"></i>
-                                                </span>Güncelle
-                                            </button>
-                                            <button type="button" class="btn btn-labeled btn-success" style="margin-left: 10px;" ng-click="OzdirencEkle(ozdirenc)" ng-show="ozdirencButonKaydet">
-                                                <span class="btn-label">
-                                                    <i class="fa fa-check"></i>
-                                                </span>Kaydet
-                                            </button>
-                                            <button type="button" class="btn btn-labeled btn-danger" style="margin-left: 10px;" ng-click="OzdirencIptal()" ng-show="ozdirencButonIptal">
-                                                <span class="btn-label">
-                                                    <i class="fa fa-check"></i>
-                                                </span>İptal
-                                            </button>
                                         </div>
                                     </div>
                                     <div class="row" ng-show="ozdirencList.length > 0">
@@ -153,7 +153,7 @@
                                     <div class="row">
                                         <div class="col-md-3">
                                             <div class="form-group">
-                                                <label class="col-sm-6 control-label">Zemin Tipi</label>
+                                                <label class="col-sm-6 control-label">Değer</label>
                                                 <div class="col-sm-6">
                                                     <input type="text" name="ozdirenc" class="form-control" ng-model="toprak.adi" />
                                                 </div>
@@ -177,22 +177,22 @@
                                         </div>
                                         <div class="col-md-3">
                                             <div class="col-md-12">
+                                                <button type="button" class="btn btn-labeled btn-info" style="margin-left: 10px;" ng-click="ToprakGuncelle(toprak)" ng-show="toprakButonGuncelle">
+                                                    <span class="btn-label">
+                                                        <i class="fa fa-check"></i>
+                                                    </span>Güncelle
+                                                </button>
+                                                <button type="button" class="btn btn-labeled btn-success" style="margin-left: 10px;" ng-click="ToprakEkle(toprak)" ng-show="toprakButonKaydet">
+                                                    <span class="btn-label">
+                                                        <i class="fa fa-check"></i>
+                                                    </span>Ekle
+                                                </button>
+                                                <button type="button" class="btn btn-labeled btn-danger" style="margin-left: 10px;" ng-click="ToprakIptal()" ng-show="toprakButonIptal">
+                                                    <span class="btn-label">
+                                                        <i class="fa fa-check"></i>
+                                                    </span>İptal
+                                                </button>
                                             </div>
-                                            <button type="button" class="btn btn-labeled btn-info" style="margin-left: 10px;" ng-click="ToprakGuncelle(toprak)" ng-show="toprakButonGuncelle">
-                                                <span class="btn-label">
-                                                    <i class="fa fa-check"></i>
-                                                </span>Güncelle
-                                            </button>
-                                            <button type="button" class="btn btn-labeled btn-success" style="margin-left: 10px;" ng-click="ToprakEkle(toprak)" ng-show="toprakButonKaydet">
-                                                <span class="btn-label">
-                                                    <i class="fa fa-check"></i>
-                                                </span>Kaydet
-                                            </button>
-                                            <button type="button" class="btn btn-labeled btn-danger" style="margin-left: 10px;" ng-click="ToprakIptal()" ng-show="toprakButonIptal">
-                                                <span class="btn-label">
-                                                    <i class="fa fa-check"></i>
-                                                </span>İptal
-                                            </button>
                                         </div>
                                     </div>
                                     <div class="row" ng-show="toprakList.length > 0">
@@ -265,103 +265,51 @@
                                                 <div class="row">
                                                     <div class="col-md-3">
                                                         <div class="form-group">
-                                                            <select class="form-control" ng-model="kural.degisken">
-                                                                <option value="">Değişken Seçiniz</option>
-                                                                <option ng-repeat="item in enums.DegiskenList" value="{{item.Value}}">{{item.Text}}</option>
-                                                            </select>
+                                                            <label class="col-md-6 control-label">Zemin Tipi</label>
+                                                            <div class="col-md-6">
+                                                                <select class="form-control" ng-model="kural.ozdirenc">
+                                                                    @*<option value="">Zemin Tipi Seçiniz</option>*@
+                                                                    <option ng-repeat="item in ozdirencList" value="{{item.adi}}">{{item.adi}}</option>
+                                                                </select>
+                                                            </div>
                                                         </div>
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <label class="col-md-6 control-label text-center">İse</label>
                                                     </div>
                                                     <div class="col-md-3">
                                                         <div class="form-group">
-                                                            <select class="form-control" ng-model="kural.esitlik">
-                                                                <option ng-repeat="item in enums.EsitlikList" value="{{item.Value}}">{{item.Text}}</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-3" ng-show="kural.degisken == 1">
-                                                        <div class="form-group">
-                                                            <select class="form-control" ng-model="kural.ozdirenc">
-                                                                @*<option value="">Zemin Tipi Seçiniz</option>*@
-                                                                <option ng-repeat="item in ozdirencList" value="{{item.adi}}">{{item.adi}}</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-3" ng-show="kural.degisken == 2">
-                                                        <div class="form-group">
-                                                            <select class="form-control" ng-model="kural.mukavemet">
-                                                                @*<option value="">Mukavemet (Vs) Değeri Seçiniz</option>*@
-                                                                <option ng-repeat="item in enums.MukavemetList" value="{{item.Value}}">{{item.Text}}</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-3" ng-show="kural.degisken == 3">
-                                                        <div class="form-group">
-                                                            <select class="form-control" ng-model="kural.doygunluk">
-                                                                @*<option value="">Doygunluk Seçiniz</option>*@
-                                                                <option ng-repeat="item in enums.DoygunlukList" value="{{item.Value}}">{{item.Text}}</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-3" ng-show="kural.degisken != null && kural.degisken != ''">
-                                                        <div class="form-group">
-                                                            <button type="button" class="btn btn-labeled btn-success" ng-click="OperatorIleBagla(kural,enums.Operator.Yok)" ng-show="preKuralList.length == 0">
-                                                                <span class="btn-label">
-                                                                    <i class="fa fa-check"></i>
-                                                                </span>Ekle
-                                                            </button>
-                                                            <button type="button" class="btn btn-labeled btn-success" ng-click="OperatorIleBagla(kural,enums.Operator.Ve)" ng-show="preKuralList.length > 0">
-                                                                <span class="btn-label">
-                                                                    <i class="fa fa-check"></i>
-                                                                </span>Ve (&&)
-                                                            </button>
-                                                            <button type="button" class="btn btn-labeled btn-success" style="margin-left: 10px;" ng-click="OperatorIleBagla(kural,enums.Operator.Veya)" ng-show="preKuralList.length > 0">
-                                                                <span class="btn-label">
-                                                                    <i class="fa fa-check"></i>
-                                                                </span>Veya (||)
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row" ng-show="preKuralList.length > 0">
-                                                    <div class="col-md-12">
-                                                        <table class="table table-hover">
-                                                            <tbody>
-                                                                <tr ng-repeat="item in preKuralList">
-                                                                    <td>{{item.text}}</td>
-                                                                    <td>
-                                                                        <button type="button" class="btn btn-labeled btn-info" ng-click="PreKuralDuzenle(item,$index)">
-                                                                            <span class="btn-label">
-                                                                                <i class="fa fa-check"></i>
-                                                                            </span>Güncelle
-                                                                        </button>
-                                                                        <button type="button" class="btn btn-labeled btn-danger" ng-click="PreKuralSil($index)">
-                                                                            <span class="btn-label">
-                                                                                <i class="fa fa-check"></i>
-                                                                            </span>Sil
-                                                                        </button>
-                                                                    </td>
-                                                                </tr>
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                </div>
-                                                <div class="row" ng-show="preKuralList.length > 1">
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
                                                             <label class="col-md-3 control-label">Toprak</label>
                                                             <div class="col-md-9 selectContainer">
-                                                                <select class="form-control" ng-model="sonuc">
+                                                                <select class="form-control" ng-model="kural.toprak">
                                                                     <option ng-repeat="item in toprakList" value="{{item.adi}}">{{item.adi}}</option>
                                                                 </select>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-6">
-                                                        <button type="button" class="btn btn-labeled btn-success" ng-click="KuralKaydet(preKuralList,sonuc)" ng-disabled="sonuc=='' || sonuc==null">
-                                                            <span class="btn-label">
-                                                                <i class="fa fa-check"></i>
-                                                            </span>Kaydet
-                                                        </button>
+                                                    <div class="col-md-4">
+                                                        <div class="col-md-12">
+                                                            <button type="button" class="btn btn-labeled btn-info" style="margin-left: 10px;" ng-click="KuralGuncelle(kural)" ng-show="kuralButonGuncelle">
+                                                                <span class="btn-label">
+                                                                    <i class="fa fa-check"></i>
+                                                                </span>Güncelle
+                                                            </button>
+                                                            <button type="button" class="btn btn-labeled btn-success" style="margin-left: 10px;" ng-click="KuralEkle(kural)" ng-show="kuralButonKaydet">
+                                                                <span class="btn-label">
+                                                                    <i class="fa fa-check"></i>
+                                                                </span>Ekle
+                                                            </button>
+                                                            <button type="button" class="btn btn-labeled btn-danger" style="margin-left: 10px;" ng-click="KuralIptal()" ng-show="kuralButonIptal">
+                                                                <span class="btn-label">
+                                                                    <i class="fa fa-check"></i>
+                                                                </span>İptal
+                                                            </button>
+                                                            <button type="button" class="btn btn-labeled btn-success" style="margin-left: 10px;" ng-click="OtomatikTanimla()" title="Özdirenç ve Toprak değeerleri eşit sayıda ise otomatik kural tanımlaması yapılır.">
+                                                                <span class="btn-label">
+                                                                    <i class="fa fa-check"></i>
+                                                                </span>Ekle
+                                                            </button>
+                                                        </div>
                                                     </div>
                                                 </div>
 
@@ -377,12 +325,12 @@
                                                                 <tr ng-repeat="item in kuralList">
                                                                     <td>{{item.text}}</td>
                                                                     <td>
-                                                                        <button type="button" class="btn btn-labeled btn-info" ng-click="OzdirencDuzenle(item,$index)">
+                                                                        <button type="button" class="btn btn-labeled btn-info" ng-click="KuralDuzenle(item,$index)">
                                                                             <span class="btn-label">
                                                                                 <i class="fa fa-check"></i>
                                                                             </span>Güncelle
                                                                         </button>
-                                                                        <button type="button" class="btn btn-labeled btn-danger" ng-click="OzdirencSil($index)">
+                                                                        <button type="button" class="btn btn-labeled btn-danger" ng-click="KuralSil($index)">
                                                                             <span class="btn-label">
                                                                                 <i class="fa fa-check"></i>
                                                                             </span>Sil

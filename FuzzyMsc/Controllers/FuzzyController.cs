@@ -56,14 +56,13 @@ namespace FuzzyMsc.Controllers
         [HttpPost]
         public JsonResult KumeKaydet(KuralKumeDTO kuralKume)
         {
-            _fuzzyManager.KurallariOlusturFLL(kuralKume);
+            _fuzzyManager.KumeKaydet(kuralKume);
             try
             {
                 return Json(new { Sonuc = kuralKume, Mesaj = "Başarılı", Exception = "asdas" }, JsonRequestBehavior.AllowGet);
             }
             catch (System.Exception ex)
             {
-
                 return Json(new { Mesaj = "Başarısız", Exception = ex }, JsonRequestBehavior.AllowGet);
             }
         }

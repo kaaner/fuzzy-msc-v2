@@ -12,7 +12,7 @@ namespace FuzzyMsc.Entity.Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Kullanici()
         {
-            KullaniciRol = new HashSet<KullaniciRol>();
+            KullaniciRols = new HashSet<KullaniciRol>();
         }
 
         public int KullaniciID { get; set; }
@@ -30,6 +30,6 @@ namespace FuzzyMsc.Entity.Model
         public string Password { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<KullaniciRol> KullaniciRol { get; set; }
+        public virtual ICollection<KullaniciRol> KullaniciRols { get; set; }
     }
 }

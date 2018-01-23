@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace FuzzyMsc.Dto.FuzzyDTOS
 {
@@ -23,8 +19,21 @@ namespace FuzzyMsc.Dto.FuzzyDTOS
 
     public class KuralKumeDTO {
         public string KumeAdi { get; set; }
-        public List<FuzzyKuralListDTO> KuralList { get; set; }
+        public List<KuralListDTO> KuralList { get; set; }
         public List<DegiskenDTO> OzdirencList { get; set; }
         public List<DegiskenDTO> ToprakList { get; set; }
+    }
+
+    public class KuralListDTO
+    {
+        public string Text { get; set; }
+        public KuralDTO Kural { get; set; }
+    }
+
+    public class KuralDTO
+    {
+        public string Ozdirenc { get; set; }
+        public string Toprak { get; set; }
+
     }
 }

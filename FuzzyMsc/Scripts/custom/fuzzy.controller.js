@@ -8,12 +8,48 @@
         $scope.toprakButonIptal = false;
         $scope.toprakButonGuncelle = false;
         $scope.toprakButonKaydet = true;
+        $scope.kuralButonIptal = false;
+        $scope.kuralButonGuncelle = false;
+        $scope.kuralButonKaydet = true;
         $scope.panelToprak = false;
         $scope.panelKurallar = false;
 
         $scope.zeminList = [];
-        $scope.ozdirencList = [];
-        $scope.toprakList = [];
+        $scope.ozdirencList = [{
+            adi: "Düşük",
+            minDeger: 0,
+            maxDeger: 30
+        }, {
+            adi: "Orta",
+            minDeger: 20,
+            maxDeger: 50
+        }, {
+            adi: "Yüksek",
+            minDeger: 50,
+            maxDeger: 70
+        }, {
+            adi: "Çok Yüksek",
+            minDeger: 40,
+            maxDeger: 80
+        }];
+        $scope.toprakList = [{
+            adi: "Kil",
+            minDeger: 0,
+            maxDeger: 30
+        }, {
+            adi: "Silt",
+            minDeger: 20,
+            maxDeger: 50
+        }, {
+            adi: "Kum",
+            minDeger: 50,
+            maxDeger: 70
+        }, {
+            adi: "Çakıl",
+            minDeger: 40,
+            maxDeger: 80
+        }];
+
         $scope.kuralList = [];
         $scope.sonucDegerleri = [];
         $scope.preKuralList = [];
@@ -80,7 +116,7 @@
             });
             $scope.ozdirenc = {};
         }
-        
+
         $scope.OzdirencGuncelle = function (item) {
             $scope.ozdirencList[item.$index] = item;
             $scope.ozdirenc = {};
@@ -155,48 +191,60 @@
         }
         //Toprak Islemleri END
 
-        $scope.OperatorIleBagla = function (kural, operator) {
-            var text = "";
-            var preKuralItem = { text: "", kural: {}};
-
-            if (kural.degisken == $scope.enums.Degisken.Ozdirenc) {
-                text = $scope.enums.DegiskenList[0].Text + " " + $scope.enums.EsitlikList[kural.esitlik - 1].Text + " " + kural.ozdirenc
-            } else if (kural.degisken == enums.Degisken.Mukavemet) {
-                text = $scope.enums.DegiskenList[1].Text + " " + $scope.enums.EsitlikList[kural.esitlik - 1].Text + " " + $scope.enums.MukavemetList[kural.mukavemet - 1].Text
-            } else if (kural.degisken == enums.Degisken.Doygunluk) {
-                text = $scope.enums.DegiskenList[2].Text + " " + $scope.enums.EsitlikList[kural.esitlik - 1].Text + " " + $scope.enums.DoygunlukList[kural.doygunluk - 1].Text
-            }
-            if (operator === $scope.enums.Operator.Yok) {
-                preKuralItem = { text: text, kural: kural };
-            } else {
-                kural.operator = operator;
-                preKuralItem = { text: $scope.enums.OperatorList[operator - 1].Text + " " + text, kural: kural };
-            }
-            $scope.preKuralList.push(preKuralItem);
-            $scope.kural = {esitlik:kural.esitlik};
-        }
-        
-        $scope.PreKuralSil = function ($index) {
-            $scope.preKuralList.splice($index, 1);
+        //Kural Islemleri START
+        $scope.KuralEkle = function (kural) {
+            $scope.kuralList.push({
+                text: "Özdirenç Değeri " + kural.ozdirenc + " İse Toprak " + kural.toprak + " Olur.",
+                kural: kural
+            });
+            $scope.kural = {};
         }
 
-        $scope.PreKuralDuzenle = function (item, $index) {
-            $scope.kural = angular.copy(item);
+        $scope.KuralGuncelle = function (kural) {
+            debugger;
+            var kuralItem = {
+                text: "Özdirenç Değeri " + kural.ozdirenc + " İse Toprak " + kural.toprak + " Olur.",
+                kural: kural
+            };
+            $scope.kuralList[kural.$index] = kuralItem;
+            $scope.kural = {};
+            $scope.kuralButonIptal = false;
+            $scope.kuralButonGuncelle = false;
+            $scope.kuralButonKaydet = true;
+        }
+
+        $scope.KuralSil = function ($index) {
+            $scope.kuralList.splice($index, 1);
+        }
+
+        $scope.KuralDuzenle = function (item, $index) {
+            $scope.kuralButonIptal = true;
+            $scope.kuralButonGuncelle = true;
+            $scope.kuralButonKaydet = false;
+            $scope.kural = angular.copy(item.kural);
             $scope.kural.$index = $index;
         }
 
-        $scope.KuralKaydet = function (preKuralList, sonuc) {
-            $scope.kuralListItem = { text: "", kurallar: [] };
-            for (var i = 0; i < preKuralList.length; i++) {
-                $scope.kuralListItem.text = $scope.kuralListItem.text + " " + preKuralList[i].text;
-                $scope.kuralListItem.kurallar.push(preKuralList[i].kural);
-            }
-            $scope.kuralListItem.text = $scope.kuralListItem.text + " İse Toprak " + sonuc;
-            $scope.kuralListItem.sonuc = sonuc;
-            $scope.kuralList.push($scope.kuralListItem);
+        $scope.KuralIptal = function () {
             $scope.kural = {};
-            $scope.preKuralList = [];
+            $scope.kuralButonIptal = false;
+            $scope.kuralButonGuncelle = false;
+            $scope.kuralButonKaydet = true;
         }
+
+        $scope.KuralKaydet = function (kuralList) {
+            $scope.panelKurallar = true;
+        }
+
+        $scope.OtomatikTanimla = function () {
+            if ($scope.ozdirencList.length == $scope.toprakList.length) {
+                for (var i = 0; i < $scope.ozdirencList.length; i++) {
+                    var kural = { ozdirenc: $scope.ozdirencList[i].adi, toprak: $scope.toprakList[i].adi };
+                    $scope.KuralEkle(kural);
+                }
+            }
+        }
+        //Kural Islemleri END
 
         $scope.KumeKaydet = function (kuralList) {
             var kuralKume = { kumeAdi: $scope.kumeAdi, kuralList: kuralList, ozdirencList: $scope.ozdirencList, toprakList: $scope.toprakList };
@@ -213,5 +261,5 @@
                 function errorCallback(response) {
                 });
         }
-            
+
     });

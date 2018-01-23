@@ -9,12 +9,11 @@ namespace FuzzyMsc.Entity.Model
     [Table("KuralListItem")]
     public partial class KuralListItem
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public long KuralListItemID { get; set; }
 
         public long KuralListID { get; set; }
 
-        public long? DegiskenID { get; set; }
+        public long? DegiskenItemID { get; set; }
 
         public long? Mukavemet { get; set; }
 
@@ -24,7 +23,7 @@ namespace FuzzyMsc.Entity.Model
 
         public long? Esitlik { get; set; }
 
-        public virtual Degisken Degisken { get; set; }
+        public virtual DegiskenItem DegiskenItem { get; set; }
 
         public virtual KuralList KuralList { get; set; }
     }

@@ -10,56 +10,51 @@ namespace FuzzyMsc.Entity.Model
         {
         }
 
-        public virtual DbSet<Degisken> Degisken { get; set; }
-        public virtual DbSet<DegiskenItem> DegiskenItem { get; set; }
-        public virtual DbSet<DegiskenTip> DegiskenTip { get; set; }
-        public virtual DbSet<Kullanici> Kullanici { get; set; }
-        public virtual DbSet<Kural> Kural { get; set; }
-        public virtual DbSet<KuralList> KuralList { get; set; }
-        public virtual DbSet<KuralListItem> KuralListItem { get; set; }
-        public virtual DbSet<KuralListText> KuralListText { get; set; }
-        public virtual DbSet<Rol> Rol { get; set; }
-        public virtual DbSet<KullaniciRol> KullaniciRol { get; set; }
+        public virtual DbSet<Degisken> Degiskens { get; set; }
+        public virtual DbSet<DegiskenItem> DegiskenItems { get; set; }
+        public virtual DbSet<DegiskenTip> DegiskenTips { get; set; }
+        public virtual DbSet<Kullanici> Kullanicis { get; set; }
+        public virtual DbSet<Kural> Kurals { get; set; }
+        public virtual DbSet<KuralList> KuralLists { get; set; }
+        public virtual DbSet<KuralListItem> KuralListItems { get; set; }
+        public virtual DbSet<KuralListText> KuralListTexts { get; set; }
+        public virtual DbSet<Rol> Rols { get; set; }
+        public virtual DbSet<KullaniciRol> KullaniciRols { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Degisken>()
-                .HasMany(e => e.DegiskenItem)
+                .HasMany(e => e.DegiskenItems)
                 .WithRequired(e => e.Degisken)
                 .WillCascadeOnDelete(false);
 
-            modelBuilder.Entity<Degisken>()
-                .HasMany(e => e.KuralList)
-                .WithOptional(e => e.Degisken)
-                .HasForeignKey(e => e.SonucDegiskenID);
-
             modelBuilder.Entity<DegiskenTip>()
-                .HasMany(e => e.Degisken)
+                .HasMany(e => e.Degiskens)
                 .WithRequired(e => e.DegiskenTip)
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Kullanici>()
-                .HasMany(e => e.KullaniciRol)
+                .HasMany(e => e.KullaniciRols)
                 .WithRequired(e => e.Kullanici)
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Kural>()
-                .HasMany(e => e.Degisken)
+                .HasMany(e => e.Degiskens)
                 .WithRequired(e => e.Kural)
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Kural>()
-                .HasMany(e => e.KuralList)
+                .HasMany(e => e.KuralLists)
                 .WithRequired(e => e.Kural)
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Kural>()
-                .HasMany(e => e.KuralListText)
+                .HasMany(e => e.KuralListTexts)
                 .WithRequired(e => e.Kural)
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<KuralList>()
-                .HasMany(e => e.KuralListItem)
+                .HasMany(e => e.KuralListItems)
                 .WithRequired(e => e.KuralList)
                 .WillCascadeOnDelete(false);
 
@@ -68,7 +63,7 @@ namespace FuzzyMsc.Entity.Model
                 .IsFixedLength();
 
             modelBuilder.Entity<Rol>()
-                .HasMany(e => e.KullaniciRol)
+                .HasMany(e => e.KullaniciRols)
                 .WithRequired(e => e.Rol)
                 .WillCascadeOnDelete(false);
         }
