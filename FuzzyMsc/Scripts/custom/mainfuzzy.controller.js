@@ -1,1 +1,1 @@
-﻿angular.module("mainfuzzy", []);
+﻿angular.module("mainfuzzy", ['ngFileUpload']);

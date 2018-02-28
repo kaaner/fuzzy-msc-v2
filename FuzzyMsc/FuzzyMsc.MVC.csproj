@@ -60,10 +60,11 @@
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.7\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System.IO.Compression.FileSystem" />
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.Numerics" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Web.DynamicData" />
@@ -123,6 +124,7 @@
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\custom\directives\limittomax.directive.js" />
     <Content Include="Scripts\custom\fuzzy.old.controller.js" />
+    <Content Include="Scripts\custom\graph.controller.js" />
     <Content Include="Scripts\custom\mainfuzzy.controller.js" />
     <Content Include="Scripts\custom\directives\preventtypinggreater.directive.js" />
     <Content Include="Scripts\custom\fuzzy.controller.js" />
@@ -130,12 +132,25 @@
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
-    <Content Include="Web.config" />
+    <Content Include="Scripts\vendor\ng-file-upload-bower-12.2.13\FileAPI.flash.swf" />
+    <Content Include="Scripts\vendor\ng-file-upload-bower-12.2.13\FileAPI.js" />
+    <Content Include="Scripts\vendor\ng-file-upload-bower-12.2.13\FileAPI.min.js" />
+    <Content Include="Scripts\vendor\ng-file-upload-bower-12.2.13\ng-file-upload-all.js" />
+    <Content Include="Scripts\vendor\ng-file-upload-bower-12.2.13\ng-file-upload-all.min.js" />
+    <Content Include="Scripts\vendor\ng-file-upload-bower-12.2.13\ng-file-upload-shim.js" />
+    <Content Include="Scripts\vendor\ng-file-upload-bower-12.2.13\ng-file-upload-shim.min.js" />
+    <Content Include="Scripts\vendor\ng-file-upload-bower-12.2.13\ng-file-upload.js" />
+    <Content Include="Scripts\vendor\ng-file-upload-bower-12.2.13\ng-file-upload.min.js" />
+    <Content Include="Scripts\vendor\ng-file-upload-bower-12.2.13\package.js" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\AutofacConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\FuzzyController.cs" />
+    <Compile Include="Controllers\GraphController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -155,6 +170,11 @@
     <Content Include="Views\Fuzzy\Index.cshtml" />
     <Content Include="Views\Fuzzy\Kume.cshtml" />
     <Content Include="Views\Fuzzy\KumeOld.cshtml" />
+    <Content Include="Views\Graph\Cizim.cshtml" />
+    <Content Include="Scripts\vendor\ng-file-upload-bower-12.2.13\.versions" />
+    <Content Include="Scripts\vendor\ng-file-upload-bower-12.2.13\bower.json" />
+    <Content Include="Scripts\vendor\ng-file-upload-bower-12.2.13\LICENSE" />
+    <Content Include="Scripts\vendor\ng-file-upload-bower-12.2.13\README.md" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

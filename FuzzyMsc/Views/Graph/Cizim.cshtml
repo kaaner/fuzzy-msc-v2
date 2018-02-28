@@ -1,0 +1,125 @@
+﻿
+@{
+    ViewBag.Title = "Cizim";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div ng-controller="graphcontroller">
+
+    <div id="panelPortlet1" class="panel panel-primary">
+        <div class="panel-heading">
+            <span>Grafik Oluşturma Sayfası</span>
+        </div>
+
+        <div class="panel-body">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <span class="panel-title">Adım 1 - Kural Seçimi</span>
+                </div>
+                <div class="panel-body">
+                    <div class="col-md-6 col-sm-12">
+                        <div class="form-group">
+                            <label class="col-md-6 control-label">Kural Seçimi Yapınız</label>
+                            <div class="col-md-6">
+                                <select class="form-control" ng-model="kural" ng-options="kume.KuralAdi for kume in kumeListesi">
+                                    @*<option value="">Zemin Tipi Seçiniz</option>*@
+                                    <option value="">Seçiniz</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <button type="button" class="btn btn-labeled btn-success pull-right" style="margin-left: 10px;" ng-click="KuralSecimi(kural)" ng-disabled="!kural">
+                                <span class="btn-label">
+                                    <i class="fa fa-check"></i>
+                                </span>Kaydet ve Devam Et
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel panel-default" ng-show="panelExcelSec">
+                <div class="panel-heading">
+                    <span class="panel-title">Adım 2 - Excel Dosyası</span>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <button class="btn btn-default" type="file" ngf-select="uploadFiles($file, $invalidFiles)"
+                                    accept="excel/*" ngf-max-height="1000" ngf-max-size="1MB">
+                                Excel Dosyası Seçiniz (Max. 1MB)
+                            </button>
+                            <span ng-show="f.progress >= 0 && excel.adi" style="color:mediumseagreen">
+                                <i class="fa fa-2x fa-check"></i> Yükleme Başarılı
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <button type="button" class="btn btn-labeled btn-success pull-right" style="margin-left: 10px;" ng-click="ExcelSecimi(excel)" ng-disabled="!excel.adi">
+                                <span class="btn-label">
+                                    <i class="fa fa-check"></i>
+                                </span>Kaydet ve Devam Et
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel panel-default" ng-show="panelOlcekSec">
+                <div class="panel-heading">
+                    <span class="panel-title">Adım 3 - Ölçek Seçimi</span>
+                </div>
+                <div class="panel-body">
+
+                    <div class="col-md-6 col-sm-12">
+                        <div class="form-group">
+                            <label class="col-sm-5 control-label">X Ekseni (Yatay) :</label>
+                            <div class="col-sm-7">
+                                <input type="number" name="mukavemet" class="form-control" ng-model="olcek.x" min="0" max="200000" prevent-typing-greater />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-12">
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">Y Ekseni (Dikey) :</label>
+                            <div class="col-sm-8">
+                                <input type="number" name="doygunluk" class="form-control" ng-model="olcek.y" min="0" max="200000" prevent-typing-greater />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <button type="button" class="btn btn-labeled btn-success pull-right" style="margin-left: 10px;" ng-click="OlcekSecimiVeGrafikOlustur(olcek)" ng-disabled="!(olcek.x > 0 && olcek.x != null) || !(olcek.y > 0 && olcek.y != null)">
+                                <span class="btn-label">
+                                    <i class="fa fa-check"></i>
+                                </span>Kaydet ve Devam Et
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel panel-default" ng-show="panelGrafik">
+                <div class="panel-heading">
+                    <span class="panel-title">Sonuç - Grafik</span>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-12" id="container">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

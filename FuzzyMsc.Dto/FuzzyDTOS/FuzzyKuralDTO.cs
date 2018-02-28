@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace FuzzyMsc.Dto.FuzzyDTOS
 {
@@ -34,6 +35,20 @@ namespace FuzzyMsc.Dto.FuzzyDTOS
     {
         public string Ozdirenc { get; set; }
         public string Toprak { get; set; }
+    }
+
+    public class KuralEntityDTO
+    {
+        public long KuralID { get; set; }
+        public string KuralAdi { get; set; }
+        public DateTime? EklenmeTarihi { get; set; }
+        public bool? AktifMi { get; set; }
+    }
+
+    public class KuralTextEntityDTO
+    {
+        public long KuralID { get; set; }
+        public string KuralText { get; set; }
 
     }
 }

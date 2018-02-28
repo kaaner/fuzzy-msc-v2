@@ -76,6 +76,19 @@ namespace FuzzyMsc.Bll
             }
             set { }
         }
+
+        public byte[] StringToByteArray(string value)
+        {
+            char[] charArr = value.ToCharArray();
+            byte[] bytes = new byte[charArr.Length];
+            for (int i = 0; i < charArr.Length; i++)
+            {
+                byte current = Convert.ToByte(charArr[i]);
+                bytes[i] = current;
+            }
+
+            return bytes;
+        }
     }
 
     public interface IOrtakManager : IBaseManager
@@ -87,5 +100,7 @@ namespace FuzzyMsc.Bll
         List<ConstantDTO> MukavemetList { get; set; }
         List<ConstantDTO> DoygunlukList { get; set; }
         List<ConstantDTO> EsitlikList { get; set; }
+
+        byte[] StringToByteArray(string value);
     }
 }

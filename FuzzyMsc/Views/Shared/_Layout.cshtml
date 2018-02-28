@@ -6,28 +6,35 @@
     <title>@ViewBag.Title - My ASP.NET Application</title>
     <link href="~/Content/Site.css" rel="stylesheet" type="text/css" />
     <link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
     <script src="~/Scripts/modernizr-2.6.2.js"></script>
     <script src="~/Scripts/angular.min.js"></script>
+    <script src="~/Scripts/vendor/ng-file-upload-bower-12.2.13/ng-file-upload-shim.min.js"></script>
+    <script src="~/Scripts/vendor/ng-file-upload-bower-12.2.13/ng-file-upload.min.js"></script>
     <script src="~/Scripts/custom/mainfuzzy.controller.js"></script>
     <script src="~/Scripts/custom/index.controller.js"></script>
     <script src="~/Scripts/custom/fuzzy.controller.js"></script>
     <script src="~/Scripts/custom/directives/limittomax.directive.js"></script>
     <script src="~/Scripts/custom/directives/preventtypinggreater.directive.js"></script>
     <script src="~/Scripts/custom/fuzzy.constant.js"></script>
+    <script src="~/Scripts/custom/graph.controller.js"></script>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
 </head>
 <body ng-app="mainfuzzy">
     <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
-            
+
             <div class="navbar-header">
                 @*<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>*@
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>*@
                 @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
                 @Html.ActionLink("Fuzzy", "Index", "Fuzzy", new { area = "" }, new { @class = "navbar-brand" })
                 @Html.ActionLink("Küme", "Kume", "Fuzzy", new { area = "" }, new { @class = "navbar-brand" })
+                @Html.ActionLink("Çizim", "Cizim", "Graph", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
@@ -66,7 +73,7 @@
                     </li>
                 </ul>
             </div><!-- /.navbar-collapse -->
-            
+
         </div>
     </div>
 

@@ -40,6 +40,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CizimDTOS\ExcelModelDTO.cs" />
+    <Compile Include="CizimDTOS\GraphDatasetDTO.cs" />
+    <Compile Include="CizimDTOS\GraphDTO.cs" />
+    <Compile Include="CizimDTOS\OlcekDTO.cs" />
+    <Compile Include="CizimDTOS\RezistiviteDTO.cs" />
     <Compile Include="FuzzyDTOS\ConstantDTO.cs" />
     <Compile Include="FuzzyDTOS\FuzzyKuralDTO.cs" />
     <Compile Include="FuzzyDTOS\FuzzyResultDTO.cs" />
