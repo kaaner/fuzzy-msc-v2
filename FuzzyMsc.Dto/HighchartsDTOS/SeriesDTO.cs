@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 
-namespace FuzzyMsc.Dto.CizimDTOS
+namespace FuzzyMsc.Dto.HighchartsDTOS
 {
-    public class GraphDatasetDTO
+    public class SeriesDTO
     {
-        public GraphDatasetDTO()
+        public SeriesDTO()
         {
             data = new List<List<double>>();
         }
@@ -17,10 +17,12 @@ namespace FuzzyMsc.Dto.CizimDTOS
         public ToolTipDTO toolTip { get; set; }
         public bool showInLegend { get; set; }
         public StatesDTO states { get; set; }
+        public bool? enableMouseTracking { get; set; }
     }
 
     public class ToolTipDTO
     {
+        public bool enabled { get; set; }
         public string headerFormat { get; set; }
         public string pointFormat { get; set; }
     }
@@ -39,10 +41,5 @@ namespace FuzzyMsc.Dto.CizimDTOS
     public class HoverDTO
     {
         public int lineWidthPlus { get; set; }
-    }
-
-    public class XAxisDTO
-    {
-        public int min { get; set; }
     }
 }

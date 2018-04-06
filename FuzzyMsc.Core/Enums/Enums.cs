@@ -18,5 +18,12 @@
             Input = 1,
             Output = 2
         }
+
+        public enum SheetTuru
+        {
+            Rezistivite = 1,
+            Sismik = 2,
+            Sondaj = 3
+        }
     }
 }

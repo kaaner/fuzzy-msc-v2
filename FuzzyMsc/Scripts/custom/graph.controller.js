@@ -49,11 +49,26 @@
             }
         }
 
-        $scope.ExcelSecimi = function (excel) {
+        $scope.ExcelSecimiVeGrafikOlustur = function (excel) {
             $scope.panelExcelSec = true;
-            $scope.panelOlcekSec = true;
-            $scope.panelGrafik = false;
+            //$scope.panelOlcekSec = true;
+            $scope.panelGrafik = true;
             $scope.olcek = { x: null, y: null };
+            var graph = { excel: $scope.excel, kuralID: $scope.kuralID, olcek: $scope.olcek };
+            $http.post('/Graph/GraphOlustur', graph).then(function successCallback(response) {
+                if (response.data.Sonuc) {
+                    $scope.sonucDegerleri = response.data.Nesne;
+                    $scope.panelGrafik = true;
+                    $scope.GrafikCiz($scope.sonucDegerleri);
+                    console.log("$scope.sonucDegerleri", $scope.sonucDegerleri);
+                }
+                else {
+                    $scope.hataMesajlari = [];
+                    $scope.hataMesajlari.push(response.data.Mesaj);
+                }
+            },
+                function errorCallback(response) {
+                });
         }
 
         $scope.OlcekSecimiVeGrafikOlustur = function (olcek) {
@@ -66,7 +81,6 @@
                     $scope.panelGrafik = true;
                     $scope.GrafikCiz($scope.sonucDegerleri);
                     console.log("$scope.sonucDegerleri", $scope.sonucDegerleri);
-                    //window.location.pathname = 'Mazeret/AktifMazeretlerim';
                 }
                 else {
                     $scope.hataMesajlari = [];
@@ -101,11 +115,13 @@
 
         }
 
-        $scope.GrafikCiz = function (series) {
+        $scope.GrafikCiz = function (chart) {
             Highcharts.chart('container', {
                 chart: {
                     type: 'spline',
-                    zoomType: 'x'
+                    zoomType: 'xy',
+                    panning: true,
+                    panKey: 'shift'
                 },
                 title: {
                     text: 'Jeodezik Kesit Analizi, Burdur'
@@ -113,26 +129,10 @@
                 subtitle: {
                     text: 'Irregular time data in Highcharts JS'
                 },
-                xAxis: {
-                    //type: 'datetime',
-                    //dateTimeLabelFormats: { // don't display the dummy year
-                    //    month: '%e. %b',
-                    //    year: '%b'
-                    //},
-                    title: {
-                        text: 'Date'
-                    }
-                },
-                yAxis: {
-                    title: {
-                        text: 'Snow depth (m)'
-                    },
-                    min: 0
-                },
-                tooltip: {
-                    headerFormat: '<b>{series.name}</b><br>',
-                    pointFormat: '{point.x:.2f}: {point.y:.2f} m<br> Vp:{point.vp}, Vs:{point.vs}'
-                },
+                xAxis: chart.xAxis
+                ,
+                yAxis: chart.yAxis
+                ,
 
                 legend: {
                     align: 'right',
@@ -148,7 +148,9 @@
                     },
                 },
 
-                series: series
+                annotations: chart.annotations,
+
+                series: chart.series
 
                 //series: [{
                 //    name: 'Winter 2012-2013',

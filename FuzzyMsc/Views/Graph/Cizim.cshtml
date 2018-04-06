@@ -62,7 +62,7 @@
                 <div class="panel-footer">
                     <div class="row">
                         <div class="col-md-12">
-                            <button type="button" class="btn btn-labeled btn-success pull-right" style="margin-left: 10px;" ng-click="ExcelSecimi(excel)" ng-disabled="!excel.adi">
+                            <button type="button" class="btn btn-labeled btn-success pull-right" style="margin-left: 10px;" ng-click="ExcelSecimiVeGrafikOlustur(excel)" ng-disabled="!excel.adi">
                                 <span class="btn-label">
                                     <i class="fa fa-check"></i>
                                 </span>Kaydet ve Devam Et
@@ -72,7 +72,7 @@
                 </div>
             </div>
 
-            <div class="panel panel-default" ng-show="panelOlcekSec">
+            @*<div class="panel panel-default" ng-show="panelOlcekSec">
                 <div class="panel-heading">
                     <span class="panel-title">Adım 3 - Ölçek Seçimi</span>
                 </div>
@@ -106,15 +106,15 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div>*@
 
             <div class="panel panel-default" ng-show="panelGrafik">
                 <div class="panel-heading">
                     <span class="panel-title">Sonuç - Grafik</span>
                 </div>
-                <div class="panel-body">
+                <div class="panel-body" style="overflow-x:scroll; overflow-x:scroll; height:800px">
                     <div class="row">
-                        <div class="col-md-12" id="container">
+                        <div class="col-md-12" id="container" style="height: 2000px; width: 5000px" >
                         </div>
                     </div>
                 </div>
