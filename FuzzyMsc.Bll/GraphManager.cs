@@ -608,34 +608,67 @@ namespace FuzzyMsc.Bll
                                     coordinates.Add(kesitDTO.RezGenelList[i][j].X);
                                     coordinates.Add((double)kesitDTO.RezGenelList[i][j].K);
                                     dataset.data.Add(coordinates);
-                                } //çukur ve fay kontrolü yapılır
+                                }
+                                else //özdirenç değerleri uygun ama sismik değerleri değil. çukur ve fay kontrolü yapılır
+                                {
+                                    if (j == 0)
+                                    {
+                                        //Fay oluştur
+                                        var fayDataset = FayOlustur(dataset, kesitDTO.RezGenelList, i, j);
+                                        datasetList.Add(fayDataset);
+                                        continue;
+                                    }
+                                    else
+                                    {
+                                        var birOncekiDugum = _fuzzyManager.FuzzyKuralOlusturVeSonucGetirFLL(kuralGetir, (double)kesitDTO.RezGenelList[i][j - 1].R);
+                                        if (birOncekiDugum == ikinciDugum)
+                                        {
+                                            //Çukur oluştur
+                                            var cukurDataset = CukurOlustur(dataset, kesitDTO.RezGenelList, i, j);
+                                            datasetList.Add(cukurDataset);
+                                            continue;
+                                        }
+                                        else
+                                        {
+                                            //Fay oluştur
+                                            var fayDataset = FayOlustur(dataset, kesitDTO.RezGenelList, i, j);
+                                            datasetList.Add(fayDataset);
+                                            continue;
+                                        }
+                                    }
+                                }
+                            }
+                            else //özdirenç değerleri uygun değil. çukur ve fay kontrolü yapılır
+                            {
+                                if (j == 0)
+                                {
+                                    //Fay oluştur
+                                    var fayDataset = FayOlustur(dataset, kesitDTO.RezGenelList, i, j);
+                                    datasetList.Add(fayDataset);
+                                    continue;
+                                }
                                 else
                                 {
-                                    var birOncekiDugum = _fuzzyManager.FuzzyKuralOlusturVeSonucGetirFLL(kuralGetir, (double)kesitDTO.RezGenelList[i][j + 1].R);
+                                    var birOncekiDugum = _fuzzyManager.FuzzyKuralOlusturVeSonucGetirFLL(kuralGetir, (double)kesitDTO.RezGenelList[i][j - 1].R);
                                     if (birOncekiDugum == ikinciDugum)
                                     {
                                         //Çukur oluştur
+                                        var cukurDataset = CukurOlustur(dataset, kesitDTO.RezGenelList, i, j);
+                                        datasetList.Add(cukurDataset);
+                                        continue;
                                     }
                                     else
                                     {
                                         //Fay oluştur
+                                        var fayDataset = FayOlustur(dataset, kesitDTO.RezGenelList, i, j);
+                                        datasetList.Add(fayDataset);
+                                        continue;
                                     }
                                 }
                             }
-                            else
-                            {
-                                var birOncekiDugum = _fuzzyManager.FuzzyKuralOlusturVeSonucGetirFLL(kuralGetir, (double)kesitDTO.RezGenelList[i][j + 1].R);
-                                if (birOncekiDugum == ikinciDugum)
-                                {
-                                    //Çukur oluştur
-                                }
-                                else
-                                {
-                                    //Fay oluştur
-                                }
-                            }
                         }
-                    } else
+                    }
+                    else
                     {
                         coordinates.Add(kesitDTO.RezGenelList[i][j].X);
                         coordinates.Add((double)kesitDTO.RezGenelList[i][j].K);
@@ -765,14 +798,127 @@ namespace FuzzyMsc.Bll
             return true;
         }
 
-        private void CukurOlustur()
+        private SeriesDTO CukurOlustur(SeriesDTO dataset, List<List<RezistiviteDTO>> rezGenelList, int i, int j)
         {
+            SeriesDTO cukurDataset = new SeriesDTO();
+            cukurDataset.name = "Fay";
+            cukurDataset.lineWidth = 2;
+            cukurDataset.color = dataset.color;
+            cukurDataset.showInLegend = false;
+            cukurDataset.marker = new MarkerDTO { enabled = false };
+            cukurDataset.toolTip = new ToolTipDTO { enabled = false };
+            cukurDataset.states = new StatesDTO { hover = new HoverDTO { lineWidthPlus = 3 } };
+            cukurDataset.enableMouseTracking = false;
 
+            var cukurBaslangicX = (rezGenelList[i][j].X + rezGenelList[i][j - 1].X) * 0.8;
+            var cukurBaslangicK = (rezGenelList[i][j].X + rezGenelList[i][j - 1].K) * 0.8;
+
+            var cukurBitisX = (rezGenelList[i][j].X + rezGenelList[i][j + 1].X) * 0.2;
+            var cukurBitisK = (rezGenelList[i][j].X + rezGenelList[i][j + 1].K) * 0.2;
+
+
+
+            List<double> coordinates = new List<double>();
+            coordinates.Add(rezGenelList[i][j-1].X);
+            coordinates.Add((double)rezGenelList[i][j-1].K);
+            dataset.data.Add(coordinates);
+
+            coordinates = new List<double>();
+            coordinates.Add(cukurBaslangicX);
+            coordinates.Add((double)cukurBaslangicK);
+            dataset.data.Add(coordinates);
+
+            coordinates = new List<double>();
+            coordinates.Add(rezGenelList[i][j].X);
+            coordinates.Add((double)rezGenelList[i][j].K);
+            dataset.data.Add(coordinates);
+
+            coordinates = new List<double>();
+            coordinates.Add(cukurBitisX);
+            coordinates.Add((double)cukurBitisK);
+            dataset.data.Add(coordinates);
+
+            coordinates = new List<double>();
+            coordinates.Add(rezGenelList[i][j + 1].X);
+            coordinates.Add((double)rezGenelList[i][j + 1].K);
+            dataset.data.Add(coordinates);
+
+
+
+            coordinates = new List<double>();
+            coordinates.Add(cukurBaslangicX);
+            coordinates.Add((double)cukurBaslangicK);
+            cukurDataset.data.Add(coordinates);
+
+            coordinates = new List<double>();
+            coordinates.Add(rezGenelList[i][j].X + 1);
+            coordinates.Add((double)rezGenelList[i][j].K);
+            cukurDataset.data.Add(coordinates);
+
+            coordinates = new List<double>();
+            coordinates.Add(cukurBitisX);
+            coordinates.Add((double)cukurBitisK);
+            cukurDataset.data.Add(coordinates);
+
+            return cukurDataset;
         }
 
-        private void FayOlustur()
+        private SeriesDTO FayOlustur(SeriesDTO dataset, List<List<RezistiviteDTO>> rezGenelList, int i, int j)
         {
+            SeriesDTO fayDataset = new SeriesDTO();
+            fayDataset.name = "Fay";
+            fayDataset.lineWidth = 2;
+            fayDataset.color = dataset.color;
+            fayDataset.showInLegend = false;
+            fayDataset.marker = new MarkerDTO { enabled = false };
+            fayDataset.toolTip = new ToolTipDTO { enabled = false };
+            fayDataset.states = new StatesDTO { hover = new HoverDTO { lineWidthPlus = 3 } };
+            fayDataset.enableMouseTracking = false;
 
+            var ortaNoktaX = (rezGenelList[i][j].X + rezGenelList[i][j + 1].X) / 2;
+            var ortaNoktaK = (rezGenelList[i][j].K + rezGenelList[i][j + 1].K) / 2;
+
+            List<double> coordinates = new List<double>();
+            coordinates.Add(rezGenelList[i][j].X);
+            coordinates.Add((double)rezGenelList[i][j].K);
+            dataset.data.Add(coordinates);
+
+            coordinates = new List<double>();
+            coordinates.Add(ortaNoktaX);
+            coordinates.Add((double)ortaNoktaK);
+            dataset.data.Add(coordinates);
+
+            coordinates = new List<double>();
+            coordinates.Add(rezGenelList[i][j + 1].X);
+            coordinates.Add((double)rezGenelList[i][j + 1].K);
+            dataset.data.Add(coordinates);
+
+            //coordinates = new List<double>();
+            //coordinates.Add(ortaNoktaX);
+            //coordinates.Add((double)ortaNoktaK);
+            //dataset.data.Add(coordinates);
+
+            coordinates = new List<double>();
+            coordinates.Add(ortaNoktaX - 1);
+            coordinates.Add((double)ortaNoktaK - 2);
+            fayDataset.data.Add(coordinates);
+
+            //coordinates = new List<double>();
+            //coordinates.Add(ortaNoktaX);
+            //coordinates.Add((double)ortaNoktaK);
+            //dataset.data.Add(coordinates);
+
+            coordinates = new List<double>();
+            coordinates.Add(ortaNoktaX + 1);
+            coordinates.Add((double)ortaNoktaK + 2);
+            fayDataset.data.Add(coordinates);
+
+            //coordinates = new List<double>();
+            //coordinates.Add(ortaNoktaX);
+            //coordinates.Add((double)ortaNoktaK);
+            //dataset.data.Add(coordinates);
+
+            return fayDataset;
         }
     }
 

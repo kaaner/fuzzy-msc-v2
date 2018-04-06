@@ -52,7 +52,6 @@
         $scope.ExcelSecimiVeGrafikOlustur = function (excel) {
             $scope.panelExcelSec = true;
             //$scope.panelOlcekSec = true;
-            $scope.panelGrafik = true;
             $scope.olcek = { x: null, y: null };
             var graph = { excel: $scope.excel, kuralID: $scope.kuralID, olcek: $scope.olcek };
             $http.post('/Graph/GraphOlustur', graph).then(function successCallback(response) {
@@ -150,7 +149,16 @@
 
                 annotations: chart.annotations,
 
-                series: chart.series
+                series: chart.series,
+
+                exporting: {
+                    sourceWidth: 5000,
+                    sourceHeight: 2000,
+                    // scale: 2 (default)
+                    chartOptions: {
+                        subtitle: null
+                    }
+                }
 
                 //series: [{
                 //    name: 'Winter 2012-2013',
