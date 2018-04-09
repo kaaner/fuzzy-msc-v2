@@ -810,13 +810,11 @@ namespace FuzzyMsc.Bll
             cukurDataset.states = new StatesDTO { hover = new HoverDTO { lineWidthPlus = 3 } };
             cukurDataset.enableMouseTracking = false;
 
-            var cukurBaslangicX = (rezGenelList[i][j].X + rezGenelList[i][j - 1].X) * 0.8;
-            var cukurBaslangicK = (rezGenelList[i][j].X + rezGenelList[i][j - 1].K) * 0.8;
+            var cukurBaslangicX = rezGenelList[i][j].X - (Math.Abs(rezGenelList[i][j].X - rezGenelList[i][j - 1].X) / 5);
+            var cukurBaslangicK = rezGenelList[i][j].K - (Math.Abs((double)rezGenelList[i][j].K - (double)rezGenelList[i][j - 1].K) / 5);
 
-            var cukurBitisX = (rezGenelList[i][j].X + rezGenelList[i][j + 1].X) * 0.2;
-            var cukurBitisK = (rezGenelList[i][j].X + rezGenelList[i][j + 1].K) * 0.2;
-
-
+            var cukurBitisX = rezGenelList[i][j].X + (Math.Abs(rezGenelList[i][j].X - rezGenelList[i][j + 1].X) / 5);
+            var cukurBitisK = rezGenelList[i][j].K + (Math.Abs((double)rezGenelList[i][j].K - (double)rezGenelList[i][j + 1].K) / 5);
 
             List<double> coordinates = new List<double>();
             coordinates.Add(rezGenelList[i][j-1].X);
