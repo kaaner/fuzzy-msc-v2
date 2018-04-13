@@ -49,6 +49,26 @@
             }
         }
 
+        $scope.KuralTextGetir = function (kural) {
+            if (kural.KuralID == null || kural.KuralID == undefined) {
+                return null;
+            }
+            else {
+                $scope.kuralID = kural.KuralID;
+                $http.get('/Graph/KuralGetir', { params: { kuralID: $scope.kuralID } }).then(function successCallback(response) {
+                    if (response.data.Sonuc) {
+                        $scope.kuralTextListesi = response.data.Nesne;
+                    }
+                    else {
+                        $scope.hataMesajlari = [];
+                        $scope.hataMesajlari.push(response.data.Mesaj);
+                    }
+                },
+                    function errorCallback(response) {
+                    });
+            }
+        }
+
         $scope.ExcelSecimiVeGrafikOlustur = function (excel) {
             $scope.panelExcelSec = true;
             //$scope.panelOlcekSec = true;

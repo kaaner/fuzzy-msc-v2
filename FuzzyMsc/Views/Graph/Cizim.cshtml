@@ -17,17 +17,41 @@
                     <span class="panel-title">Adım 1 - Kural Seçimi</span>
                 </div>
                 <div class="panel-body">
-                    <div class="col-md-6 col-sm-12">
-                        <div class="form-group">
-                            <label class="col-md-6 control-label">Kural Seçimi Yapınız</label>
-                            <div class="col-md-6">
-                                <select class="form-control" ng-model="kural" ng-options="kume.KuralAdi for kume in kumeListesi">
-                                    @*<option value="">Zemin Tipi Seçiniz</option>*@
-                                    <option value="">Seçiniz</option>
-                                </select>
+
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a data-toggle="tab" href="#rule"><i class="fa fa-edit"></i> Seçim</a></li>
+                        <li ng-show="kural"><a data-toggle="tab" href="#rule1"><i class="fa fa-list-ul"></i> Kurallar</a></li>
+                    </ul>
+                    
+                    <div class="tab-content">
+                        <div id="rule" class="tab-pane fade in active">
+                            <div class="col-md-6 col-sm-12">
+                                <div class="form-group">
+                                    <label class="col-md-6 control-label">Kural Seçimi Yapınız</label>
+                                    <div class="col-md-6">
+                                        <select class="form-control" ng-model="kural" ng-options="kume.KuralAdi for kume in kumeListesi" ng-change="KuralTextGetir(kural)">
+                                            @*<option value="">Zemin Tipi Seçiniz</option>*@
+                                            <option value="">Seçiniz</option>
+                                        </select>
+                                    </div>
+                                </div>
                             </div>
                         </div>
+                        <div id="rule1" class="tab-pane fade">
+                            <div class="col-md-12">
+                                <table class="table table-hover">
+                                    <tbody>
+                                        <tr ng-repeat="item in kuralTextListesi">
+                                            <td>{{item.KuralText}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
                     </div>
+
+                    
                 </div>
                 <div class="panel-footer">
                     <div class="row">
@@ -108,8 +132,8 @@
                     </div>
                 </div>*@
 
-            @*<div class="panel panel-default" ng-show="panelGrafik">*@
-            <div class="panel panel-default">
+            <div class="panel panel-default" ng-show="panelGrafik">
+    @*<div class="panel panel-default">*@
                 <div class="panel-heading">
                     <span class="panel-title">Sonuç - Grafik</span>
                 </div>
@@ -127,30 +151,39 @@
                             </div>
                         </div>
                         <div id="menu1" class="tab-pane fade">
-                            <div class="form-horizontal">
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label">Değer</label>
-                                    <div class="col-sm-9">
-                                        <input type="text" name="ozdirenc" class="form-control" ng-model="ozdirenc.adi" />
+                            <div class="panel-body">
+                                <div class="form-horizontal">
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label">Değer</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" name="ozdirenc" class="form-control" ng-model="ozdirenc.adi" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label">Min. Değer</label>
+                                        <div class="col-sm-9">
+                                            <input type="number" name="mukavemet" class="form-control" ng-model="ozdirenc.minDeger" min="0" max="1000" prevent-typing-greater placeholder="Min. 0" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label">Max. Değer</label>
+                                        <div class="col-sm-9">
+                                            <input type="number" name="doygunluk" class="form-control" ng-model="ozdirenc.maxDeger" min="0" max="1000" prevent-typing-greater placeholder="Max. 1000" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label">Min & Max Values</label>
+                                        <div class="col-md-9">
+                                            <input id="range_2" type="text" value="" />
+                                            @*<span class="help-block"> Set min value, max value and start point </span>*@
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label">Min. Değer</label>
-                                    <div class="col-sm-9">
-                                        <input type="number" name="mukavemet" class="form-control" ng-model="ozdirenc.minDeger" min="0" max="1000" prevent-typing-greater placeholder="Min. 0" />
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label">Max. Değer</label>
-                                    <div class="col-sm-9">
-                                        <input type="number" name="doygunluk" class="form-control" ng-model="ozdirenc.maxDeger" min="0" max="1000" prevent-typing-greater placeholder="Max. 1000" />
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-md-3 control-label">Min & Max Values</label>
-                                    <div class="col-md-9">
-                                        <input id="range_2" type="text" value="" />
-                                        @*<span class="help-block"> Set min value, max value and start point </span>*@
+                                <div class="panel-footer">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <button type="button" class="btn green pull-right" ng-click="ChartGuncelle()">Güncelle</button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

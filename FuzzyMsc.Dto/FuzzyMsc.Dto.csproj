@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CizimDTOS\RGBDTO.cs" />
     <Compile Include="CizimDTOS\SismikDTO.cs" />
     <Compile Include="CizimDTOS\SondajDTO.cs" />
     <Compile Include="FuzzyDTOS\KuralGetirDTO.cs" />

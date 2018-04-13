@@ -11,6 +11,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -576,12 +577,14 @@ namespace FuzzyMsc.Bll
                 dataset = new SeriesDTO();
                 dataset.name = name + count.ToString();
                 dataset.lineWidth = 2;
-                dataset.color = String.Format("#{0:X6}", random.Next(0x1000000));
+                dataset.color = RenkUret(i, kesitDTO.RezGenelList.Count); // String.Format("#{0:X6}", random.Next(0x1000000));
                 dataset.showInLegend = false;
                 dataset.marker = new MarkerDTO { symbol = "circle", radius = 2, enabled = true };
                 dataset.toolTip = new ToolTipDTO { enabled = false };
                 dataset.states = new StatesDTO { hover = new HoverDTO { lineWidthPlus = 3 } };
-                dataset.enableMouseTracking = false;
+                //dataset.enableMouseTracking = false;
+                dataset.draggableY = true;
+                dataset.draggableX = true;
                 for (int j = 0; j < kesitDTO.RezGenelList[i].Count; j++)
                 {
                     List<double> coordinates = new List<double>();
@@ -680,6 +683,86 @@ namespace FuzzyMsc.Bll
             return datasetList;
         }
 
+        private string RenkUret(int i, int count)
+        {
+
+            var color = Color.Black;
+            if (i == 0) //ilk Çizgi Mavi
+            {
+                color = Color.FromArgb(0, 0, 255);
+                return "#" + color.R.ToString("X2") + color.G.ToString("X2") + color.B.ToString("X2");
+            }
+            else if (count - 1 == i) //Son Çizgi Kırmızı
+            {
+                color = Color.FromArgb(255, 0, 0);
+                return "#" + color.R.ToString("X2") + color.G.ToString("X2") + color.B.ToString("X2");
+            }
+            else
+            {
+                List<RGBDTO> RGBList = ColorsFromBlueToRed();
+                double percent = (double)i / (double)count * 100;
+                int index = (int)Math.Round(percent * RGBList.Count / 100);
+                RGBDTO RGBItem = RGBList[index];
+
+                return "#" + RGBItem.R.ToString("X2") + RGBItem.G.ToString("X2") + RGBItem.B.ToString("X2");
+            }
+        }
+
+        private List<RGBDTO> ColorsFromBlueToRed()
+        {
+            List<RGBDTO> RGBList = new List<RGBDTO>();
+
+            RGBList.Add(new RGBDTO
+            {
+                R = 0,
+                G = 0,
+                B = 255
+            });
+
+
+            for (int i = 1; i < 256; i++) //Maviden Açık Maviye
+            {
+                RGBList.Add(new RGBDTO
+                {
+                    R = 0,
+                    G = i,
+                    B = 255
+                });
+            }
+
+            for (int i = 254; i >= 0; i--) //Açık Maviden Yeşile
+            {
+                RGBList.Add(new RGBDTO
+                {
+                    R = 0,
+                    G = 255,
+                    B = i
+                });
+            }
+
+            for (int i = 1; i < 256; i++) //Yeşilden Sarıya
+            {
+                RGBList.Add(new RGBDTO
+                {
+                    R = i,
+                    G = 255,
+                    B = 0
+                });
+            }
+
+            for (int i = 254; i >= 0; i--) //Sarıdan Kırmızıya
+            {
+                RGBList.Add(new RGBDTO
+                {
+                    R = 255,
+                    G = i,
+                    B = 0
+                });
+            }
+
+            return RGBList;
+        }
+
         public SonucDTO KumeListesiGetir()
         {
             SonucDTO sonuc = new SonucDTO();
@@ -713,7 +796,7 @@ namespace FuzzyMsc.Bll
             SonucDTO sonuc = new SonucDTO();
             try
             {
-                var kuralList = _kuralListTextService.Queryable().Select(k => new KuralTextEntityDTO
+                var kuralList = _kuralListTextService.Queryable().Where(k => k.KuralID == kuralID).Select(k => new KuralTextEntityDTO
                 {
                     KuralID = k.KuralID,
                     KuralText = k.KuralText
@@ -817,8 +900,8 @@ namespace FuzzyMsc.Bll
             var cukurBitisK = rezGenelList[i][j].K + (Math.Abs((double)rezGenelList[i][j].K - (double)rezGenelList[i][j + 1].K) / 5);
 
             List<double> coordinates = new List<double>();
-            coordinates.Add(rezGenelList[i][j-1].X);
-            coordinates.Add((double)rezGenelList[i][j-1].K);
+            coordinates.Add(rezGenelList[i][j - 1].X);
+            coordinates.Add((double)rezGenelList[i][j - 1].K);
             dataset.data.Add(coordinates);
 
             coordinates = new List<double>();
@@ -868,10 +951,13 @@ namespace FuzzyMsc.Bll
             fayDataset.lineWidth = 2;
             fayDataset.color = dataset.color;
             fayDataset.showInLegend = false;
-            fayDataset.marker = new MarkerDTO { enabled = false };
+            //fayDataset.marker = new MarkerDTO { enabled = false };
+            fayDataset.marker = new MarkerDTO { symbol = "circle", radius = 2, enabled = true };
             fayDataset.toolTip = new ToolTipDTO { enabled = false };
             fayDataset.states = new StatesDTO { hover = new HoverDTO { lineWidthPlus = 3 } };
-            fayDataset.enableMouseTracking = false;
+            //fayDataset.enableMouseTracking = false;
+            fayDataset.draggableY = true;
+            fayDataset.draggableX = true;
 
             var ortaNoktaX = (rezGenelList[i][j].X + rezGenelList[i][j + 1].X) / 2;
             var ortaNoktaK = (rezGenelList[i][j].K + rezGenelList[i][j + 1].K) / 2;
@@ -897,8 +983,8 @@ namespace FuzzyMsc.Bll
             //dataset.data.Add(coordinates);
 
             coordinates = new List<double>();
-            coordinates.Add(ortaNoktaX - 1);
-            coordinates.Add((double)ortaNoktaK - 2);
+            coordinates.Add(ortaNoktaX - 0.5);
+            coordinates.Add((double)ortaNoktaK - 1);
             fayDataset.data.Add(coordinates);
 
             //coordinates = new List<double>();
@@ -907,8 +993,8 @@ namespace FuzzyMsc.Bll
             //dataset.data.Add(coordinates);
 
             coordinates = new List<double>();
-            coordinates.Add(ortaNoktaX + 1);
-            coordinates.Add((double)ortaNoktaK + 2);
+            coordinates.Add(ortaNoktaX + 0.5);
+            coordinates.Add((double)ortaNoktaK + 1);
             fayDataset.data.Add(coordinates);
 
             //coordinates = new List<double>();
