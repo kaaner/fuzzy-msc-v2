@@ -135,10 +135,10 @@ namespace FuzzyMsc.Bll
 
                     foreach (var item in kuralKume.KuralList)
                     {
-                        var InputDegiskenID = _degiskenItemService.Queryable().FirstOrDefault(d => d.Degisken.DegiskenTipID == (byte)Enums.DegiskenTip.Input && d.DegiskenItemGorunenAdi == item.Kural.Ozdirenc).DegiskenItemID;
+                        var InputDegiskenID = _degiskenItemService.Queryable().FirstOrDefault(d => d.Degisken.DegiskenTipID == (byte)Enums.DegiskenTip.Input && d.DegiskenItemAdi == item.Kural.Ozdirenc).DegiskenItemID;
                         kuralListItem.Add(new KuralListItem { KuralListID = kuralList.KuralListID, DegiskenItemID = InputDegiskenID });
 
-                        var OutputDegiskenID = _degiskenItemService.Queryable().FirstOrDefault(d => d.Degisken.DegiskenTipID == (byte)Enums.DegiskenTip.Output && d.DegiskenItemGorunenAdi == item.Kural.Toprak).DegiskenItemID;
+                        var OutputDegiskenID = _degiskenItemService.Queryable().FirstOrDefault(d => d.Degisken.DegiskenTipID == (byte)Enums.DegiskenTip.Output && d.DegiskenItemAdi == item.Kural.Toprak).DegiskenItemID;
                         kuralListItem.Add(new KuralListItem { KuralListID = kuralList.KuralListID, DegiskenItemID = InputDegiskenID });
                     }
                 }
@@ -180,7 +180,7 @@ namespace FuzzyMsc.Bll
             _fsToprak.DefuzzificationMethod = DefuzzificationMethod.Centroid;
 
             double outputValue = result[fvOutput];
-            string outputType = SonucGetir(kurallar, outputValue);
+            string outputType = SonucGetirYakinSiniraGore(kurallar, outputValue);
 
             return outputType;
 
@@ -224,6 +224,40 @@ namespace FuzzyMsc.Bll
             //    kurallar.Add(ruleText);
             //}
             #endregion            
+        }
+
+        public bool FuzzyKuralOlusturVeSonucGetirFLLKarsilastirma(KuralGetirDTO kurallar, double inputValue1, double inputValue2, int oran)
+        {
+            _fsToprak = SistemOlustur(kurallar);
+
+            FuzzyVariable fvInput1 = _fsToprak.InputByName(kurallar.DegiskenList.FirstOrDefault(d => d.DegiskenTipID == (byte)Enums.DegiskenTip.Input).DegiskenGorunenAdi);
+            FuzzyVariable fvOutput1 = _fsToprak.OutputByName(kurallar.DegiskenList.FirstOrDefault(d => d.DegiskenTipID == (byte)Enums.DegiskenTip.Output).DegiskenGorunenAdi);
+
+            Dictionary<FuzzyVariable, double> inputValues1 = new Dictionary<FuzzyVariable, double>();
+            inputValues1.Add(fvInput1, inputValue1);
+
+            Dictionary<FuzzyVariable, double> result1 = _fsToprak.Calculate(inputValues1);
+            _fsToprak.DefuzzificationMethod = DefuzzificationMethod.Centroid;
+
+            double outputValue1 = result1[fvOutput1];
+
+            _fsToprak = null;
+            _fsToprak = SistemOlustur(kurallar);
+
+            FuzzyVariable fvInput2 = _fsToprak.InputByName(kurallar.DegiskenList.FirstOrDefault(d => d.DegiskenTipID == (byte)Enums.DegiskenTip.Input).DegiskenGorunenAdi);
+            FuzzyVariable fvOutput2 = _fsToprak.OutputByName(kurallar.DegiskenList.FirstOrDefault(d => d.DegiskenTipID == (byte)Enums.DegiskenTip.Output).DegiskenGorunenAdi);
+
+            Dictionary<FuzzyVariable, double> inputValues2 = new Dictionary<FuzzyVariable, double>();
+            inputValues2.Add(fvInput2, inputValue2);
+
+            Dictionary<FuzzyVariable, double> result2 = _fsToprak.Calculate(inputValues2);
+            _fsToprak.DefuzzificationMethod = DefuzzificationMethod.Centroid;
+
+            double outputValue2 = result2[fvOutput2];
+
+            var result = SonucGetirYakinligaGore(outputValue1, outputValue2, oran);
+
+            return result;
         }
 
         private MamdaniFuzzySystem SistemOlustur(KuralGetirDTO kurallar)
@@ -425,7 +459,7 @@ namespace FuzzyMsc.Bll
             return kuralGetir;
         }
 
-        private string SonucGetir(KuralGetirDTO kurallar, double outputValue)
+        private string SonucGetirYakinSiniraGore(KuralGetirDTO kurallar, double outputValue)
         {
             string sonuc = "";
 
@@ -465,6 +499,30 @@ namespace FuzzyMsc.Bll
 
             return sonuc;
         }
+
+        private bool SonucGetirYakinligaGore(double outputValue1, double outputValue2, int oran)
+        {
+            if (outputValue1 > outputValue2)
+            {
+                if (outputValue1 * oran / 100 > outputValue2)
+                {
+                    return false;
+                }
+            }
+            else if (outputValue2 > outputValue1)
+            {
+                if (outputValue2 * oran / 100 > outputValue1)
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return true;
+            }
+            
+            return true;
+        }
     }
 
     public interface IFuzzyManager : IBaseManager
@@ -474,6 +532,8 @@ namespace FuzzyMsc.Bll
         void KurallariOlusturFLS(KuralKumeDTO kuralKume);
 
         string FuzzyKuralOlusturVeSonucGetirFLL(KuralGetirDTO kurallar, double inputValue);
+
+        bool FuzzyKuralOlusturVeSonucGetirFLLKarsilastirma(KuralGetirDTO kurallar, double inputValue1, double inputValue2, int oran);
 
         SonucDTO KumeKaydet(KuralKumeDTO kuralKume);
 

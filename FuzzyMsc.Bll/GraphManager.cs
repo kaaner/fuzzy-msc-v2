@@ -160,6 +160,20 @@ namespace FuzzyMsc.Bll
             }
             #endregion
 
+            #region Derinlik Eşitleme
+            List<List<string>> rezExcel = new List<List<string>>();
+            List<string> rezExcelItem;
+            for (int i = 1; i < rowCount; i++)
+            {
+                rezExcelItem = new List<string>();
+                for (int j = 1; j < colCount; j = j++)
+                {
+                    rezExcelItem.Add((string)(xlWorksheetRezistivite.Cells[i + 1, 1]).Value);
+                }
+                rezExcel.Add(rezExcelItem);
+            }
+            #endregion
+
             for (int i = 1; i < rowCount; i++)
             {
                 rezItem = new RezistiviteDTO();
@@ -179,11 +193,15 @@ namespace FuzzyMsc.Bll
                 {
 
                     rezItem = new RezistiviteDTO();
-                    if ((xlWorksheetRezistivite.Cells[i + 1, j]).Value == null && (xlWorksheetRezistivite.Cells[i + 1, j + 1]).Value == null)
+                    if ((xlWorksheetRezistivite.Cells[i + 1, j]).Value == null && (xlWorksheetRezistivite.Cells[i + 1, j + 1]).Value == null) //Exceldeki İki Hücre değeri de boşsa (hem koordinat hem de özdirenç)
                     {
                         continue;
                     }
-                    if ((xlWorksheetRezistivite.Cells[i + 1, j]).Value == null && (xlWorksheetRezistivite.Cells[i + 1, j + 1]).Value != null)
+                    if ((xlWorksheetRezistivite.Cells[i + 1, j + 1]).Value == null)
+                    {
+                        continue;
+                    }
+                    if ((xlWorksheetRezistivite.Cells[i + 1, j]).Value == null && (xlWorksheetRezistivite.Cells[i + 1, j + 1]).Value != null)//
                     {
                         rezItem.ID = i;
                         rezItem.Adi = (string)(xlWorksheetRezistivite.Cells[i + 1, 1]).Value.ToString() + count.ToString();
@@ -206,8 +224,35 @@ namespace FuzzyMsc.Bll
                 count = 1;
             }
 
+            rezGenelList = TabloDuzenle(rezGenelList);
+
             highcharts = ChartOlustur(highcharts, rezGenelList);
         }
+
+        private List<List<RezistiviteDTO>> TabloDuzenle(List<List<RezistiviteDTO>> rezGenelList)
+        {
+            int count = 0;
+            foreach (var item in rezGenelList)
+            {
+                if (item.Count > count)
+                    count = item.Count();
+            }
+
+            foreach (var item in rezGenelList)
+            {
+                if (item.Count < count)
+                {
+                    for (int i = 0; i < count - item.Count; i++)
+                    {
+                        var eklenecekItem = item.LastOrDefault();
+                        item.Add(eklenecekItem);
+                    }
+                }
+            }
+
+            return rezGenelList;
+        }
+
         private void SismikOlustur(HighchartsDTO highcharts, Workbook xlWorkbook)
         {
             sisGenelList = new List<List<SismikDTO>>();
@@ -336,7 +381,7 @@ namespace FuzzyMsc.Bll
                     sonItem.Adi = (string)(xlWorkSheetSondaj.Cells[i + 1, 1]).Value.ToString() + count.ToString();
                     sonItem.X = (double)(xlWorkSheetSondaj.Cells[i + 1, 2]).Value;
                     sonItem.K = (xlWorkSheetSondaj.Cells[i + 1, j]).Value == null ? 0 : (double)(xlWorkSheetSondaj.Cells[i + 1, 4]).Value - (double)(xlWorkSheetSondaj.Cells[i + 1, j]).Value;
-                    sonItem.T = (xlWorkSheetSondaj.Cells[i + 1, j + 1]).Value == null ? "" : (xlWorkSheetSondaj.Cells[i + 1, j + 1]).Value;
+                    sonItem.T = (xlWorkSheetSondaj.Cells[i + 1, j + 1]).Value == null ? "" : ((xlWorkSheetSondaj.Cells[i + 1, j + 1]).Value).ToString();
                     sonList.Add(sonItem);
                     count++;
                 }
@@ -384,9 +429,11 @@ namespace FuzzyMsc.Bll
                 foreach (var rezItem in rezGenelList[i])
                 {
                     if (i == 0)
-                        label = new AnnotationLabelsDTO { x = -20, y = -20, point = new PointDTO { xAxis = 0, yAxis = 0, x = rezItem.X, y = rezItem.K }, text = rezItem.Adi + "<br>X:" + rezItem.X + " Y:" + rezItem.K, shape = "connector", allowOverlap = true };
+                        label = new AnnotationLabelsDTO { x = -20, y = -20, point = new PointDTO { xAxis = 0, yAxis = 0, x = rezItem.X, y = rezItem.K }, text = rezItem.Adi, shape = "connector", allowOverlap = true };
+                    //label = new AnnotationLabelsDTO { x = -20, y = -20, point = new PointDTO { xAxis = 0, yAxis = 0, x = rezItem.X, y = rezItem.K }, text = rezItem.Adi + "<br>X:" + rezItem.X + " Y:" + rezItem.K, shape = "connector", allowOverlap = true };
                     else
-                        label = new AnnotationLabelsDTO { x = -20, y = -20, point = new PointDTO { xAxis = 0, yAxis = 0, x = rezItem.X, y = rezItem.K }, text = rezItem.R + " ohm<br>X:" + rezItem.X + " Y:" + rezItem.K, shape = "connector", allowOverlap = true };
+                        label = new AnnotationLabelsDTO { x = -20, y = -20, point = new PointDTO { xAxis = 0, yAxis = 0, x = rezItem.X, y = rezItem.K }, text = rezItem.R + " ohm", shape = "connector", allowOverlap = true };
+                    //label = new AnnotationLabelsDTO { x = -20, y = -20, point = new PointDTO { xAxis = 0, yAxis = 0, x = rezItem.X, y = rezItem.K }, text = rezItem.R + " ohm<br>X:" + rezItem.X + " Y:" + rezItem.K, shape = "connector", allowOverlap = true };
                     annotations.labels.Add(label);
                 }
                 annotationsList.Add(annotations);
@@ -408,9 +455,11 @@ namespace FuzzyMsc.Bll
                 foreach (var sisItem in sisGenelList[i])
                 {
                     if (i == 0)
-                        label = new AnnotationLabelsDTO { x = 20, y = -20, point = new PointDTO { xAxis = 0, yAxis = 0, x = sisItem.X, y = sisItem.K }, text = sisItem.Adi + "<br>X:" + sisItem.X + " Y:" + sisItem.K, shape = "connector", allowOverlap = true };
+                        label = new AnnotationLabelsDTO { x = 20, y = -20, point = new PointDTO { xAxis = 0, yAxis = 0, x = sisItem.X, y = sisItem.K }, text = sisItem.Adi, shape = "connector", allowOverlap = true };
+                    //label = new AnnotationLabelsDTO { x = 20, y = -20, point = new PointDTO { xAxis = 0, yAxis = 0, x = sisItem.X, y = sisItem.K }, text = sisItem.Adi + "<br>X:" + sisItem.X + " Y:" + sisItem.K, shape = "connector", allowOverlap = true };
                     else
-                        label = new AnnotationLabelsDTO { x = 20, y = -20, point = new PointDTO { xAxis = 0, yAxis = 0, x = sisItem.X, y = sisItem.K }, text = "Vp = " + sisItem.Vp + "m/s<br>Vs =" + sisItem.Vs + "m/s<br>X:" + sisItem.X + " Y:" + sisItem.K, shape = "connector", allowOverlap = true };
+                        label = new AnnotationLabelsDTO { x = 20, y = -20, point = new PointDTO { xAxis = 0, yAxis = 0, x = sisItem.X, y = sisItem.K }, text = "Vp = " + sisItem.Vp + "m/s<br>Vs =" + sisItem.Vs + "m/s", shape = "connector", allowOverlap = true };
+                    //label = new AnnotationLabelsDTO { x = 20, y = -20, point = new PointDTO { xAxis = 0, yAxis = 0, x = sisItem.X, y = sisItem.K }, text = "Vp = " + sisItem.Vp + "m/s<br>Vs =" + sisItem.Vs + "m/s<br>X:" + sisItem.X + " Y:" + sisItem.K, shape = "connector", allowOverlap = true };
                     annotations.labels.Add(label);
                 }
                 annotationsList.Add(annotations);
@@ -432,9 +481,11 @@ namespace FuzzyMsc.Bll
                 foreach (var sonItem in sonGenelList[i])
                 {
                     if (i == 0)
-                        label = new AnnotationLabelsDTO { x = 20, y = 20, point = new PointDTO { xAxis = 0, yAxis = 0, x = sonItem.X, y = sonItem.K }, text = sonItem.Adi + "<br>X:" + sonItem.X + " Y:" + sonItem.K, shape = "connector", allowOverlap = true };
+                        //label = new AnnotationLabelsDTO { x = 20, y = 20, point = new PointDTO { xAxis = 0, yAxis = 0, x = sonItem.X, y = sonItem.K }, text = sonItem.Adi + "<br>X:" + sonItem.X + " Y:" + sonItem.K, shape = "connector", allowOverlap = true };
+                        label = new AnnotationLabelsDTO { x = 20, y = 20, point = new PointDTO { xAxis = 0, yAxis = 0, x = sonItem.X, y = sonItem.K }, text = sonItem.Adi, shape = "connector", allowOverlap = true };
                     else
-                        label = new AnnotationLabelsDTO { x = 20, y = 20, point = new PointDTO { xAxis = 0, yAxis = 0, x = sonItem.X, y = sonItem.K }, text = sonItem.T + "<br>X:" + sonItem.X + " Y:" + sonItem.K, shape = "connector", allowOverlap = true };
+                        //label = new AnnotationLabelsDTO { x = 20, y = 20, point = new PointDTO { xAxis = 0, yAxis = 0, x = sonItem.X, y = sonItem.K }, text = sonItem.T + "<br>X:" + sonItem.X + " Y:" + sonItem.K, shape = "connector", allowOverlap = true };
+                        label = new AnnotationLabelsDTO { x = 20, y = 20, point = new PointDTO { xAxis = 0, yAxis = 0, x = sonItem.X, y = sonItem.K }, text = sonItem.T, shape = "connector", allowOverlap = true };
                     annotations.labels.Add(label);
                 }
                 annotationsList.Add(annotations);
@@ -588,13 +639,23 @@ namespace FuzzyMsc.Bll
                 for (int j = 0; j < kesitDTO.RezGenelList[i].Count; j++)
                 {
                     List<double> coordinates = new List<double>();
-                    if (i == 0) //ilk çizim daima yapılacak
+
+                    #region Özdirenç Değerinin Solunda Olan Sismik Değerlerinin Kontrolü
+                    if (j == 0 && kesitDTO.SisGenelList.Count >= kesitDTO.RezGenelList.Count)
+                        CizimeSismikEkle(kesitDTO.RezGenelList[i][j].X, kesitDTO.SisGenelList[i], dataset, (byte)Enums.YonDegeri.Sol);
+                    #endregion
+
+                    #region Topografya (İlk Çizgi) Çizimi Koşulsuz Yapılmalı 
+                    if (i == 0)
                     {
                         coordinates.Add(kesitDTO.RezGenelList[i][j].X);
                         coordinates.Add((double)kesitDTO.RezGenelList[i][j].K);
                         dataset.data.Add(coordinates);
+                        if (j == kesitDTO.RezGenelList[i].Count - 1 && j == 0 && kesitDTO.SisGenelList.Count >= kesitDTO.RezGenelList.Count)
+                            CizimeSismikEkle(kesitDTO.RezGenelList[i][j].X, kesitDTO.SisGenelList[i], dataset, (byte)Enums.YonDegeri.Sag);
                         continue;
                     }
+                    #endregion
                     if (j != kesitDTO.RezGenelList[i].Count - 1) //Son sıra kontrolü
                     {
                         if (kesitDTO.RezGenelList[i][j].R != null && kesitDTO.RezGenelList[i][j + 1].R != null && kesitDTO.RezGenelList[i][j].R != 0 && kesitDTO.RezGenelList[i][j + 1].R != 0)
@@ -602,7 +663,10 @@ namespace FuzzyMsc.Bll
                             var ilkDugum = _fuzzyManager.FuzzyKuralOlusturVeSonucGetirFLL(kuralGetir, (double)kesitDTO.RezGenelList[i][j].R);
                             var ikinciDugum = _fuzzyManager.FuzzyKuralOlusturVeSonucGetirFLL(kuralGetir, (double)kesitDTO.RezGenelList[i][j + 1].R);
 
-                            if (ilkDugum == ikinciDugum) //iki özdirenç değeri de aynı aralıktaysa bu sefer hız değerlerine bakılır
+                            var ikiDugumKarsilastirma = _fuzzyManager.FuzzyKuralOlusturVeSonucGetirFLLKarsilastirma(kuralGetir, (double)kesitDTO.RezGenelList[i][j].R, (double)kesitDTO.RezGenelList[i][j + 1].R, 40);
+
+                            //if (ilkDugum == ikinciDugum) //iki özdirenç değeri de aynı aralıktaysa bu sefer hız değerlerine bakılır
+                            if (ikiDugumKarsilastirma) //iki özdirenç değeri de aynı aralıktaysa bu sefer hız değerlerine bakılır
                             {
                                 bool VpUygunMu = SismikKontroluVp(kesitDTO, i, j);
                                 bool VsUygunMu = SismikKontroluVs(kesitDTO, i, j);
@@ -617,14 +681,20 @@ namespace FuzzyMsc.Bll
                                     if (j == 0)
                                     {
                                         //Fay oluştur
-                                        var fayDataset = FayOlustur(dataset, kesitDTO.RezGenelList, i, j);
-                                        datasetList.Add(fayDataset);
+                                        coordinates.Add(kesitDTO.RezGenelList[i][j].X);
+                                        coordinates.Add((double)kesitDTO.RezGenelList[i][j].K);
+                                        dataset.data.Add(coordinates);
+                                        //var fayDataset = FayOlustur(dataset, kesitDTO.RezGenelList, i, j);
+                                        KapatmaOlustur(datasetList, dataset, kesitDTO.RezGenelList, i, j);
+                                        //datasetList.Add(fayDataset);
                                         continue;
                                     }
                                     else
                                     {
                                         var birOncekiDugum = _fuzzyManager.FuzzyKuralOlusturVeSonucGetirFLL(kuralGetir, (double)kesitDTO.RezGenelList[i][j - 1].R);
-                                        if (birOncekiDugum == ikinciDugum)
+                                        var cukurKarsilastirma = _fuzzyManager.FuzzyKuralOlusturVeSonucGetirFLLKarsilastirma(kuralGetir, (double)kesitDTO.RezGenelList[i][j - 1].R, (double)kesitDTO.RezGenelList[i][j + 1].R, 40);
+                                        //if (birOncekiDugum == ikinciDugum)
+                                        if (cukurKarsilastirma)
                                         {
                                             //Çukur oluştur
                                             var cukurDataset = CukurOlustur(dataset, kesitDTO.RezGenelList, i, j);
@@ -634,8 +704,12 @@ namespace FuzzyMsc.Bll
                                         else
                                         {
                                             //Fay oluştur
-                                            var fayDataset = FayOlustur(dataset, kesitDTO.RezGenelList, i, j);
-                                            datasetList.Add(fayDataset);
+                                            coordinates.Add(kesitDTO.RezGenelList[i][j].X);
+                                            coordinates.Add((double)kesitDTO.RezGenelList[i][j].K);
+                                            dataset.data.Add(coordinates);
+                                            //var fayDataset = FayOlustur(dataset, kesitDTO.RezGenelList, i, j);
+                                            KapatmaOlustur(datasetList, dataset, kesitDTO.RezGenelList, i, j);
+                                            //datasetList.Add(fayDataset);
                                             continue;
                                         }
                                     }
@@ -646,14 +720,21 @@ namespace FuzzyMsc.Bll
                                 if (j == 0)
                                 {
                                     //Fay oluştur
-                                    var fayDataset = FayOlustur(dataset, kesitDTO.RezGenelList, i, j);
-                                    datasetList.Add(fayDataset);
+                                    coordinates.Add(kesitDTO.RezGenelList[i][j].X);
+                                    coordinates.Add((double)kesitDTO.RezGenelList[i][j].K);
+                                    dataset.data.Add(coordinates);
+                                    //var fayDataset = FayOlustur(dataset, kesitDTO.RezGenelList, i, j);
+                                    KapatmaOlustur(datasetList, dataset, kesitDTO.RezGenelList, i, j);
+                                    //datasetList.Add(fayDataset);
                                     continue;
                                 }
                                 else
                                 {
                                     var birOncekiDugum = _fuzzyManager.FuzzyKuralOlusturVeSonucGetirFLL(kuralGetir, (double)kesitDTO.RezGenelList[i][j - 1].R);
-                                    if (birOncekiDugum == ikinciDugum)
+                                    var cukurKarsilastirma = _fuzzyManager.FuzzyKuralOlusturVeSonucGetirFLLKarsilastirma(kuralGetir, (double)kesitDTO.RezGenelList[i][j - 1].R, (double)kesitDTO.RezGenelList[i][j + 1].R, 40);
+
+                                    //if (birOncekiDugum == ikinciDugum)
+                                    if (cukurKarsilastirma)
                                     {
                                         //Çukur oluştur
                                         var cukurDataset = CukurOlustur(dataset, kesitDTO.RezGenelList, i, j);
@@ -663,8 +744,12 @@ namespace FuzzyMsc.Bll
                                     else
                                     {
                                         //Fay oluştur
-                                        var fayDataset = FayOlustur(dataset, kesitDTO.RezGenelList, i, j);
-                                        datasetList.Add(fayDataset);
+                                        coordinates.Add(kesitDTO.RezGenelList[i][j].X);
+                                        coordinates.Add((double)kesitDTO.RezGenelList[i][j].K);
+                                        dataset.data.Add(coordinates);
+                                        //var fayDataset = FayOlustur(dataset, kesitDTO.RezGenelList, i, j);
+                                        KapatmaOlustur(datasetList, dataset, kesitDTO.RezGenelList, i, j);
+                                        //datasetList.Add(fayDataset);
                                         continue;
                                     }
                                 }
@@ -676,6 +761,21 @@ namespace FuzzyMsc.Bll
                         coordinates.Add(kesitDTO.RezGenelList[i][j].X);
                         coordinates.Add((double)kesitDTO.RezGenelList[i][j].K);
                         dataset.data.Add(coordinates);
+                        #region Özdirenç Değerinin Solunda Olan Sismik Değerlerinin Kontrolü
+                        if (kesitDTO.SisGenelList.Count >= kesitDTO.RezGenelList.Count)
+                            CizimeSismikEkle(kesitDTO.RezGenelList[i][j].X, kesitDTO.SisGenelList[i], dataset, (byte)Enums.YonDegeri.Sag);
+                        //    var sonOzdirencX = kesitDTO.RezGenelList[i][j].X;
+                        //    var sagdaKalanSismikList = kesitDTO.SisGenelList[i].Where(s => s.X > sonOzdirencX).ToList();
+                        //var ads = kesitDTO.SisGenelList[i];
+                        //    foreach (var item in sagdaKalanSismikList)
+                        //    {
+                        //        coordinates = new List<double>();
+                        //        coordinates.Add(item.X);
+                        //        coordinates.Add((double)item.K);
+                        //        dataset.data.Add(coordinates);
+                        //    }
+
+                        #endregion
                     }
                 }
                 datasetList.Add(dataset);
@@ -817,6 +917,38 @@ namespace FuzzyMsc.Bll
             }
         }
 
+        public SonucDTO KuralTextVeOzdirencGetir(long kuralID)
+        {
+            SonucDTO sonuc = new SonucDTO();
+            try
+            {
+                var kuralList = _kuralListTextService.Queryable().Where(k => k.KuralID == kuralID).Select(k => new KuralTextEntityDTO
+                {
+                    KuralID = k.KuralID,
+                    KuralText = k.KuralText
+                }).ToList();
+                var ozdirencList = _degiskenItemService.Queryable().Where(d => d.Degisken.KuralID == kuralID && d.Degisken.DegiskenTipID == (byte)Enums.DegiskenTip.Input).Select(d => new DegiskenDTO
+                {
+                    Adi = d.DegiskenItemAdi,
+                    MinDeger = d.MinDeger,
+                    MaxDeger = d.MaxDeger,
+                }).ToList();
+                sonuc.Nesne = new KuralTextVeOzdirencDTO { kuralTextList = kuralList, ozdirencList = ozdirencList };
+                sonuc.Sonuc = true;
+                sonuc.Mesaj = "Başarılı.";
+                return sonuc;
+            }
+            catch (Exception ex)
+            {
+
+                sonuc.Nesne = null;
+                sonuc.Sonuc = false;
+                sonuc.Mesaj = "Başarısız.";
+                sonuc.Exception = ex;
+                return sonuc;
+            }
+        }
+
         private bool SismikKontroluVp(KesitDTO kesitDTO, int i, int j)
         {
             if (i < kesitDTO.SisGenelList.Count && j < kesitDTO.SisGenelList[i].Count)
@@ -829,7 +961,7 @@ namespace FuzzyMsc.Bll
                         {
                             if (kesitDTO.SisGenelList[i][j].Vp > kesitDTO.SisGenelList[i + 1][j].Vp)//soldaki Vp daha büyükse
                             {
-                                if (kesitDTO.SisGenelList[i][j].Vp * 0.7 > kesitDTO.SisGenelList[i + 1][j].Vp) //öncekinin %60 bir sonrakinden büyük olmalı
+                                if (kesitDTO.SisGenelList[i][j].Vp * 0.7 > kesitDTO.SisGenelList[i + 1][j].Vp) //öncekinin oran ile çarpımı bir sonrakinden büyük olmalı
                                 {
                                     return false;
                                 }
@@ -884,7 +1016,7 @@ namespace FuzzyMsc.Bll
         private SeriesDTO CukurOlustur(SeriesDTO dataset, List<List<RezistiviteDTO>> rezGenelList, int i, int j)
         {
             SeriesDTO cukurDataset = new SeriesDTO();
-            cukurDataset.name = "Fay";
+            cukurDataset.name = "Çukur";
             cukurDataset.lineWidth = 2;
             cukurDataset.color = dataset.color;
             cukurDataset.showInLegend = false;
@@ -1004,6 +1136,55 @@ namespace FuzzyMsc.Bll
 
             return fayDataset;
         }
+
+        private SeriesDTO KapatmaOlustur(List<SeriesDTO> datasetList, SeriesDTO dataset, List<List<RezistiviteDTO>> rezGenelList, int i, int j)
+        {
+            var oncekiDatasetName = "Set-" + (Convert.ToInt32(dataset.name.Split('-')[1]) - 1).ToString();
+            List<double> coordinates;
+            int index = 0;
+
+            var oncekiDataset = datasetList.FirstOrDefault(d => d.name == oncekiDatasetName);
+
+            var ortaNoktaX = (rezGenelList[i - 1][j].X + rezGenelList[i - 1][j + 1].X) / 2;
+            var ortaNoktaK = (rezGenelList[i - 1][j].K + rezGenelList[i - 1][j + 1].K) / 2;
+
+            var oncekiNoktaX = rezGenelList[i - 1][j].X;
+            var oncekiNoktaK = rezGenelList[i - 1][j].K;
+
+
+            for (int k = 0; k < datasetList.FirstOrDefault(d => d.name == oncekiDatasetName).data.Count; k++)
+            {
+                var dataItem = datasetList.FirstOrDefault(d => d.name == oncekiDatasetName).data[k];
+                if (dataItem[0] == oncekiNoktaX && dataItem[1] == (double)oncekiNoktaK)
+                {
+                    index = k;
+                    break;
+                }
+            }
+
+            coordinates = new List<double>();
+            coordinates.Add(ortaNoktaX);
+            coordinates.Add((double)ortaNoktaK);
+            datasetList.FirstOrDefault(d => d.name == oncekiDatasetName).data.Insert(index + 1, coordinates);
+            dataset.data.Add(coordinates);
+
+            return dataset;
+        }
+
+        /// <summary>
+        /// Özdirenç Değerinin Sağında Veya Solunda Bulunan Sismik Değerlerini Çizime Bağlar
+        /// </summary>
+        private void CizimeSismikEkle(double OzdirencX, List<SismikDTO> sismikList, SeriesDTO dataset, byte Yon)
+        {
+            var SismikList = sismikList.Where(s => Yon == (byte)Enums.YonDegeri.Sol ? s.X < OzdirencX : s.X > OzdirencX).ToList();
+            foreach (var item in SismikList)
+            {
+                List<double> coordinates = new List<double>();
+                coordinates.Add(item.X);
+                coordinates.Add((double)item.K);
+                dataset.data.Add(coordinates);
+            }
+        }
     }
 
     public interface IGraphManager : IBaseManager
@@ -1012,5 +1193,6 @@ namespace FuzzyMsc.Bll
         SonucDTO GraphOlustur(GraphDTO graph, string path);
         SonucDTO KumeListesiGetir();
         SonucDTO KuralGetir(long kuralID);
+        SonucDTO KuralTextVeOzdirencGetir(long kuralID);
     }
 }

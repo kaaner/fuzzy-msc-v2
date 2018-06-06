@@ -3,7 +3,7 @@ namespace FuzzyMsc.Entity.Model
     using FuzzyMsc.Pattern.EF6;
     using System.Data.Entity;
 
-    public partial class FuzzyMscContext : DataContext
+    public partial class FuzzyMscContext : DbContext
     {
         public FuzzyMscContext()
             : base("name=FuzzyMscContext")

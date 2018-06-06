@@ -40,9 +40,26 @@
                         <div id="rule1" class="tab-pane fade">
                             <div class="col-md-12">
                                 <table class="table table-hover">
+                                    <thead>
+                                        <tr><th>Bulanık Mantık Kural Kümesi</th></tr>
+                                    </thead>
                                     <tbody>
                                         <tr ng-repeat="item in kuralTextListesi">
                                             <td>{{item.KuralText}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col-md-12">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr><th>Özdirenç Değer Aralıkları</th></tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="item in ozdirencListesi">
+                                            <td>{{item.Adi}}</td>
+                                            <td>{{item.MinDeger}}</td>
+                                            <td>{{item.MaxDeger}}</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -172,7 +189,7 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-md-3 control-label">Min & Max Values</label>
+                                        <label class="col-md-3 control-label">Uygunluk Değeri (%)</label>
                                         <div class="col-md-9">
                                             <input id="range_2" type="text" value="" />
                                             @*<span class="help-block"> Set min value, max value and start point </span>*@

@@ -44,6 +44,7 @@
     <Compile Include="CizimDTOS\SismikDTO.cs" />
     <Compile Include="CizimDTOS\SondajDTO.cs" />
     <Compile Include="FuzzyDTOS\KuralGetirDTO.cs" />
+    <Compile Include="FuzzyDTOS\KuralTextVeOzdirencDTO.cs" />
     <Compile Include="HighchartsDTOS\AnnotationsDTO.cs" />
     <Compile Include="HighchartsDTOS\AxisDTO.cs" />
     <Compile Include="CizimDTOS\ExcelModelDTO.cs" />

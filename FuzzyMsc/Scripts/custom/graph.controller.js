@@ -55,9 +55,10 @@
             }
             else {
                 $scope.kuralID = kural.KuralID;
-                $http.get('/Graph/KuralGetir', { params: { kuralID: $scope.kuralID } }).then(function successCallback(response) {
+                $http.get('/Graph/KuralTextVeOzdirencGetir', { params: { kuralID: $scope.kuralID } }).then(function successCallback(response) {
                     if (response.data.Sonuc) {
-                        $scope.kuralTextListesi = response.data.Nesne;
+                        $scope.kuralTextListesi = response.data.Nesne.kuralTextList;
+                        $scope.ozdirencListesi = response.data.Nesne.ozdirencList;
                     }
                     else {
                         $scope.hataMesajlari = [];

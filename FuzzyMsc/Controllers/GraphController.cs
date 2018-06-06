@@ -50,6 +50,13 @@ namespace FuzzyMsc.Controllers
             return Json(new { Sonuc = sonuc.Sonuc, Mesaj = sonuc.Mesaj, Nesne = sonuc.Nesne, Exception = sonuc.Exception }, JsonRequestBehavior.AllowGet);
         }
 
+        [HttpGet]
+        public JsonResult KuralTextVeOzdirencGetir(long kuralID)
+        {
+            var sonuc = _graphManager.KuralTextVeOzdirencGetir(kuralID);
+            return Json(new { Sonuc = sonuc.Sonuc, Mesaj = sonuc.Mesaj, Nesne = sonuc.Nesne, Exception = sonuc.Exception }, JsonRequestBehavior.AllowGet);
+        }
+
         [HttpPost]
         public JsonResult UploadExcel()
         {

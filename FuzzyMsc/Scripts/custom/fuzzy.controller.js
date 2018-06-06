@@ -21,7 +21,7 @@
             maxDeger: 30
         }, {
             adi: "Orta",
-            minDeger: 20,
+            minDeger: 30,
             maxDeger: 50
         }, {
             adi: "Yüksek",
@@ -29,8 +29,8 @@
             maxDeger: 70
         }, {
             adi: "Çok Yüksek",
-            minDeger: 40,
-            maxDeger: 80
+            minDeger: 70,
+            maxDeger: 1000
         }];
         $scope.toprakList = [{
             adi: "Kil",
@@ -38,7 +38,7 @@
             maxDeger: 30
         }, {
             adi: "Silt",
-            minDeger: 20,
+            minDeger: 30,
             maxDeger: 50
         }, {
             adi: "Kum",
@@ -46,8 +46,8 @@
             maxDeger: 70
         }, {
             adi: "Çakıl",
-            minDeger: 40,
-            maxDeger: 80
+            minDeger: 70,
+            maxDeger: 1000
         }];
 
         $scope.kuralList = [];

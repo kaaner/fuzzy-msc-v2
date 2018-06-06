@@ -25,5 +25,11 @@
             Sismik = 2,
             Sondaj = 3
         }
+
+        public enum YonDegeri
+        {
+            Sol = 1,
+            Sag = 2
+        }
     }
 }
