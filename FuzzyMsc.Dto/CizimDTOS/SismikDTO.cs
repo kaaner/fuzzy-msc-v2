@@ -8,5 +8,6 @@
         public double? K { get; set; }
         public double? Vp { get; set; }
         public double? Vs { get; set; }
+        public bool Checked { get; set; }
     }
 }

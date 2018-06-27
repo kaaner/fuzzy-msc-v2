@@ -3,7 +3,7 @@ namespace FuzzyMsc.Entity.Model
     using FuzzyMsc.Pattern.EF6;
     using System.Data.Entity;
 
-    public partial class FuzzyMscContext : DbContext
+    public partial class FuzzyMscContext : DataContext
     {
         public FuzzyMscContext()
             : base("name=FuzzyMscContext")
@@ -23,6 +23,9 @@ namespace FuzzyMsc.Entity.Model
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
+            Database.SetInitializer<FuzzyMscContext>(null); //Migration Sonrasý Eklendi 
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.Entity<Degisken>()
                 .HasMany(e => e.DegiskenItems)
                 .WithRequired(e => e.Degisken)

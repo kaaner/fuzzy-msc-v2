@@ -20,6 +20,7 @@ namespace FuzzyMsc.Dto.HighchartsDTOS
         public bool? enableMouseTracking { get; set; }
         public bool draggableY { get; set; }
         public bool draggableX { get; set; }
+        public bool? visible { get; set; }
     }
 
     public class ToolTipDTO

@@ -2,10 +2,20 @@
     .controller("graphcontroller", function ($http, $scope, enums, Upload,$timeout) {
         $scope.kumeListesi = [];
         $scope.panelExcelSec = false;
-        $scope.panelOlcekSec = false;
+        $scope.panelAyarlar = false;
         $scope.panelGrafik = false;
         $scope.olcek = { x: null, y: null };
         $scope.excel = {};
+        $scope.parameters = {
+            Adi: "",
+            CizimlerGorunsunMu: true,
+            CozunurlukX: 2500,
+            CozunurlukY: 1000,
+            OlcekX: 10,
+            OlcekY: 2,
+            SismikOran: 70,
+            OzdirencOran: 40
+        };
 
 
         $scope.KumeListesiGetir = function () {
@@ -34,7 +44,7 @@
                     if (response.data.Sonuc) {
                         $scope.kuralListesi = response.data.Nesne;
                         $scope.panelExcelSec = true;
-                        $scope.panelOlcekSec = false;
+                        $scope.panelAyarlar = false;
                         $scope.panelGrafik = false;
                         $scope.olcek = { x: null, y: null };
                         $scope.excel = {};
@@ -70,17 +80,15 @@
             }
         }
 
-        $scope.ExcelSecimiVeGrafikOlustur = function (excel) {
+        $scope.ExcelSecimi= function (excel) {
             $scope.panelExcelSec = true;
             //$scope.panelOlcekSec = true;
             $scope.olcek = { x: null, y: null };
-            var graph = { excel: $scope.excel, kuralID: $scope.kuralID, olcek: $scope.olcek };
-            $http.post('/Graph/GraphOlustur', graph).then(function successCallback(response) {
+            $http.post('/Graph/ExcelKontrolEt', $scope.excel).then(function successCallback(response) {
                 if (response.data.Sonuc) {
-                    $scope.sonucDegerleri = response.data.Nesne;
-                    $scope.panelGrafik = true;
-                    $scope.GrafikCiz($scope.sonucDegerleri);
-                    console.log("$scope.sonucDegerleri", $scope.sonucDegerleri);
+                    $scope.panelAyarlar = true;
+                    $scope.panelGrafik = false;
+
                 }
                 else {
                     $scope.hataMesajlari = [];
@@ -90,11 +98,21 @@
                 function errorCallback(response) {
                 });
         }
+        $scope.VassayilanAyarlaraDon = function () {
+            $scope.parameters = {
+                Adi: "",
+                CizimlerGorunsunMu: true,
+                CozunurlukX: 2500,
+                CozunurlukY: 1000,
+                OlcekX: 10,
+                OlcekY: 2,
+                SismikOran: 70,
+                OzdirencOran: 40
+            };
+        }
 
-        $scope.OlcekSecimiVeGrafikOlustur = function (olcek) {
-            $scope.panelExcelSec = true;
-            $scope.panelOlcekSec = true;
-            var graph = { excel: $scope.excel, kuralID: $scope.kuralID, olcek: $scope.olcek };
+        $scope.AyarSecimiVeGrafikOlustur = function (excel, parameters) {
+            var graph = { excel: $scope.excel, kuralID: $scope.kuralID, olcek: $scope.olcek, parameters: $scope.parameters };
             $http.post('/Graph/GraphOlustur', graph).then(function successCallback(response) {
                 if (response.data.Sonuc) {
                     $scope.sonucDegerleri = response.data.Nesne;
@@ -144,7 +162,7 @@
                     panKey: 'shift'
                 },
                 title: {
-                    text: 'Jeodezik Kesit Analizi, Burdur'
+                    text: chart.parameters.Baslik//'Jeoteknik Kesit Analizi, Burdur'//text: 'Jeoteknik Kesit Analizi, Burdur'
                 },
                 subtitle: {
                     text: 'Irregular time data in Highcharts JS'
@@ -173,8 +191,8 @@
                 series: chart.series,
 
                 exporting: {
-                    sourceWidth: 5000,
-                    sourceHeight: 2000,
+                    sourceWidth: chart.parameters.CozunurlukX,
+                    sourceHeight: chart.parameters.CozunurlukY,
                     // scale: 2 (default)
                     chartOptions: {
                         subtitle: null

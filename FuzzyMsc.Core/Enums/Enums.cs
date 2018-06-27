@@ -31,5 +31,11 @@
             Sol = 1,
             Sag = 2
         }
+
+        public enum ExcelDataTipi
+        {
+            Gercek = 1,
+            Yapay = 2
+        }
     }
 }

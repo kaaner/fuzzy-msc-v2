@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using FuzzyMsc.Dto.CizimDTOS;
+using System.Collections.Generic;
 
 namespace FuzzyMsc.Dto.HighchartsDTOS
 {
@@ -13,5 +14,6 @@ namespace FuzzyMsc.Dto.HighchartsDTOS
         public AxisDTO xAxis { get; set; }
         public AxisDTO yAxis { get; set; }
         public List<AnnotationsDTO> annotations { get; set; }
+        public ParametersDTO parameters { get; set; }
     }
 }

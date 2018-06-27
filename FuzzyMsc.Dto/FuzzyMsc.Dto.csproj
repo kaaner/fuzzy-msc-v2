@@ -40,11 +40,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CizimDTOS\ExcelDTO.cs" />
+    <Compile Include="CizimDTOS\ParametersDTO.cs" />
     <Compile Include="CizimDTOS\RGBDTO.cs" />
     <Compile Include="CizimDTOS\SismikDTO.cs" />
     <Compile Include="CizimDTOS\SondajDTO.cs" />
     <Compile Include="FuzzyDTOS\KuralGetirDTO.cs" />
     <Compile Include="FuzzyDTOS\KuralTextVeOzdirencDTO.cs" />
+    <Compile Include="FuzzySystemResultDTO.cs" />
     <Compile Include="HighchartsDTOS\AnnotationsDTO.cs" />
     <Compile Include="HighchartsDTOS\AxisDTO.cs" />
     <Compile Include="CizimDTOS\ExcelModelDTO.cs" />
@@ -68,6 +71,10 @@
     <ProjectReference Include="..\FuzzyMsc.Entity\FuzzyMsc.Entity.csproj">
       <Project>{9CAEC49A-F361-49E3-891D-3939BDF30BAC}</Project>
       <Name>FuzzyMsc.Entity</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FuzzyMsc.FuzzyLibrary\FuzzyMsc.FuzzyLibrary.csproj">
+      <Project>{5E119F90-4E53-43DA-93E4-CC255020F16E}</Project>
+      <Name>FuzzyMsc.FuzzyLibrary</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

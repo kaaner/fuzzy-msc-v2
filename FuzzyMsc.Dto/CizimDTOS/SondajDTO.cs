@@ -7,5 +7,6 @@
         public double X { get; set; }
         public double? K { get; set; }
         public string T { get; set; }
+        public bool Checked { get; set; }
     }
 }

@@ -5,5 +5,6 @@
         public ExcelModelDTO excel { get; set; }
         public long kuralID { get; set; }
         public OlcekDTO olcek { get; set; }
+        public ParametersDTO parameters { get; set; }
     }
 }

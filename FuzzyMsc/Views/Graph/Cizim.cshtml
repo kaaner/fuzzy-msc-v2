@@ -22,7 +22,7 @@
                         <li class="active"><a data-toggle="tab" href="#rule"><i class="fa fa-edit"></i> Seçim</a></li>
                         <li ng-show="kural"><a data-toggle="tab" href="#rule1"><i class="fa fa-list-ul"></i> Kurallar</a></li>
                     </ul>
-                    
+
                     <div class="tab-content">
                         <div id="rule" class="tab-pane fade in active">
                             <div class="col-md-6 col-sm-12">
@@ -68,7 +68,7 @@
 
                     </div>
 
-                    
+
                 </div>
                 <div class="panel-footer">
                     <div class="row">
@@ -103,7 +103,7 @@
                 <div class="panel-footer">
                     <div class="row">
                         <div class="col-md-12">
-                            <button type="button" class="btn btn-labeled btn-success pull-right" style="margin-left: 10px;" ng-click="ExcelSecimiVeGrafikOlustur(excel)" ng-disabled="!excel.adi">
+                            <button type="button" class="btn btn-labeled btn-success pull-right" style="margin-left: 10px;" ng-click="ExcelSecimi(excel)" ng-disabled="!excel.adi">
                                 <span class="btn-label">
                                     <i class="fa fa-check"></i>
                                 </span>Kaydet ve Devam Et
@@ -113,44 +113,89 @@
                 </div>
             </div>
 
-            @*<div class="panel panel-default" ng-show="panelOlcekSec">
-                    <div class="panel-heading">
-                        <span class="panel-title">Adım 3 - Ölçek Seçimi</span>
-                    </div>
-                    <div class="panel-body">
-
-                        <div class="col-md-6 col-sm-12">
-                            <div class="form-group">
-                                <label class="col-sm-5 control-label">X Ekseni (Yatay) :</label>
-                                <div class="col-sm-7">
-                                    <input type="number" name="mukavemet" class="form-control" ng-model="olcek.x" min="0" max="200000" prevent-typing-greater />
+            <div class="panel panel-default" ng-show="panelAyarlar">
+                <div class="panel-heading">
+                    <span class="panel-title">Adım 3 - Ayarlar</span>
+                </div>
+                <div class="panel-body">
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">Çizim Başlığı</label>
+                            <div class="col-sm-9">
+                                <input type="text" name="" class="form-control" ng-model="parameters.Baslik" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">Çizimler Görünsün Mü ?</label>
+                            <div class="col-sm-9">
+                                <input type="checkbox" name="" ng-model="parameters.CizimlerGorunsunMu" />{{parameters.CizimlerGorunsunMu ? ' Evet' : ' Hayır'}}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">Çözünürlük Değeri (X)</label>
+                            <div class="col-sm-9">
+                                <input type="number" name="" class="form-control" ng-model="parameters.CozunurlukX" min="0" max="10000" prevent-typing-greater placeholder="Min. 0 - Max 10000" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">Çözünürlük Değeri (Y)</label>
+                            <div class="col-sm-9">
+                                <input type="number" name="" class="form-control" ng-model="parameters.CozunurlukY" min="0" max="10000" prevent-typing-greater placeholder="Min. 0 - Max 10000" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">Ölçek Aralığı (X)</label>
+                            <div class="col-sm-9">
+                                <input type="number" name="" class="form-control" ng-model="parameters.OlcekX" min="1" max="1000" prevent-typing-greater placeholder="Min. 1 - Max 1000" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">Ölçek Aralığı (Y)</label>
+                            <div class="col-sm-9">
+                                <input type="number" name="" class="form-control" ng-model="parameters.OlcekY" min="1" max="1000" prevent-typing-greater placeholder="Min. 1 - Max 1000" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Sismik Uygunluk Oranı (%)</label>
+                            <div class="col-md-9">
+                                <input type="number" name="" class="form-control" ng-model="parameters.SismikOran" min="1" max="100" prevent-typing-greater placeholder="Min. 1 - Max 100" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Özdirenç Yakınlık Oranı (%)</label>
+                            <div class="col-md-9">
+                                <input type="number" name="" class="form-control" ng-model="parameters.OzdirencOran" min="1" max="100" prevent-typing-greater placeholder="Min. 1 - Max 100" />
+                            </div>
+                        </div>
+                        @*<div class="form-group">
+        <label class="col-md-3 control-label">Özdirenç Yakınlık Oranı (%)</label>
+        <div class="col-md-9">
+            <input id="range_3" type="text" value="" ng-model="parameters.OzdirencOran = range3.from" />
+            <span class="help-block"> Set min value, max value and start point </span>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-sm-12">
-                            <div class="form-group">
-                                <label class="col-sm-4 control-label">Y Ekseni (Dikey) :</label>
-                                <div class="col-sm-8">
-                                    <input type="number" name="doygunluk" class="form-control" ng-model="olcek.y" min="0" max="200000" prevent-typing-greater />
-                                </div>
-                            </div>
+                                    </div>*@
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <button type="button" class="btn btn-labeled btn-success pull-right" style="margin-left: 10px;" ng-click="AyarSecimiVeGrafikOlustur(excel, parameters)">
+                                <span class="btn-label">
+                                    <i class="fa fa-check"></i>
+                                </span>Kaydet ve Çiz
+                            </button>
+                            <button type="button" class="btn btn-labeled btn-danger pull-right" style="margin-left: 10px;" ng-click="VassayilanAyarlaraDon()">
+                                <span class="btn-label">
+                                    <i class="fa fa-check"></i>
+                                </span>Varsayılan Ayarlar'a Dön
+                            </button>
                         </div>
                     </div>
-                    <div class="panel-footer">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <button type="button" class="btn btn-labeled btn-success pull-right" style="margin-left: 10px;" ng-click="OlcekSecimiVeGrafikOlustur(olcek)" ng-disabled="!(olcek.x > 0 && olcek.x != null) || !(olcek.y > 0 && olcek.y != null)">
-                                    <span class="btn-label">
-                                        <i class="fa fa-check"></i>
-                                    </span>Kaydet ve Devam Et
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>*@
-
+                </div>
+            </div>
+            
             <div class="panel panel-default" ng-show="panelGrafik">
-    @*<div class="panel panel-default">*@
+                @*<div class="panel panel-default">*@
                 <div class="panel-heading">
                     <span class="panel-title">Sonuç - Grafik</span>
                 </div>
@@ -171,30 +216,54 @@
                             <div class="panel-body">
                                 <div class="form-horizontal">
                                     <div class="form-group">
-                                        <label class="col-sm-3 control-label">Değer</label>
+                                        <label class="col-sm-3 control-label">Çizimler Görünsün Mü ?</label>
                                         <div class="col-sm-9">
-                                            <input type="text" name="ozdirenc" class="form-control" ng-model="ozdirenc.adi" />
+                                            <input type="checkbox" name="" ng-model="parameters.CizimlerGorunsunMu" />{{parameters.CizimlerGorunsunMu ? ' Evet' : ' Hayır'}}
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-sm-3 control-label">Min. Değer</label>
+                                        <label class="col-sm-3 control-label">Çözünürlük Değeri (X)</label>
                                         <div class="col-sm-9">
-                                            <input type="number" name="mukavemet" class="form-control" ng-model="ozdirenc.minDeger" min="0" max="1000" prevent-typing-greater placeholder="Min. 0" />
+                                            <input type="number" name="" class="form-control" ng-model="parameters.CozunurlukX" min="0" max="10000" prevent-typing-greater placeholder="Min. 0 - Max 10000" />
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-sm-3 control-label">Max. Değer</label>
+                                        <label class="col-sm-3 control-label">Çözünürlük Değeri (Y)</label>
                                         <div class="col-sm-9">
-                                            <input type="number" name="doygunluk" class="form-control" ng-model="ozdirenc.maxDeger" min="0" max="1000" prevent-typing-greater placeholder="Max. 1000" />
+                                            <input type="number" name="" class="form-control" ng-model="parameters.CozunurlukY" min="0" max="10000" prevent-typing-greater placeholder="Min. 0 - Max 10000" />
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-md-3 control-label">Uygunluk Değeri (%)</label>
+                                        <label class="col-sm-3 control-label">Ölçek Aralığı (X)</label>
+                                        <div class="col-sm-9">
+                                            <input type="number" name="" class="form-control" ng-model="parameters.OlcekX" min="10" max="1000" prevent-typing-greater placeholder="Min. 10 - Max 1000" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label">Ölçek Aralığı (Y)</label>
+                                        <div class="col-sm-9">
+                                            <input type="number" name="" class="form-control" ng-model="parameters.OlcekY" min="10" max="1000" prevent-typing-greater placeholder="Min. 10 - Max 1000" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label">Sismik Uygunluk Oranı (%)</label>
                                         <div class="col-md-9">
-                                            <input id="range_2" type="text" value="" />
-                                            @*<span class="help-block"> Set min value, max value and start point </span>*@
+                                            <input type="number" name="" class="form-control" ng-model="parameters.SismikOran" min="0" max="100" prevent-typing-greater placeholder="Min. 0 - Max 100" />
                                         </div>
                                     </div>
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label">Özdirenç Yakınlık Oranı (%)</label>
+                                        <div class="col-md-9">
+                                            <input type="number" name="" class="form-control" ng-model="parameters.OzdirencOran" min="0" max="100" prevent-typing-greater placeholder="Min. 0 - Max 100" />
+                                        </div>
+                                    </div>
+                                    @*<div class="form-group">
+                                <label class="col-md-3 control-label">Özdirenç Yakınlık Oranı (%)</label>
+                                <div class="col-md-9">
+                                    <input id="range_3" type="text" value="" ng-model="parameters.OzdirencOran = range3.from" />
+                                    <span class="help-block"> Set min value, max value and start point </span>
+                                                        </div>
+                                                            </div>*@
                                 </div>
                                 <div class="panel-footer">
                                     <div class="row">
