@@ -71,6 +71,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FuzzyManager.cs" />
+    <Compile Include="GraphManager - Copy.cs" />
     <Compile Include="GraphManager.cs" />
     <Compile Include="Interface\IBaseManager.cs" />
     <Compile Include="KullaniciManager.cs" />

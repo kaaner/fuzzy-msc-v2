@@ -15,5 +15,6 @@ namespace FuzzyMsc.Dto.HighchartsDTOS
         public AxisDTO yAxis { get; set; }
         public List<AnnotationsDTO> annotations { get; set; }
         public ParametersDTO parameters { get; set; }
+        public CizimCountDTO sayilar { get; set; }
     }
 }

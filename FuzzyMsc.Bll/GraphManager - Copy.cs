@@ -18,7 +18,7 @@ using System.Runtime.InteropServices;
 
 namespace FuzzyMsc.Bll
 {
-    public class GraphManager : IGraphManager
+    public class GraphManagerBackup : IGraphManagerBackup
     {
         IUnitOfWorkAsync _unitOfWork;
         IOrtakManager _ortakManager;
@@ -35,7 +35,6 @@ namespace FuzzyMsc.Bll
         private List<List<SismikDTO>> sisGenelList;
         private List<List<SondajDTO>> sonGenelList;
         private CizimCountDTO cizimCount;
-        private List<SeriesDTO> datasetList = new List<SeriesDTO>();
         private int id;
         Microsoft.Office.Interop.Excel.Application xl;
         Microsoft.Office.Interop.Excel.Workbook xlWorkbook;
@@ -43,7 +42,7 @@ namespace FuzzyMsc.Bll
         [DllImport("user32.dll")]
         static extern int GetWindowThreadProcessId(int hWnd, out int lpdwProcessId);
 
-        public GraphManager(
+        public GraphManagerBackup(
             IUnitOfWorkAsync unitOfWork,
             IKullaniciService kullaniciService,
             IOrtakManager ortakManager,
@@ -112,13 +111,6 @@ namespace FuzzyMsc.Bll
                 KesitDTO kesitDTO = new KesitDTO { RezGenelList = rezGenelList, SisGenelList = sisGenelList, SonGenelList = sonGenelList };
                 highcharts.series.AddRange(GraphDataOlustur(graph.kuralID, kesitDTO, graph.parameters));
 
-                bool fayVarMi = highcharts.series.Any(s => s.name == "Fay");
-
-                if (fayVarMi)
-                    highcharts.series.AddRange(GraphDataOlustur(graph.kuralID, kesitDTO, graph.parameters));
-
-                highcharts.series = highcharts.series.Distinct().ToList();
-
                 double minX = MinHesapla(highcharts);
                 highcharts.xAxis = new AxisDTO { min = 0, minTickInterval = (int)graph.parameters.OlcekX, offset = 20, title = new AxisTitleDTO { text = "Genişlik" }, labels = new AxisLabelsDTO { format = "{value} m" } };
                 highcharts.yAxis = new AxisDTO { min = (int)minX - 5, minTickInterval = (int)graph.parameters.OlcekY, offset = 20, title = new AxisTitleDTO { text = "Yükseklik" }, labels = new AxisLabelsDTO { format = "{value} m" } };
@@ -171,27 +163,21 @@ namespace FuzzyMsc.Bll
         private double MinHesapla(HighchartsDTO highcharts)
         {
             double min = Double.MaxValue;
-            //foreach (var item in highcharts.series)
-            //{
-            //    foreach (var dataItem in item.data)
-            //    {
-            //        if (dataItem != null)
-            //        {
-            //            if (dataItem.Count > 0)
-            //            {
-            //                double a = dataItem[1];
-            //                if (a < min)
-            //                    min = a;
-            //            }
-            //        }
-            //    }
-
-            //}
-            foreach (var item in highcharts.annotations)
+            foreach (var item in highcharts.series)
             {
-                var minItem = (double)item.labels.Min(m => m.point.y);
-                if (minItem != 0 && minItem < min)
-                    min = minItem;
+                foreach (var dataItem in item.data)
+                {
+                    if (dataItem != null)
+                    {
+                        if (dataItem.Count > 0)
+                        {
+                            double a = dataItem[1];
+                            if (a < min)
+                                min = a;
+                        }
+                    }
+                }
+
             }
             return min;
         }
@@ -266,8 +252,8 @@ namespace FuzzyMsc.Bll
                                 item[j - 1].JSONData = JsonConvert.SerializeObject(item[i - 3]);
                                 item[j - 2] = JsonConvert.DeserializeObject<ExcelDTO>(item[j - 2].JSONData);
                                 item[j - 1] = JsonConvert.DeserializeObject<ExcelDTO>(item[j - 1].JSONData);
-                                item[j - 4].TypeID = (byte)Enums.ExcelDataTipi.Yapay;
-                                item[j - 3].TypeID = (byte)Enums.ExcelDataTipi.Yapay;
+                                item[j - 2].TypeID = (byte)Enums.ExcelDataTipi.Yapay;
+                                item[j - 1].TypeID = (byte)Enums.ExcelDataTipi.Yapay;
 
                                 if (j == item.Count - 2)
                                 {
@@ -275,8 +261,6 @@ namespace FuzzyMsc.Bll
                                     item[j + 1].JSONData = JsonConvert.SerializeObject(finalItem[1]);
                                     item[j] = JsonConvert.DeserializeObject<ExcelDTO>(item[j].JSONData);
                                     item[j + 1] = JsonConvert.DeserializeObject<ExcelDTO>(item[j + 1].JSONData);
-                                    item[j - 2].TypeID = (byte)Enums.ExcelDataTipi.Gercek;//Sondan önceki değerlerin gerçek hale getirilmesi
-                                    item[j - 1].TypeID = (byte)Enums.ExcelDataTipi.Gercek;
                                     continue;
                                 }
                             }
@@ -386,7 +370,7 @@ namespace FuzzyMsc.Bll
                         }
                         rezItem.K = (Convert.ToDouble(rezExcelInstance[3].Value) - Convert.ToDouble(value)) * 0.99;
                         rezItem.R = rezExcelInstance[j + 1].Value == "" ? Convert.ToDouble("") : Convert.ToDouble(rezExcelInstance[j + 1].Value);
-                        rezItem.TypeID = rezExcelInstance[j].TypeID;
+                        rezItem.TypeID = rezExcel[i][j].TypeID;
                         rezList.Add(rezItem);
                         count++;
                         continue;
@@ -397,7 +381,7 @@ namespace FuzzyMsc.Bll
                     rezItem.X = Convert.ToDouble(rezExcelInstance[1].Value);
                     rezItem.K = rezExcelInstance[j].Value == "" ? 0 : Convert.ToDouble(rezExcelInstance[3].Value) - Convert.ToDouble(rezExcelInstance[j].Value);
                     rezItem.R = rezExcelInstance[j + 1].Value == "" ? Convert.ToDouble("") : Convert.ToDouble(rezExcelInstance[j + 1].Value);
-                    rezItem.TypeID = rezExcelInstance[j].TypeID;
+                    rezItem.TypeID = rezExcel[i][j].TypeID;
                     rezList.Add(rezItem);
                     count++;
 
@@ -408,6 +392,7 @@ namespace FuzzyMsc.Bll
 
             highcharts = ChartOlustur(highcharts, rezGenelList);
         }
+
         private void SismikOlustur(HighchartsDTO highcharts, Workbook xlWorkbook)
         {
             sisGenelList = new List<List<SismikDTO>>();
@@ -482,9 +467,9 @@ namespace FuzzyMsc.Bll
                                 item[j - 3] = JsonConvert.DeserializeObject<ExcelDTO>(item[j - 3].JSONData);
                                 item[j - 2] = JsonConvert.DeserializeObject<ExcelDTO>(item[j - 2].JSONData);
                                 item[j - 1] = JsonConvert.DeserializeObject<ExcelDTO>(item[j - 1].JSONData);
-                                item[j - 6].TypeID = (byte)Enums.ExcelDataTipi.Yapay;
-                                item[j - 5].TypeID = (byte)Enums.ExcelDataTipi.Yapay;
-                                item[j - 4].TypeID = (byte)Enums.ExcelDataTipi.Yapay;
+                                item[j - 3].TypeID = (byte)Enums.ExcelDataTipi.Yapay;
+                                item[j - 2].TypeID = (byte)Enums.ExcelDataTipi.Yapay;
+                                item[j - 1].TypeID = (byte)Enums.ExcelDataTipi.Yapay;
 
                                 if (j == item.Count - 3)
                                 {
@@ -494,9 +479,6 @@ namespace FuzzyMsc.Bll
                                     item[j] = JsonConvert.DeserializeObject<ExcelDTO>(item[j].JSONData);
                                     item[j + 1] = JsonConvert.DeserializeObject<ExcelDTO>(item[j + 1].JSONData);
                                     item[j + 2] = JsonConvert.DeserializeObject<ExcelDTO>(item[j + 2].JSONData);
-                                    item[j - 3].TypeID = (byte)Enums.ExcelDataTipi.Gercek;//Sondan önceki değerlerin gerçek hale getirilmesi
-                                    item[j - 2].TypeID = (byte)Enums.ExcelDataTipi.Gercek;
-                                    item[j - 1].TypeID = (byte)Enums.ExcelDataTipi.Gercek;
                                     continue;
                                 }
                             }
@@ -796,6 +778,7 @@ namespace FuzzyMsc.Bll
         {
             KuralGetirDTO kuralGetir = _fuzzyManager.KuralGetir(kuralID);
 
+            List<SeriesDTO> datasetList = new List<SeriesDTO>();
             SeriesDTO dataset;
             cizimCount = new CizimCountDTO();
             var name = "Set-";
@@ -823,422 +806,223 @@ namespace FuzzyMsc.Bll
                     #region Özdirenç Değerinin Solunda Olan Sismik Değerlerinin Kontrolü
                     if (j == 0 && kesitDTO.SisGenelList.Count >= kesitDTO.RezGenelList.Count)
                     {
-                        if (!kesitDTO.RezGenelList[i][j].Checked)
-                        {
-                            CizimeSismikEkle(kesitDTO.RezGenelList[i][j].X, kesitDTO.SisGenelList[i], dataset, (byte)Enums.YonDegeri.Sol);
-                            if (i < kesitDTO.RezGenelList.Count - 1)
-                                cizimCount.Normal++;
-                        }
+                        CizimeSismikEkle(kesitDTO.RezGenelList[i][j].X, kesitDTO.SisGenelList[i], dataset, (byte)Enums.YonDegeri.Sol);
+                        if (i < kesitDTO.RezGenelList.Count - 1)
+                            cizimCount.Normal++;
                     }
                     #endregion
 
                     #region Topografya (İlk Çizgi) Çizimi Koşulsuz Yapılmalı 
                     if (i == 0)
                     {
-                        if (!kesitDTO.RezGenelList[i][j].Checked)
+                        coordinates.Add(kesitDTO.RezGenelList[i][j].X);
+                        coordinates.Add((double)kesitDTO.RezGenelList[i][j].K);
+                        dataset.data.Add(coordinates);
+                        cizimCount.Normal++;
+                        if (j == kesitDTO.RezGenelList[i].Count - 1 && kesitDTO.SisGenelList.Count >= kesitDTO.RezGenelList.Count)
                         {
-                            coordinates.Add(kesitDTO.RezGenelList[i][j].X);
-                            coordinates.Add((double)kesitDTO.RezGenelList[i][j].K);
-                            dataset.data.Add(coordinates);
-                            kesitDTO.RezGenelList[i][j].Checked = true;
-                            cizimCount.Normal++;
-                            if (j == kesitDTO.RezGenelList[i].Count - 1)
-                            {
-                                CizimeSismikEkle(kesitDTO.RezGenelList[i][j].X, kesitDTO.SisGenelList[i], dataset, (byte)Enums.YonDegeri.Sag);
-                            }
+                            CizimeSismikEkle(kesitDTO.RezGenelList[i][j].X, kesitDTO.SisGenelList[i], dataset, (byte)Enums.YonDegeri.Sag);
                         }
                         continue;
                     }
                     #endregion
-
-                    DugumDTO uygunIlkDugum = new DugumDTO();
-                    DugumDTO uygunIkinciDugum = new DugumDTO();
-                    if (i < kesitDTO.RezGenelList.Count - 1)
+                    if (j != kesitDTO.RezGenelList[i].Count - 1) //Son sıra kontrolü
                     {
-
-                        if (j != kesitDTO.RezGenelList[i].Count - 1) //Son sıra kontrolü
+                        //
+                        var uygunIlkDugum = UygunIlkDugumKontrolu(kesitDTO.RezGenelList, i, j);
+                        var uygunIkinciDugum = UygunIkinciDugumKontrolu(kesitDTO.RezGenelList, i, j + 1);
+                        if (kesitDTO.RezGenelList[i][j].R != null && kesitDTO.RezGenelList[i][j + 1].R != null && kesitDTO.RezGenelList[i][j].R != 0 && kesitDTO.RezGenelList[i][j + 1].R != 0)
                         {
+                            //if (!kesitDTO.RezGenelList[i][j].Checked && kesitDTO.RezGenelList[i][j].TypeID == (byte)Enums.ExcelDataTipi.Gercek)
+                            //{
+                            var ilkDugum = _fuzzyManager.FuzzyKuralOlusturVeSonucGetirFLL(kuralGetir, (double)kesitDTO.RezGenelList[i][j].R);
+                            var ikinciDugum = _fuzzyManager.FuzzyKuralOlusturVeSonucGetirFLL(kuralGetir, (double)kesitDTO.RezGenelList[i][j + 1].R);
 
-                            uygunIlkDugum = UygunIlkDugumKontrolu(kesitDTO.RezGenelList, i, j);
-                            uygunIkinciDugum = UygunIkinciDugumKontrolu(kuralGetir, kesitDTO, kesitDTO.RezGenelList, i, j + 1, parameters);
-                            if ((uygunIlkDugum.Dugum.TypeID == (byte)Enums.ExcelDataTipi.Gercek && uygunIkinciDugum.Dugum.TypeID == (byte)Enums.ExcelDataTipi.Gercek) ||
-                                (uygunIlkDugum.Dugum.TypeID == (byte)Enums.ExcelDataTipi.Yapay && uygunIkinciDugum.Dugum.TypeID == (byte)Enums.ExcelDataTipi.Gercek) ||
-                                (uygunIlkDugum.Dugum.TypeID == (byte)Enums.ExcelDataTipi.Gercek && uygunIkinciDugum.Dugum.TypeID == (byte)Enums.ExcelDataTipi.Yapay))
+                            var ikiDugumKarsilastirma = _fuzzyManager.FuzzyKuralOlusturVeSonucGetirFLLKarsilastirma(kuralGetir, (double)kesitDTO.RezGenelList[i][j].R, (double)kesitDTO.RezGenelList[i][j + 1].R, (int)parameters.OzdirencOran);
+
+                            //if (ilkDugum == ikinciDugum) //iki özdirenç değeri de aynı aralıktaysa bu sefer hız değerlerine bakılır
+                            if (ikiDugumKarsilastirma) //iki özdirenç değeri de aynı aralıktaysa bu sefer hız değerlerine bakılır
                             {
-                                if ((!uygunIlkDugum.Dugum.Checked && !uygunIkinciDugum.Dugum.Checked) ||
-                                    (uygunIlkDugum.Dugum.Checked && !uygunIkinciDugum.Dugum.Checked) ||
-                                    (!uygunIlkDugum.Dugum.Checked && uygunIkinciDugum.Dugum.Checked))
+                                bool VpUygunMu = SismikKontroluVp(kesitDTO, i, j, (int)parameters.SismikOran);
+                                bool VsUygunMu = SismikKontroluVs(kesitDTO, i, j, (int)parameters.SismikOran);
+                                if (VpUygunMu && VsUygunMu) //Vp Vs ve Özdirenç değerleri uygunsa birleştirme yapılır
                                 {
-                                    if (uygunIlkDugum.Dugum.R != null && uygunIkinciDugum.Dugum.R != null && uygunIlkDugum.Dugum.R != 0 && uygunIkinciDugum.Dugum.R != 0)
+                                    coordinates.Add(kesitDTO.RezGenelList[i][j].X);
+                                    coordinates.Add((double)kesitDTO.RezGenelList[i][j].K);
+                                    dataset.data.Add(coordinates);
+                                    kesitDTO.RezGenelList[i][j].Checked = true;
+                                    if (i < kesitDTO.RezGenelList.Count - 1)
+                                        cizimCount.Normal++;
+                                }
+                                else //özdirenç değerleri uygun ama sismik değerleri değil. çukur ve fay kontrolü yapılır
+                                {
+                                    if (j == 0) //en üst düzey kontrolü
                                     {
-                                        //if (!kesitDTO.RezGenelList[i][j].Checked && kesitDTO.RezGenelList[i][j].TypeID == (byte)Enums.ExcelDataTipi.Gercek)
-                                        //{
-                                        //var ilkDugum = _fuzzyManager.FuzzyKuralOlusturVeSonucGetirFLL(kuralGetir, (double)kesitDTO.RezGenelList[i][j].R);
-                                        //var ikinciDugum = _fuzzyManager.FuzzyKuralOlusturVeSonucGetirFLL(kuralGetir, (double)kesitDTO.RezGenelList[i][j + 1].R);
-
-                                        var ikiDugumKarsilastirma = _fuzzyManager.FuzzyKuralOlusturVeSonucGetirFLLKarsilastirma(kuralGetir, (double)uygunIlkDugum.Dugum.R, (double)uygunIkinciDugum.Dugum.R, (int)parameters.OzdirencOran);
-
-                                        //if (ilkDugum == ikinciDugum) //iki özdirenç değeri de aynı aralıktaysa bu sefer hız değerlerine bakılır
-                                        if (ikiDugumKarsilastirma) //iki özdirenç değeri de aynı aralıktaysa bu sefer hız değerlerine bakılır
+                                        //Fay oluştur
+                                        coordinates.Add(kesitDTO.RezGenelList[i][j].X);
+                                        coordinates.Add((double)kesitDTO.RezGenelList[i][j].K);
+                                        dataset.data.Add(coordinates);
+                                        KapatmaOlustur(datasetList, dataset, kesitDTO.RezGenelList, i, j);
+                                        if (i < kesitDTO.RezGenelList.Count - 1)
+                                            cizimCount.Kapatma++;
+                                        continue;
+                                    }
+                                    else
+                                    {
+                                        var birOncekiDugum = _fuzzyManager.FuzzyKuralOlusturVeSonucGetirFLL(kuralGetir, (double)kesitDTO.RezGenelList[i][j - 1].R);
+                                        var cukurKarsilastirma = _fuzzyManager.FuzzyKuralOlusturVeSonucGetirFLLKarsilastirma(kuralGetir, (double)kesitDTO.RezGenelList[i][j - 1].R, (double)kesitDTO.RezGenelList[i][j + 1].R, (int)parameters.OzdirencOran);
+                                        if (cukurKarsilastirma)
                                         {
-                                            bool VpUygunMu = SismikKontroluVp(kesitDTO, uygunIlkDugum.IndexI, uygunIlkDugum.IndexJ, (int)parameters.SismikOran);
-                                            bool VsUygunMu = SismikKontroluVs(kesitDTO, uygunIlkDugum.IndexI, uygunIlkDugum.IndexJ, (int)parameters.SismikOran);
-                                            if (VpUygunMu && VsUygunMu) //Vp Vs ve Özdirenç değerleri uygunsa birleştirme yapılır
-                                            {
-
-                                                var IlkDugumunSolundaFay = IlkDugumunSolundaFayKontrolu(kesitDTO, uygunIlkDugum, uygunIkinciDugum, datasetList);
-                                                if (IlkDugumunSolundaFay != null)
-                                                {
-                                                    List<double> coordinatesNull = new List<double>();
-                                                    dataset.data.Add(coordinatesNull);
-
-                                                    List<double> coordinatesSolFay = new List<double>();
-                                                    coordinatesSolFay.Add(IlkDugumunSolundaFay.data[0][0]);
-                                                    coordinatesSolFay.Add((double)uygunIlkDugum.Dugum.K);
-                                                    dataset.data.Add(coordinatesSolFay);
-                                                }
-                                                if (!kesitDTO.RezGenelList[uygunIlkDugum.IndexI][uygunIlkDugum.IndexJ].Checked)
-                                                {
-                                                    coordinates = new List<double>();
-                                                    coordinates.Add(uygunIlkDugum.Dugum.X);
-                                                    coordinates.Add((double)uygunIlkDugum.Dugum.K);
-                                                    dataset.data.Add(coordinates);
-                                                    kesitDTO.RezGenelList[uygunIlkDugum.IndexI][uygunIlkDugum.IndexJ].Checked = true;
-                                                }
-                                                var IlkDugumunSagindaFay = IlkDugumunSagindaFayKontrolu(kesitDTO, uygunIlkDugum, uygunIkinciDugum, datasetList);
-                                                if (IlkDugumunSagindaFay != null)
-                                                {
-                                                    List<double> coordinatesSagFay = new List<double>();
-                                                    coordinatesSagFay.Add(IlkDugumunSagindaFay.data[0][0]);
-                                                    coordinatesSagFay.Add((double)uygunIlkDugum.Dugum.K);
-                                                    dataset.data.Add(coordinatesSagFay);
-                                                    continue;
-                                                }
-                                                coordinates = new List<double>();
-                                                coordinates.Add(uygunIkinciDugum.Dugum.X);
-                                                coordinates.Add((double)uygunIkinciDugum.Dugum.K);
-                                                dataset.data.Add(coordinates);
-                                                kesitDTO.RezGenelList[uygunIkinciDugum.IndexI][uygunIkinciDugum.IndexJ].Checked = true;
-                                                if (i < kesitDTO.RezGenelList.Count - 1)
-                                                    cizimCount.Normal++;
-                                            }
-                                            else //özdirenç değerleri uygun ama sismik değerleri değil. çukur ve fay kontrolü yapılır
-                                            {
-                                                if (j == 0) //en üst düzey kontrolü
-                                                {
-                                                    //Fay oluştur
-                                                    bool KapatmaCizilebilirMi = KapatmaKontrolu(datasetList, dataset, kesitDTO.RezGenelList, uygunIlkDugum.IndexI, uygunIkinciDugum.IndexJ);
-                                                    //Çukur oluştur
-                                                    //if (KapatmaCizilebilirMi)
-                                                    //{
-                                                    coordinates.Add(uygunIlkDugum.Dugum.X);
-                                                    coordinates.Add((double)uygunIlkDugum.Dugum.K);
-                                                    dataset.data.Add(coordinates);
-                                                    kesitDTO.RezGenelList[uygunIlkDugum.IndexI][uygunIlkDugum.IndexJ].Checked = true;
-                                                    KapatmaOlustur(datasetList, dataset, kesitDTO.RezGenelList, uygunIlkDugum.IndexI, uygunIlkDugum.IndexJ);
-                                                    if (i < kesitDTO.RezGenelList.Count - 1)
-                                                        cizimCount.Kapatma++;
-                                                    //}
-                                                    break;
-                                                }
-                                                else
-                                                {
-                                                    var birOncekiDugum = _fuzzyManager.FuzzyKuralOlusturVeSonucGetirFLL(kuralGetir, (double)kesitDTO.RezGenelList[uygunIlkDugum.IndexI][uygunIlkDugum.IndexJ - 1].R);
-                                                    var cukurKarsilastirma = _fuzzyManager.FuzzyKuralOlusturVeSonucGetirFLLKarsilastirma(kuralGetir, (double)kesitDTO.RezGenelList[uygunIlkDugum.IndexI][uygunIlkDugum.IndexJ - 1].R, (double)uygunIkinciDugum.Dugum.R, (int)parameters.OzdirencOran);
-                                                    //if (cukurKarsilastirma)
-                                                    //{
-                                                    //    //Çukur oluştur
-                                                    //    var cukurDataset = CukurOlustur(dataset, kesitDTO.RezGenelList, uygunIlkDugum.IndexI, uygunIlkDugum.IndexJ);
-                                                    //    datasetList.Add(cukurDataset);
-                                                    //    if (i < kesitDTO.RezGenelList.Count - 1)
-                                                    //        cizimCount.Kapatma++;
-                                                    //    continue;
-                                                    //}
-                                                    //else
-                                                    //{
-                                                    //Fay oluştur
-                                                    bool KapatmaCizilebilirMi = KapatmaKontrolu(datasetList, dataset, kesitDTO.RezGenelList, uygunIlkDugum.IndexI, uygunIkinciDugum.IndexJ);
-                                                    //Çukur oluştur
-                                                    //if (KapatmaCizilebilirMi)
-                                                    // {
-                                                    coordinates.Add(uygunIlkDugum.Dugum.X);
-                                                    coordinates.Add((double)uygunIlkDugum.Dugum.K);
-                                                    dataset.data.Add(coordinates);
-                                                    kesitDTO.RezGenelList[uygunIlkDugum.IndexI][uygunIlkDugum.IndexJ].Checked = true;
-                                                    KapatmaOlustur(datasetList, dataset, kesitDTO.RezGenelList, uygunIlkDugum.IndexI, uygunIkinciDugum.IndexJ);
-                                                    if (i < kesitDTO.RezGenelList.Count - 1)
-                                                        cizimCount.Kapatma++;
-                                                    //}
-                                                    break;
-                                                    //}
-                                                }
-                                            }
+                                            //Çukur oluştur
+                                            var cukurDataset = CukurOlustur(dataset, kesitDTO.RezGenelList, i, j);
+                                            datasetList.Add(cukurDataset);
+                                            if (i < kesitDTO.RezGenelList.Count - 1)
+                                                cizimCount.Kapatma++;
+                                            continue;
                                         }
-                                        else //özdirenç değerleri uygun değil. fay ve kapatma kontrolü yapılır
+                                        else
                                         {
-                                            if (j == 0)
-                                            {
-                                                bool KapatmaCizilebilirMi = KapatmaKontrolu(datasetList, dataset, kesitDTO.RezGenelList, uygunIlkDugum.IndexI, uygunIkinciDugum.IndexJ);
-                                                //Çukur oluştur
-                                                // if (KapatmaCizilebilirMi)
-                                                //{
-                                                coordinates.Add(uygunIlkDugum.Dugum.X);
-                                                coordinates.Add((double)uygunIlkDugum.Dugum.K);
-                                                dataset.data.Add(coordinates);
-                                                kesitDTO.RezGenelList[uygunIlkDugum.IndexI][uygunIlkDugum.IndexJ].Checked = true;
-                                                KapatmaOlustur(datasetList, dataset, kesitDTO.RezGenelList, uygunIlkDugum.IndexI, uygunIkinciDugum.IndexJ);
-                                                if (i < kesitDTO.RezGenelList.Count - 1)
-                                                    cizimCount.Kapatma++;
-                                                //}
-                                                break;
-                                            }
-                                            else
-                                            {
-                                                var fayKontrolü = FayKontrolu(kuralGetir, kesitDTO, uygunIlkDugum, uygunIkinciDugum, parameters);
-                                                //Fay oluştur
-                                                if (fayKontrolü && i > 1)
-                                                {
-                                                    if (!kesitDTO.RezGenelList[uygunIlkDugum.IndexI][uygunIlkDugum.IndexJ].Checked)
-                                                    {
-                                                        coordinates.Add(uygunIlkDugum.Dugum.X);
-                                                        coordinates.Add((double)uygunIlkDugum.Dugum.K);
-                                                        dataset.data.Add(coordinates);
-                                                        kesitDTO.RezGenelList[uygunIlkDugum.IndexI][uygunIlkDugum.IndexJ].Checked = true;
-                                                    }
-                                                    //Fay oluşturma kodları
-
-                                                    SeriesDTO fayDataset = FayOlustur(kuralGetir, kesitDTO, uygunIlkDugum, uygunIkinciDugum, parameters);
-                                                    datasetList.Add(fayDataset);
-
-                                                    if (!(kesitDTO.RezGenelList[uygunIlkDugum.IndexI][uygunIlkDugum.IndexJ].TypeID == (byte)Enums.ExcelDataTipi.Yapay && kesitDTO.RezGenelList[uygunIlkDugum.IndexI][uygunIlkDugum.IndexJ - 1].TypeID == (byte)Enums.ExcelDataTipi.Yapay))
-                                                    {
-                                                        List<double> fayCoordinates = new List<double>();
-                                                        fayCoordinates.Add(fayDataset.data[0][0]);
-                                                        fayCoordinates.Add((double)uygunIlkDugum.Dugum.K);
-                                                        dataset.data.Add(fayCoordinates);
-                                                    }
-
-                                                    if (i < kesitDTO.RezGenelList.Count - 1)
-                                                        cizimCount.Fay++;
-
-                                                    continue;
-                                                }
-                                                else
-                                                {
-
-                                                    var birOncekiDugum = _fuzzyManager.FuzzyKuralOlusturVeSonucGetirFLL(kuralGetir, (double)kesitDTO.RezGenelList[uygunIlkDugum.IndexI][uygunIlkDugum.IndexJ - 1].R);
-                                                    var cukurKarsilastirma = _fuzzyManager.FuzzyKuralOlusturVeSonucGetirFLLKarsilastirma(kuralGetir, (double)kesitDTO.RezGenelList[uygunIlkDugum.IndexI][uygunIlkDugum.IndexJ - 1].R, (double)uygunIkinciDugum.Dugum.R, (int)parameters.OzdirencOran);
-
-                                                    //if (birOncekiDugum == ikinciDugum)
-                                                    //if (cukurKarsilastirma)
-                                                    //{
-                                                    //    bool KapatmaCizilebilirMi = KapatmaKontrolu(datasetList, dataset, kesitDTO.RezGenelList, uygunIlkDugum.IndexI, uygunIkinciDugum.IndexJ);
-                                                    //    //Çukur oluştur
-                                                    //    if (KapatmaCizilebilirMi)
-                                                    //    {
-                                                    //        coordinates.Add(uygunIlkDugum.Dugum.X);
-                                                    //        coordinates.Add((double)uygunIlkDugum.Dugum.K);
-                                                    //        dataset.data.Add(coordinates);
-                                                    //        kesitDTO.RezGenelList[uygunIlkDugum.IndexI][uygunIlkDugum.IndexJ].Checked = true;
-                                                    //        KapatmaOlustur(datasetList, dataset, kesitDTO.RezGenelList, uygunIlkDugum.IndexI, uygunIkinciDugum.IndexJ);
-                                                    //        if (i < kesitDTO.RezGenelList.Count - 1)
-                                                    //            cizimCount.Kapatma++;
-                                                    //    }
-                                                    //    break;
-                                                    //}
-                                                    //else
-                                                    //{
-                                                    bool KapatmaCizilebilirMi = KapatmaKontrolu(datasetList, dataset, kesitDTO.RezGenelList, uygunIlkDugum.IndexI, uygunIkinciDugum.IndexJ);
-                                                    //Fay oluştur
-                                                    if (KapatmaCizilebilirMi)
-                                                    {
-                                                        if (!kesitDTO.RezGenelList[uygunIlkDugum.IndexI][uygunIlkDugum.IndexJ].Checked)
-                                                        {
-                                                            coordinates.Add(uygunIlkDugum.Dugum.X);
-                                                            coordinates.Add((double)uygunIlkDugum.Dugum.K);
-                                                            dataset.data.Add(coordinates);
-                                                            kesitDTO.RezGenelList[uygunIlkDugum.IndexI][uygunIlkDugum.IndexJ].Checked = true;
-                                                        }
-
-                                                        KapatmaOlustur(datasetList, dataset, kesitDTO.RezGenelList, uygunIlkDugum.IndexI, uygunIkinciDugum.IndexJ);
-                                                        if (i < kesitDTO.RezGenelList.Count - 1)
-                                                            cizimCount.Kapatma++;
-                                                        break;
-                                                    }
-                                                    var IlkDugumunSagindaFay = IlkDugumunSagindaFayKontrolu(kesitDTO, uygunIlkDugum, uygunIkinciDugum, datasetList);
-                                                    if (IlkDugumunSagindaFay != null)
-                                                    {
-                                                        List<double> coordinatesSagFay = new List<double>();
-                                                        coordinatesSagFay.Add(IlkDugumunSagindaFay.data[0][0]);
-                                                        coordinatesSagFay.Add((double)uygunIlkDugum.Dugum.K);
-                                                        dataset.data.Add(coordinatesSagFay);
-                                                        continue;
-                                                    }
-                                                    //}
-                                                }
-                                            }
+                                            //Fay oluştur
+                                            coordinates.Add(kesitDTO.RezGenelList[i][j].X);
+                                            coordinates.Add((double)kesitDTO.RezGenelList[i][j].K);
+                                            dataset.data.Add(coordinates);
+                                            KapatmaOlustur(datasetList, dataset, kesitDTO.RezGenelList, i, j);
+                                            if (i < kesitDTO.RezGenelList.Count - 1)
+                                                cizimCount.Kapatma++;
+                                            continue;
                                         }
-                                        //}
                                     }
                                 }
                             }
-                            else
+                            else //özdirenç değerleri uygun değil. fay ve kapatma kontrolü yapılır
                             {
-                                kesitDTO.RezGenelList[uygunIlkDugum.IndexI][uygunIlkDugum.IndexJ].Checked = true;
-                                kesitDTO.RezGenelList[uygunIkinciDugum.IndexI][uygunIkinciDugum.IndexJ].Checked = true;
-                                continue;
-                            }
-                        }
-                        else
-                        {
-                            //coordinates.Add(kesitDTO.RezGenelList[i][j].X);
-                            //coordinates.Add((double)kesitDTO.RezGenelList[i][j].K);
-                            //dataset.data.Add(coordinates);
-                            //kesitDTO.RezGenelList[i][j].Checked = true;
-                            #region Özdirenç Değerinin Sağında Olan Sismik Değerlerinin Kontrolü
-                            if (kesitDTO.SisGenelList.Count >= kesitDTO.RezGenelList.Count)
-                            {
-                                CizimeSismikEkle(kesitDTO.RezGenelList[i][j].X, kesitDTO.SisGenelList[i], dataset, (byte)Enums.YonDegeri.Sag);
-                                if (i < kesitDTO.RezGenelList.Count - 1)
-                                    cizimCount.Normal++;
-                            }
-                            //    var sonOzdirencX = kesitDTO.RezGenelList[i][j].X;
-                            //    var sagdaKalanSismikList = kesitDTO.SisGenelList[i].Where(s => s.X > sonOzdirencX).ToList();
-                            //var ads = kesitDTO.SisGenelList[i];
-                            //    foreach (var item in sagdaKalanSismikList)
-                            //    {
-                            //        coordinates = new List<double>();
-                            //        coordinates.Add(item.X);
-                            //        coordinates.Add((double)item.K);
-                            //        dataset.data.Add(coordinates);
-                            //    }
+                                if (j == 0)
+                                {
 
-                            #endregion
+                                    coordinates.Add(kesitDTO.RezGenelList[i][j].X);
+                                    coordinates.Add((double)kesitDTO.RezGenelList[i][j].K);
+                                    dataset.data.Add(coordinates);
+                                    KapatmaOlustur(datasetList, dataset, kesitDTO.RezGenelList, i, j);
+                                    if (i < kesitDTO.RezGenelList.Count - 1)
+                                        cizimCount.Kapatma++;
+                                    continue;
+                                }
+                                else
+                                {
+                                    var fayKontrolü = FayKontrolEt(kuralGetir, kesitDTO, i, j, parameters);
+                                    //Fay oluştur
+                                    if (fayKontrolü && j > 1)
+                                    {
+                                        coordinates.Add(kesitDTO.RezGenelList[i][j].X);
+                                        coordinates.Add((double)kesitDTO.RezGenelList[i][j].K);
+                                        dataset.data.Add(coordinates);
+                                        if (i < kesitDTO.RezGenelList.Count - 1)
+                                            cizimCount.Fay++;
+                                        continue;
+                                    }
+                                    else
+                                    {
+                                        var birOncekiDugum = _fuzzyManager.FuzzyKuralOlusturVeSonucGetirFLL(kuralGetir, (double)kesitDTO.RezGenelList[i][j - 1].R);
+                                        var cukurKarsilastirma = _fuzzyManager.FuzzyKuralOlusturVeSonucGetirFLLKarsilastirma(kuralGetir, (double)kesitDTO.RezGenelList[i][j - 1].R, (double)kesitDTO.RezGenelList[i][j + 1].R, (int)parameters.OzdirencOran);
+
+                                        //if (birOncekiDugum == ikinciDugum)
+                                        if (cukurKarsilastirma)
+                                        {
+                                            //Çukur oluştur
+                                            coordinates.Add(kesitDTO.RezGenelList[i][j].X);
+                                            coordinates.Add((double)kesitDTO.RezGenelList[i][j].K);
+                                            dataset.data.Add(coordinates);
+                                            KapatmaOlustur(datasetList, dataset, kesitDTO.RezGenelList, i, j);
+                                            if (i < kesitDTO.RezGenelList.Count - 1)
+                                                cizimCount.Kapatma++;
+                                            break;
+                                        }
+                                        else
+                                        {
+                                            //Fay oluştur
+                                            coordinates.Add(kesitDTO.RezGenelList[i][j].X);
+                                            coordinates.Add((double)kesitDTO.RezGenelList[i][j].K);
+                                            dataset.data.Add(coordinates);
+                                            KapatmaOlustur(datasetList, dataset, kesitDTO.RezGenelList, i, j);
+                                            if (i < kesitDTO.RezGenelList.Count - 1)
+                                                cizimCount.Kapatma++;
+                                            break;
+
+                                        }
+                                    }
+                                }
+                            }
+                            //}
                         }
                     }
+                    else
+                    {
+                        coordinates.Add(kesitDTO.RezGenelList[i][j].X);
+                        coordinates.Add((double)kesitDTO.RezGenelList[i][j].K);
+                        dataset.data.Add(coordinates);
+                        #region Özdirenç Değerinin Sağında Olan Sismik Değerlerinin Kontrolü
+                        if (kesitDTO.SisGenelList.Count >= kesitDTO.RezGenelList.Count)
+                        {
+                            CizimeSismikEkle(kesitDTO.RezGenelList[i][j].X, kesitDTO.SisGenelList[i], dataset, (byte)Enums.YonDegeri.Sag);
+                            if (i < kesitDTO.RezGenelList.Count - 1)
+                                cizimCount.Normal++;
+                        }
+                        //    var sonOzdirencX = kesitDTO.RezGenelList[i][j].X;
+                        //    var sagdaKalanSismikList = kesitDTO.SisGenelList[i].Where(s => s.X > sonOzdirencX).ToList();
+                        //var ads = kesitDTO.SisGenelList[i];
+                        //    foreach (var item in sagdaKalanSismikList)
+                        //    {
+                        //        coordinates = new List<double>();
+                        //        coordinates.Add(item.X);
+                        //        coordinates.Add((double)item.K);
+                        //        dataset.data.Add(coordinates);
+                        //    }
+
+                        #endregion
+                    }
                 }
-                if (dataset.data.Count > 0)
-                    datasetList.Add(dataset);
+                datasetList.Add(dataset);
             }
-            //datasetList.RemoveAt(datasetList.Count - 1);//Sondaki fazla çizimin kaldırılması
             return datasetList;
         }
 
-        private bool KapatmaKontrolu(List<SeriesDTO> datasetList, SeriesDTO dataset, List<List<RezistiviteDTO>> rezGenelList, int indexI, int indexJ)
-        {
-            var ustDugum = rezGenelList[indexI - 1][indexJ];
-            var ustSolDugum = rezGenelList[indexI - 1][indexJ - 1];
-            foreach (var item in datasetList)
-            {
-                for (int i = 0; i < item.data.Count; i++)
-                {
-                    if (i + 1 < item.data.Count)
-                    {
-                        if (item.data[i].Count > 0 && item.data[i][0] == ustSolDugum.X && item.data[i][1] == ustSolDugum.K && item.data[i + 1][0] == ustDugum.X && item.data[i + 1][1] == ustDugum.K)
-                        {
-                            return true;
-                        }
-                    }
-
-                }
-            }
-
-            return false;
-        }
-
-        private SeriesDTO KapatmaOlustur(List<SeriesDTO> datasetList, SeriesDTO dataset, List<List<RezistiviteDTO>> rezGenelList, int i, int j)
-        {
-            if (rezGenelList.Count > i)
-            {
-                if (rezGenelList[i - 1].Count > j)
-                {
-                    List<double> coordinates;
-
-                    double ortaNoktaX = 0, ortaNoktaK = 0;
-
-                    ortaNoktaX = (rezGenelList[i - 1][j - 1].X + rezGenelList[i - 1][j].X) / 2;
-                    ortaNoktaK = (double)(rezGenelList[i - 1][j - 1].K + rezGenelList[i - 1][j].K) / 2;
-
-                    var oncekiNoktaX = rezGenelList[i - 1][j].X;
-                    var oncekiNoktaK = rezGenelList[i - 1][j].K;
-
-                    coordinates = new List<double>();
-                    coordinates.Add(ortaNoktaX);
-                    coordinates.Add((double)ortaNoktaK);
-                    //datasetList.FirstOrDefault(d => d.name == oncekiDatasetName).data.Insert(index + 1, coordinates);
-                    dataset.data.Add(coordinates);
-                }
-            }
-            return dataset;
-        }
-
-        private SeriesDTO IlkDugumunSolundaFayKontrolu(KesitDTO kesitDTO, DugumDTO uygunIlkDugum, DugumDTO uygunIkinciDugum, List<SeriesDTO> datasetList)
-        {
-
-            if (uygunIlkDugum.IndexJ > 0 && uygunIlkDugum.IndexI > 0)
-            {
-                var fay = datasetList.Where(f => f.name == "Fay" && f.data[0][0] < uygunIlkDugum.Dugum.X && kesitDTO.RezGenelList[uygunIlkDugum.IndexI][uygunIlkDugum.IndexJ - 1].X < f.data[0][0]).FirstOrDefault();
-                if (fay != null)
-                {
-                    return fay;
-                }
-            }
-
-            return null;
-        }
 
 
-        private SeriesDTO IlkDugumunSagindaFayKontrolu(KesitDTO kesitDTO, DugumDTO uygunIlkDugum, DugumDTO uygunIkinciDugum, List<SeriesDTO> datasetList)
-        {
-            if (uygunIlkDugum.IndexJ > 0 && uygunIlkDugum.IndexI > 0)
-            {
-                var fay = datasetList.Where(f => f.name == "Fay" && f.data[0][0] > uygunIlkDugum.Dugum.X && uygunIkinciDugum.Dugum.X > f.data[0][0]).FirstOrDefault();
-                if (fay != null)
-                {
-                    return fay;
-                }
-            }
-
-            return null;
-        }
-        private bool FayKontrolu(KuralGetirDTO kuralGetir, KesitDTO kesitDTO, DugumDTO uygunIlkDugum, DugumDTO uygunIkinciDugum, ParametersDTO parameters)
+        private bool FayKontrolEt(KuralGetirDTO kuralGetir, KesitDTO kesitDTO, int i, int j, ParametersDTO parameters)
         {
             bool ilkOzdirencIleAlttakiUyumlumu = false, ikinciOzdirencIleAlttakiUyumlumu = false;
             bool ikiOzdirencKarsilastirma = true, VpUygunMu = false, VsUygunMu = false, altIkiOzdirencKarsilastirma = true, altVpUygunMu = false, altVsUygunMu = false;
-            int i = uygunIlkDugum.IndexI;
-            int j = uygunIlkDugum.IndexJ;
             //Sonuçlar False Dönmeli
-
-            ikiOzdirencKarsilastirma = _fuzzyManager.FuzzyKuralOlusturVeSonucGetirFLLKarsilastirma(kuralGetir, (double)kesitDTO.RezGenelList[uygunIlkDugum.IndexI][uygunIlkDugum.IndexJ].R, (double)kesitDTO.RezGenelList[uygunIkinciDugum.IndexI][uygunIkinciDugum.IndexJ].R, (int)parameters.OzdirencOran);
-            VpUygunMu = SismikKontroluVp(kesitDTO, i, j, (int)parameters.SismikOran);
-            VsUygunMu = SismikKontroluVs(kesitDTO, i, j, (int)parameters.SismikOran);
-
-            if (uygunIlkDugum.IndexI + 1 + 1 < (double)kesitDTO.RezGenelList.Count && uygunIkinciDugum.IndexI + 1 + 1 < (double)kesitDTO.RezGenelList.Count)
+            if (i + 1 < (double)kesitDTO.RezGenelList.Count)
             {
+                ikiOzdirencKarsilastirma = _fuzzyManager.FuzzyKuralOlusturVeSonucGetirFLLKarsilastirma(kuralGetir, (double)kesitDTO.RezGenelList[i][j].R, (double)kesitDTO.RezGenelList[i][j + 1].R, (int)parameters.OzdirencOran);
+                VpUygunMu = SismikKontroluVp(kesitDTO, i, j, (int)parameters.SismikOran);
+                VsUygunMu = SismikKontroluVs(kesitDTO, i, j, (int)parameters.SismikOran);
+
                 //Sonuçlar False Dönmeli
-                altIkiOzdirencKarsilastirma = _fuzzyManager.FuzzyKuralOlusturVeSonucGetirFLLKarsilastirma(kuralGetir, (double)kesitDTO.RezGenelList[uygunIlkDugum.IndexI + 1][uygunIlkDugum.IndexJ].R, (double)kesitDTO.RezGenelList[uygunIkinciDugum.IndexI + 1][uygunIkinciDugum.IndexJ].R, (int)parameters.OzdirencOran);
+                altIkiOzdirencKarsilastirma = _fuzzyManager.FuzzyKuralOlusturVeSonucGetirFLLKarsilastirma(kuralGetir, (double)kesitDTO.RezGenelList[i + 1][j].R, (double)kesitDTO.RezGenelList[i + 1][j + 1].R, (int)parameters.OzdirencOran);
                 altVpUygunMu = SismikKontroluVp(kesitDTO, i + 1, j, (int)parameters.SismikOran);
                 altVsUygunMu = SismikKontroluVs(kesitDTO, i + 1, j, (int)parameters.SismikOran);
             }
 
-            if (uygunIkinciDugum.IndexI + 2 < (double)kesitDTO.RezGenelList.Count)
+            if (i + 2 < (double)kesitDTO.RezGenelList.Count)
             {
                 for (int k = i; k < (double)kesitDTO.RezGenelList[i].Count; k++)
                 {
                     if ((double)kesitDTO.RezGenelList[i][k].TypeID == (byte)Enums.ExcelDataTipi.Gercek)
                     {
-                        ilkOzdirencIleAlttakiUyumlumu = _fuzzyManager.FuzzyKuralOlusturVeSonucGetirFLLKarsilastirma(kuralGetir, (double)kesitDTO.RezGenelList[uygunIlkDugum.IndexI][uygunIlkDugum.IndexJ].R, (double)kesitDTO.RezGenelList[uygunIkinciDugum.IndexI + 2][uygunIkinciDugum.IndexJ].R, (int)parameters.OzdirencOran);
+                        ilkOzdirencIleAlttakiUyumlumu = _fuzzyManager.FuzzyKuralOlusturVeSonucGetirFLLKarsilastirma(kuralGetir, (double)kesitDTO.RezGenelList[i][j].R, (double)kesitDTO.RezGenelList[i + 2][j + 1].R, (int)parameters.OzdirencOran);
                         break;
                     }
                 }
             }
-            if (uygunIlkDugum.IndexI + 1 < (double)kesitDTO.RezGenelList.Count && uygunIkinciDugum.IndexI + 3 < (double)kesitDTO.RezGenelList.Count)
+            if (i + 3 < (double)kesitDTO.RezGenelList.Count)
             {
                 for (int k = i + 1; k < (double)kesitDTO.RezGenelList[i + 1].Count; k++)
                 {
                     if ((double)kesitDTO.RezGenelList[i + 1][k].TypeID == (byte)Enums.ExcelDataTipi.Gercek)
                     {
-                        ikinciOzdirencIleAlttakiUyumlumu = _fuzzyManager.FuzzyKuralOlusturVeSonucGetirFLLKarsilastirma(kuralGetir, (double)kesitDTO.RezGenelList[uygunIlkDugum.IndexI + 1][uygunIlkDugum.IndexJ].R, (double)kesitDTO.RezGenelList[uygunIkinciDugum.IndexI + 3][uygunIkinciDugum.IndexJ].R, (int)parameters.OzdirencOran);
+                        ikinciOzdirencIleAlttakiUyumlumu = _fuzzyManager.FuzzyKuralOlusturVeSonucGetirFLLKarsilastirma(kuralGetir, (double)kesitDTO.RezGenelList[i + 1][j].R, (double)kesitDTO.RezGenelList[i + 3][j + 1].R, (int)parameters.OzdirencOran);
                         break;
                     }
                 }
@@ -1255,43 +1039,6 @@ namespace FuzzyMsc.Bll
                 return true;
 
             return false;
-        }
-
-        private SeriesDTO FayOlustur(KuralGetirDTO kuralGetir, KesitDTO kesitDTO, DugumDTO uygunIlkDugum, DugumDTO uygunIkinciDugum, ParametersDTO parameters)
-        {
-
-            //üst nokta belirle
-            var FayBaslangicX = (kesitDTO.RezGenelList[uygunIlkDugum.IndexI - 2][uygunIlkDugum.IndexJ].X + kesitDTO.RezGenelList[uygunIkinciDugum.IndexI - 1][uygunIkinciDugum.IndexJ].X) / 2;
-            var FayBaslangicY = (kesitDTO.RezGenelList[uygunIlkDugum.IndexI - 2][uygunIlkDugum.IndexJ].K + kesitDTO.RezGenelList[uygunIkinciDugum.IndexI - 1][uygunIkinciDugum.IndexJ].K) / 2;
-            //alt nokta belirle
-
-            var FayBitisX = (kesitDTO.RezGenelList[uygunIlkDugum.IndexI + 1][uygunIlkDugum.IndexJ].X + kesitDTO.RezGenelList[uygunIkinciDugum.IndexI + 3][uygunIkinciDugum.IndexJ].X) / 2;
-            var FayBitisY = kesitDTO.RezGenelList[uygunIkinciDugum.IndexI + 3][uygunIkinciDugum.IndexJ].K;
-            //Fay ciz
-            SeriesDTO fayDataset = new SeriesDTO();
-            fayDataset.name = "Fay";
-            if ((bool)parameters.CizimlerGorunsunMu)
-                fayDataset.lineWidth = 2;
-            fayDataset.color = "#000000";
-            fayDataset.showInLegend = false;
-            fayDataset.marker = new MarkerDTO { enabled = false };
-            fayDataset.toolTip = new ToolTipDTO { enabled = false };
-            fayDataset.states = new StatesDTO { hover = new HoverDTO { lineWidthPlus = 3 } };
-            //fayDataset.enableMouseTracking = false;
-            fayDataset.draggableY = true;
-            fayDataset.draggableX = true;
-
-            List<double> coordinates = new List<double>();
-            coordinates.Add(FayBaslangicX);
-            coordinates.Add((double)FayBaslangicY);
-            fayDataset.data.Add(coordinates);
-
-            coordinates = new List<double>();
-            coordinates.Add(FayBitisX);
-            coordinates.Add((double)FayBitisY);
-            fayDataset.data.Add(coordinates);
-
-            return fayDataset;
         }
 
         private string RenkUret(int i, int count)
@@ -1487,12 +1234,9 @@ namespace FuzzyMsc.Bll
                         }
                         else
                         {
-                            if (j + 1 < kesitDTO.SisGenelList[i].Count)
+                            if (kesitDTO.SisGenelList[i][j].Vp * (oran / 100) > kesitDTO.SisGenelList[i][j + 1].Vp) //öncekinin oran ile çarpımı bir sonrakinden büyük olmalı
                             {
-                                if (kesitDTO.SisGenelList[i][j].Vp * (oran / 100) > kesitDTO.SisGenelList[i][j + 1].Vp) //öncekinin oran ile çarpımı bir sonrakinden büyük olmalı
-                                {
-                                    return false;
-                                }
+                                return false;
                             }
                         }
                     }
@@ -1529,12 +1273,9 @@ namespace FuzzyMsc.Bll
                         }
                         else
                         {
-                            if (j + 1 < kesitDTO.SisGenelList[i].Count)
+                            if (kesitDTO.SisGenelList[i][j].Vs * (oran / 100) > kesitDTO.SisGenelList[i][j + 1].Vs) //öncekinin oran ile çarpımı bir sonrakinden büyük olmalı
                             {
-                                if (kesitDTO.SisGenelList[i][j].Vs * (oran / 100) > kesitDTO.SisGenelList[i][j + 1].Vs) //öncekinin oran ile çarpımı bir sonrakinden büyük olmalı
-                                {
-                                    return false;
-                                }
+                                return false;
                             }
                         }
                     }
@@ -1607,6 +1348,106 @@ namespace FuzzyMsc.Bll
             return cukurDataset;
         }
 
+        private SeriesDTO FayOlustur(SeriesDTO dataset, List<List<RezistiviteDTO>> rezGenelList, int i, int j)
+        {
+            SeriesDTO fayDataset = new SeriesDTO();
+            fayDataset.name = "Fay";
+            fayDataset.lineWidth = 2;
+            fayDataset.color = dataset.color;
+            fayDataset.showInLegend = false;
+            //fayDataset.marker = new MarkerDTO { enabled = false };
+            fayDataset.marker = new MarkerDTO { symbol = "circle", radius = 2, enabled = true };
+            fayDataset.toolTip = new ToolTipDTO { enabled = false };
+            fayDataset.states = new StatesDTO { hover = new HoverDTO { lineWidthPlus = 3 } };
+            //fayDataset.enableMouseTracking = false;
+            fayDataset.draggableY = true;
+            fayDataset.draggableX = true;
+
+            var ortaNoktaX = (rezGenelList[i][j].X + rezGenelList[i][j + 1].X) / 2;
+            var ortaNoktaK = (rezGenelList[i][j].K + rezGenelList[i][j + 1].K) / 2;
+
+            List<double> coordinates = new List<double>();
+            coordinates.Add(rezGenelList[i][j].X);
+            coordinates.Add((double)rezGenelList[i][j].K);
+            dataset.data.Add(coordinates);
+
+            coordinates = new List<double>();
+            coordinates.Add(ortaNoktaX);
+            coordinates.Add((double)ortaNoktaK);
+            dataset.data.Add(coordinates);
+
+            coordinates = new List<double>();
+            coordinates.Add(rezGenelList[i][j + 1].X);
+            coordinates.Add((double)rezGenelList[i][j + 1].K);
+            dataset.data.Add(coordinates);
+
+            //coordinates = new List<double>();
+            //coordinates.Add(ortaNoktaX);
+            //coordinates.Add((double)ortaNoktaK);
+            //dataset.data.Add(coordinates);
+
+            coordinates = new List<double>();
+            coordinates.Add(ortaNoktaX - 0.5);
+            coordinates.Add((double)ortaNoktaK - 1);
+            fayDataset.data.Add(coordinates);
+
+            //coordinates = new List<double>();
+            //coordinates.Add(ortaNoktaX);
+            //coordinates.Add((double)ortaNoktaK);
+            //dataset.data.Add(coordinates);
+
+            coordinates = new List<double>();
+            coordinates.Add(ortaNoktaX + 0.5);
+            coordinates.Add((double)ortaNoktaK + 1);
+            fayDataset.data.Add(coordinates);
+
+            //coordinates = new List<double>();
+            //coordinates.Add(ortaNoktaX);
+            //coordinates.Add((double)ortaNoktaK);
+            //dataset.data.Add(coordinates);
+
+            return fayDataset;
+        }
+
+        private SeriesDTO KapatmaOlustur(List<SeriesDTO> datasetList, SeriesDTO dataset, List<List<RezistiviteDTO>> rezGenelList, int i, int j)
+        {
+            if (rezGenelList.Count > i)
+            {
+                if (rezGenelList[i - 1].Count > j)
+                {
+                    var oncekiDatasetName = "Set-" + (Convert.ToInt32(dataset.name.Split('-')[1]) - 1).ToString();
+                    List<double> coordinates;
+                    int index = 0;
+
+                    var oncekiDataset = datasetList.FirstOrDefault(d => d.name == oncekiDatasetName);
+
+                    var ortaNoktaX = (rezGenelList[i - 1][j].X + rezGenelList[i - 1][j + 1].X) / 2;
+                    var ortaNoktaK = (rezGenelList[i - 1][j].K + rezGenelList[i - 1][j + 1].K) / 2;
+
+                    var oncekiNoktaX = rezGenelList[i - 1][j].X;
+                    var oncekiNoktaK = rezGenelList[i - 1][j].K;
+
+
+                    for (int k = 0; k < datasetList.FirstOrDefault(d => d.name == oncekiDatasetName).data.Count; k++)
+                    {
+                        var dataItem = datasetList.FirstOrDefault(d => d.name == oncekiDatasetName).data[k];
+                        if (dataItem[0] == oncekiNoktaX && dataItem[1] == (double)oncekiNoktaK)
+                        {
+                            index = k;
+                            break;
+                        }
+                    }
+
+                    coordinates = new List<double>();
+                    coordinates.Add(ortaNoktaX);
+                    coordinates.Add((double)ortaNoktaK);
+                    //datasetList.FirstOrDefault(d => d.name == oncekiDatasetName).data.Insert(index + 1, coordinates);
+                    dataset.data.Add(coordinates);
+                }
+            }
+            return dataset;
+        }
+
         /// <summary>
         /// Özdirenç Değerinin Sağında Veya Solunda Bulunan Sismik Değerlerini Çizime Bağlar
         /// </summary>
@@ -1625,48 +1466,50 @@ namespace FuzzyMsc.Bll
 
         private DugumDTO UygunIlkDugumKontrolu(List<List<RezistiviteDTO>> rezGenelList, int indexI, int indexJ)
         {
-            DugumDTO dugum = new DugumDTO { Dugum = rezGenelList[indexI][indexJ], IndexI = indexI, IndexJ = indexJ };
+            DugumDTO dugum = new DugumDTO();
 
-            for (int i = indexI - 1; i >= 0; i--)
+            if (rezGenelList.Count < indexI - 1)
             {
-                if (!rezGenelList[i][indexJ].Checked && rezGenelList[i][indexJ].TypeID == (byte)Enums.ExcelDataTipi.Gercek)
+                dugum = new DugumDTO { Dugum = rezGenelList[indexI][indexJ], IndexI = indexI, IndexJ = indexJ };
+            }
+            else
+            {
+                if (!rezGenelList[indexI - 1][indexJ].Checked)
                 {
-                    if (!rezGenelList[i - 1][indexJ].Checked)
-                    {
-                        return dugum;
-                    }
-                    dugum.IndexI = i;
+                    dugum.IndexI = indexI;
                     dugum.IndexJ = indexJ;
-                    dugum.Dugum = rezGenelList[i][indexJ];
-                    break;
+                    dugum.Dugum = rezGenelList[indexI][indexJ];
+                }
+                else
+                {
+                    dugum = new DugumDTO { Dugum = rezGenelList[indexI][indexJ], IndexI = indexI, IndexJ = indexJ };
                 }
             }
-
 
             return dugum;
         }
 
-        private DugumDTO UygunIkinciDugumKontrolu(KuralGetirDTO kuralGetir, KesitDTO kesitDTO, List<List<RezistiviteDTO>> rezGenelList, int indexI, int indexJ, ParametersDTO parameters)
+        private DugumDTO UygunIkinciDugumKontrolu(List<List<RezistiviteDTO>> rezGenelList, int indexI, int indexJ)
         {
-            DugumDTO dugum = new DugumDTO { Dugum = rezGenelList[indexI][indexJ], IndexI = indexI, IndexJ = indexJ };
+            DugumDTO dugum = new DugumDTO();
 
-            //bool ikiOzdirencKarsilastirma = _fuzzyManager.FuzzyKuralOlusturVeSonucGetirFLLKarsilastirma(kuralGetir, (double)kesitDTO.RezGenelList[indexI][indexJ - 1].R, (double)kesitDTO.RezGenelList[indexI][indexJ].R, (int)parameters.OzdirencOran);
-            //if (ikiOzdirencKarsilastirma)
-            //{
-            //    return dugum;
-            //}
-
-            for (int i = indexI - 1; i >= 0; i--)
+            if (rezGenelList.Count < indexI - 1)
             {
-                if (!rezGenelList[i][indexJ].Checked && rezGenelList[i][indexJ].TypeID == (byte)Enums.ExcelDataTipi.Gercek)
+                dugum = new DugumDTO { Dugum = rezGenelList[indexI][indexJ], IndexI = indexI, IndexJ = indexJ };
+            }
+            else
+            {
+                if (!rezGenelList[indexI - 1][indexJ].Checked)
                 {
-
-                    dugum.IndexI = i;
+                    dugum.IndexI = indexI;
                     dugum.IndexJ = indexJ;
-                    dugum.Dugum = rezGenelList[i][indexJ];
+                    dugum.Dugum = rezGenelList[indexI][indexJ];
+                }
+                else
+                {
+                    dugum = new DugumDTO { Dugum = rezGenelList[indexI][indexJ], IndexI = indexI, IndexJ = indexJ };
                 }
             }
-
 
             return dugum;
         }
@@ -1791,7 +1634,7 @@ namespace FuzzyMsc.Bll
         #endregion
     }
 
-    public interface IGraphManager : IBaseManager
+    public interface IGraphManagerBackup : IBaseManager
     {
         SonucDTO ExcelKontrolEt(ExcelModelDTO excel, string path);
         SonucDTO GraphOlustur(GraphDTO graph, string path);
