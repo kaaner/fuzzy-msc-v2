@@ -14,7 +14,7 @@ namespace FuzzyMsc.Dto.HighchartsDTOS
         public string color { get; set; }
         public List<List<double>> data { get; set; }
         public MarkerDTO marker { get; set; }
-        public ToolTipDTO toolTip { get; set; }
+        public ToolTipDTO tooltip { get; set; }
         public bool showInLegend { get; set; }
         public StatesDTO states { get; set; }
         public bool? enableMouseTracking { get; set; }
@@ -25,9 +25,11 @@ namespace FuzzyMsc.Dto.HighchartsDTOS
 
     public class ToolTipDTO
     {
-        public bool enabled { get; set; }
+        public bool useHTML { get; set; }
         public string headerFormat { get; set; }
         public string pointFormat { get; set; }
+        public string footerFormat { get; set; }
+        public int valueDecimals { get; set; }
     }
 
     public class MarkerDTO

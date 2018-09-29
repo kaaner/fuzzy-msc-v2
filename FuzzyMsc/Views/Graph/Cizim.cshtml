@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewBag.Title = "Cizim";
+    ViewBag.Title = "Çizim";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -30,7 +30,6 @@
                                     <label class="col-md-6 control-label">Kural Seçimi Yapınız</label>
                                     <div class="col-md-6">
                                         <select class="form-control" ng-model="kural" ng-options="kume.KuralAdi for kume in kumeListesi" ng-change="KuralTextGetir(kural)">
-                                            @*<option value="">Zemin Tipi Seçiniz</option>*@
                                             <option value="">Seçiniz</option>
                                         </select>
                                     </div>
@@ -124,7 +123,7 @@
                     <span class="panel-title">Adım 3 - Ayarlar</span>
                 </div>
                 <div class="panel-body">
-                    <div class="col-md-6">
+                    <div class="col-md-12">
                         <div class="form-horizontal">
                             <div class="form-group">
                                 <label class="col-sm-3 control-label" title="Çizim sayfasındaki büyük başlıktır. Çıktı alınırken de görünür.">Çizim Başlığı</label>
@@ -175,21 +174,14 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-md-3 control-label" title="Bulanık mantık kullanılan özdirenç hesaplamalarında kullanılan uygunluk oranıdır.">Özdirenç Yakınlık Oranı (%)</label>
+                                <label class="col-md-3 control-label" title="Bulanık mantık kullanılan özdirenç hesaplamalarında kullanılan yakınlık oranıdır.">Özdirenç Yakınlık Oranı (%)</label>
                                 <div class="col-md-9">
                                     <input type="number" name="" class="form-control" ng-model="parameters.OzdirencOran" min="1" max="100" prevent-typing-greater placeholder="Min. 1 - Max 100" />
                                 </div>
                             </div>
-                            @*<div class="form-group">
-                        <label class="col-md-3 control-label">Özdirenç Yakınlık Oranı (%)</label>
-                        <div class="col-md-9">
-                            <input id="range_3" type="text" value="" ng-model="parameters.OzdirencOran = range3.from" />
-                            <span class="help-block"> Set min value, max value and start point </span>
-                                                </div>
-                                                    </div>*@
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    @*<div class="col-md-6">
                         <div class="form-horizontal">
                             <div class="form-group">
                                 <label class="col-sm-3 control-label" title="El ile yapılan çizimdeki normal çizim sayısıdır.">Normal</label>
@@ -209,15 +201,8 @@
                                     <input type="number" name="" class="form-control" ng-model="sayilar.Fay" ng-init="sayilar.Fay = 0" min="0" max="100" prevent-typing-greater placeholder="Min. 0 - Max 100" />
                                 </div>
                             </div>
-                            @*<div class="form-group">
-                        <label class="col-md-3 control-label">Özdirenç Yakınlık Oranı (%)</label>
-                        <div class="col-md-9">
-                            <input id="range_3" type="text" value="" ng-model="parameters.OzdirencOran = range3.from" />
-                            <span class="help-block"> Set min value, max value and start point </span>
-                                                </div>
-                                                    </div>*@
                         </div>
-                    </div>
+                    </div>*@
                 </div>
                 <div class="panel-footer">
                     <div class="row">
@@ -243,7 +228,6 @@
             </div>
 
             <div class="panel panel-default" ng-show="panelGrafik">
-                @*<div class="panel panel-default">*@
                 <div class="panel-heading">
                     <span class="panel-title">Sonuç - Grafik </span>
                     <div class="mt-radio-inline pull-right" style="margin-left: 10px;">
@@ -265,36 +249,40 @@
                 </div>
             </div>
             <div class="panel panel-default" ng-show="panelGrafik">
-                @*<div class="panel panel-default">*@
                 <div class="panel-heading">
                     <span class="panel-title">Sonuç - Başarı </span>
                 </div>
                 <div class="panel-body">
                     <div class="row">{{sayilar}}</div>
+                    <div class="row">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th class="text-center">Sıra</th>
+                                    <th class="text-center">Birinci Düğüm</th>
+                                    <th class="text-center">İkinci Düğüm</th>
+                                    <th class="text-center">Bağlantı</th>
+                                    <th class="text-center">Normal</th>
+                                    <th class="text-center">Kapatma</th>
+                                    <th class="text-center">Fay</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="text-center" ng-repeat="(key, item) in cizimBilgileri">
+                                    <td>{{key + 1}}</td>
+                                    <td>{{item.BirinciDugum}}</td>
+                                    <td>{{item.IkinciDugum}}</td>
+                                    <td>{{item.Baglanti}}</td>
+                                    <td>{{item.Normal}}</td>
+                                    <td>{{item.Kapatma}}</td>
+                                    <td>{{item.Fay}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
 
-        @*<div class="panel panel-default">
-                <div class="panel-body">
-                    <ul class="nav nav-tabs">
-                        <li class="active"><a data-toggle="tab" href="#home">Grafik</a></li>
-                        <li><a data-toggle="tab" href="#menu1">Ayarlar</a></li>
-                    </ul>
-
-                    <div class="tab-content">
-                        <div id="home" class="tab-pane fade in active">
-                            <div class="row">
-                                <div class="col-md-12" id="container" style="height: 2000px; width: 5000px">
-                                </div>
-                            </div>
-                        </div>
-                        <div id="menu1" class="tab-pane fade">
-                            <h3>Menu 1</h3>
-                            <p>Some content in menu 1.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>*@
     </div>
 </div>

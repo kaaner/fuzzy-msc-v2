@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CizimDTOS\CizimCountDTO.cs" />
+    <Compile Include="CizimDTOS\CizimDetailedDTO.cs" />
     <Compile Include="CizimDTOS\DugumDTO.cs" />
     <Compile Include="CizimDTOS\ExcelDTO.cs" />
     <Compile Include="CizimDTOS\ParametersDTO.cs" />

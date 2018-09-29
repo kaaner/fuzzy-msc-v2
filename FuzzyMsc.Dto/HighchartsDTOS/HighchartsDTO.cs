@@ -9,6 +9,7 @@ namespace FuzzyMsc.Dto.HighchartsDTOS
         {
             series = new List<SeriesDTO>();
             annotations = new List<AnnotationsDTO>();
+            cizimBilgileri = new List<CizimDetailedDTO>();
         }
         public List<SeriesDTO> series { get; set; }
         public AxisDTO xAxis { get; set; }
@@ -16,5 +17,6 @@ namespace FuzzyMsc.Dto.HighchartsDTOS
         public List<AnnotationsDTO> annotations { get; set; }
         public ParametersDTO parameters { get; set; }
         public CizimCountDTO sayilar { get; set; }
+        public List<CizimDetailedDTO> cizimBilgileri { get; set; }
     }
 }

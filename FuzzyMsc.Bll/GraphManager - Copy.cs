@@ -794,7 +794,12 @@ namespace FuzzyMsc.Bll
                 dataset.color = RenkUret(i, kesitDTO.RezGenelList.Count); // String.Format("#{0:X6}", random.Next(0x1000000));
                 dataset.showInLegend = false;
                 dataset.marker = new MarkerDTO { symbol = "circle", radius = 2, enabled = true };
-                dataset.toolTip = new ToolTipDTO { enabled = false };
+                dataset.tooltip = new ToolTipDTO { useHTML = true,
+                    headerFormat= "<small>{point.key}</small><table>",
+                    pointFormat= "<tr><td style='color: {series.color}'>{series.name}: </td>" +
+            "<td style='text-align: right'><b>{point.y} EUR</b></td></tr>",
+                    footerFormat= "</table>",
+                };
                 dataset.states = new StatesDTO { hover = new HoverDTO { lineWidthPlus = 3 } };
                 //dataset.enableMouseTracking = false;
                 dataset.draggableY = true;
@@ -1293,7 +1298,7 @@ namespace FuzzyMsc.Bll
             cukurDataset.color = dataset.color;
             cukurDataset.showInLegend = false;
             cukurDataset.marker = new MarkerDTO { enabled = false };
-            cukurDataset.toolTip = new ToolTipDTO { enabled = false };
+            cukurDataset.tooltip = new ToolTipDTO { useHTML = true };
             cukurDataset.states = new StatesDTO { hover = new HoverDTO { lineWidthPlus = 3 } };
             cukurDataset.enableMouseTracking = false;
 
@@ -1357,7 +1362,7 @@ namespace FuzzyMsc.Bll
             fayDataset.showInLegend = false;
             //fayDataset.marker = new MarkerDTO { enabled = false };
             fayDataset.marker = new MarkerDTO { symbol = "circle", radius = 2, enabled = true };
-            fayDataset.toolTip = new ToolTipDTO { enabled = false };
+            fayDataset.tooltip = new ToolTipDTO { useHTML = true };
             fayDataset.states = new StatesDTO { hover = new HoverDTO { lineWidthPlus = 3 } };
             //fayDataset.enableMouseTracking = false;
             fayDataset.draggableY = true;
@@ -1531,7 +1536,7 @@ namespace FuzzyMsc.Bll
                 dataset.color = String.Format("#{0:X6}", random.Next(0x1000000));
                 dataset.showInLegend = false;
                 dataset.marker = new MarkerDTO { symbol = "circle", radius = 2, enabled = true };
-                dataset.toolTip = new ToolTipDTO { enabled = false };
+                dataset.tooltip = new ToolTipDTO { useHTML = true };
                 dataset.states = new StatesDTO { hover = new HoverDTO { lineWidthPlus = 3 } };
                 dataset.enableMouseTracking = false;
                 for (int i = 0; i < rezList.Count; i++)
@@ -1587,7 +1592,7 @@ namespace FuzzyMsc.Bll
                 dataset.color = String.Format("#{0:X6}", random.Next(0x1000000));
                 dataset.showInLegend = false;
                 dataset.marker = new MarkerDTO { symbol = "triangle-down", radius = 2, enabled = true };
-                dataset.toolTip = new ToolTipDTO { enabled = false };
+                dataset.tooltip = new ToolTipDTO { useHTML = true };
                 dataset.states = new StatesDTO { hover = new HoverDTO { lineWidthPlus = 3 } };
                 dataset.enableMouseTracking = false;
                 foreach (var rezItem in sisList)
@@ -1617,7 +1622,7 @@ namespace FuzzyMsc.Bll
                 dataset.color = String.Format("#{0:X6}", random.Next(0x1000000));
                 dataset.showInLegend = false;
                 dataset.marker = new MarkerDTO { symbol = "triangle", radius = 2, enabled = true };
-                dataset.toolTip = new ToolTipDTO { enabled = false };
+                dataset.tooltip = new ToolTipDTO { useHTML = true };
                 dataset.states = new StatesDTO { hover = new HoverDTO { lineWidthPlus = 0 } };
                 dataset.enableMouseTracking = false;
                 foreach (var rezItem in rezList)
