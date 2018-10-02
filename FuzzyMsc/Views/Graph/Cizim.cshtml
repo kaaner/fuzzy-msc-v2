@@ -6,31 +6,39 @@
 
 <div ng-controller="graphcontroller">
 
+    @*<p>{{ 'HEADLINE' | translate }}</p>
+        <p>{{ 'PARAGRAPH' | translate }}</p>
+        <p translate>PASSED_AS_TEXT</p>
+        <p translate="PASSED_AS_ATTRIBUTE"></p>
+        <p translate>{{ 'PASSED_AS_INTERPOLATION' }}</p>
+        <p translate="{{ 'PASSED_AS_INTERPOLATION' }}"></p>
+        <p translate="VARIABLE_REPLACEMENT" translate-values="{ name: 'PascalPrecht' }"></p>
+        <p translate>MISSING_TRANSLATION</p>*@
     <div id="panelPortlet1" class="panel panel-primary">
         <div class="panel-heading">
-            <span>Grafik Oluşturma Sayfası</span>
+            <span>{{'GraphCreationPage' | translate}}</span>
         </div>
 
         <div class="panel-body">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <span class="panel-title">Adım 1 - Kural Seçimi</span>
+                    <span class="panel-title">{{'StepOneRuleSelection' | translate}}</span>
                 </div>
                 <div class="panel-body">
 
                     <ul class="nav nav-tabs">
-                        <li class="active"><a data-toggle="tab" href="#rule"><i class="fa fa-edit"></i> Seçim</a></li>
-                        <li ng-show="kural"><a data-toggle="tab" href="#rule1"><i class="fa fa-list-ul"></i> Kurallar</a></li>
+                        <li class="active"><a data-toggle="tab" href="#rule"><i class="fa fa-edit"></i> {{'Selection' | translate}}</a></li>
+                        <li ng-show="kural"><a data-toggle="tab" href="#rule1"><i class="fa fa-list-ul"></i> {{'Rules' | translate}}</a></li>
                     </ul>
 
                     <div class="tab-content">
                         <div id="rule" class="tab-pane fade in active">
                             <div class="col-md-6 col-sm-12">
                                 <div class="form-group">
-                                    <label class="col-md-6 control-label">Kural Seçimi Yapınız</label>
+                                    <label class="col-md-6 control-label">{{'PleaseMakeARuleSelection' | translate}}</label>
                                     <div class="col-md-6">
                                         <select class="form-control" ng-model="kural" ng-options="kume.KuralAdi for kume in kumeListesi" ng-change="KuralTextGetir(kural)">
-                                            <option value="">Seçiniz</option>
+                                            <option value="">{{'Select' | translate}}</option>
                                         </select>
                                     </div>
                                 </div>
@@ -40,7 +48,7 @@
                             <div class="col-md-12">
                                 <table class="table table-hover">
                                     <thead>
-                                        <tr><th>Bulanık Mantık Kural Kümesi</th></tr>
+                                        <tr><th>{{'RuleSetOfFuzzyLogic' | translate}}</th></tr>
                                     </thead>
                                     <tbody>
                                         <tr ng-repeat="item in kuralTextListesi">
@@ -52,7 +60,7 @@
                             <div class="col-md-12">
                                 <table class="table table-hover">
                                     <thead>
-                                        <tr><th>Özdirenç Değer Aralıkları</th></tr>
+                                        <tr><th>{{'ValueRangesOfResistivities' | translate}}</th></tr>
                                     </thead>
                                     <tbody>
                                         <tr ng-repeat="item in ozdirencListesi">
@@ -75,7 +83,7 @@
                             <button type="button" class="btn btn-labeled btn-success pull-right" style="margin-left: 10px;" ng-click="KuralSecimi(kural)" ng-disabled="!kural">
                                 <span class="btn-label">
                                     <i class="fa fa-check"></i>
-                                </span>Kaydet ve Devam Et
+                                </span>{{'SaveAndContinue' | translate}}
                             </button>
                         </div>
                     </div>
@@ -84,23 +92,23 @@
 
             <div class="panel panel-default" ng-show="panelExcelSec">
                 <div class="panel-heading">
-                    <span class="panel-title">Adım 2 - Excel Dosyası</span>
+                    <span class="panel-title">{{'StepTwoExcelFile' | translate}}</span>
                 </div>
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-md-12">
                             <button class="btn btn-default" type="file" ngf-select="uploadFiles($file, $invalidFiles)"
                                     accept="excel/*" ngf-max-height="1000" ngf-max-size="1MB">
-                                Excel Dosyası Seçiniz (Max. 1MB)
+                                {{'SelectAnExcelFile' | translate}}
                             </button>
                             <span ng-show="f.progress >= 0 && excel.adi && !excelError" style="color:mediumseagreen">
-                                <i class="fa fa-2x fa-check"></i> Yükleme Başarılı
+                                <i class="fa fa-2x fa-check"></i> {{'LoadingSuccessful' | translate}}
                             </span>
                             <span ng-show="f.progress == 0 && excel.adi && !excelError" style="color:darkred">
-                                <i class="fa fa-2x fa-times"></i> Yükleme Başarısız
+                                <i class="fa fa-2x fa-times"></i> {{'LoadingUnsuccessful' | translate}}
                             </span>
                             <span ng-show="excelError" style="color:darkred">
-                                <i class="fa fa-2x fa-times"></i> Excel Kontrolleri Sırasında Bir Hata Oluştu
+                                <i class="fa fa-2x fa-times"></i> {{'ExcelWarning' | translate}}
                             </span>
                         </div>
                     </div>
@@ -111,7 +119,7 @@
                             <button type="button" class="btn btn-labeled btn-success pull-right" style="margin-left: 10px;" ng-click="ExcelSecimi(excel)" ng-disabled="!excel.adi">
                                 <span class="btn-label">
                                     <i class="fa fa-check"></i>
-                                </span>Kaydet ve Devam Et
+                                </span>{{'SaveAndContinue' | translate}}
                             </button>
                         </div>
                     </div>
@@ -120,61 +128,61 @@
 
             <div class="panel panel-default" ng-show="panelAyarlar">
                 <div class="panel-heading">
-                    <span class="panel-title">Adım 3 - Ayarlar</span>
+                    <span class="panel-title">{{'StepThreeSettings' | translate}}</span>
                 </div>
                 <div class="panel-body">
                     <div class="col-md-12">
                         <div class="form-horizontal">
                             <div class="form-group">
-                                <label class="col-sm-3 control-label" title="Çizim sayfasındaki büyük başlıktır. Çıktı alınırken de görünür.">Çizim Başlığı</label>
+                                <label class="col-sm-3 control-label" title="{{'TitleOfTheGraphDescription'|translate}}">{{'TitleOfTheGraph'|translate}}</label>
                                 <div class="col-sm-9">
-                                    <input type="text" name="" class="form-control" ng-model="parameters.Baslik" ng-init="parameters.Baslik = 'Jeoteknik Kesit Analizi'" />
+                                    <input type="text" name="" class="form-control" ng-model="parameters.Baslik" ng-init="parameters.Baslik = 'Jeoteknik Kesit Analizi'" />@*{{'GeotechnicalSectionAnalysis' | translate}}*@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-3 control-label" title="Çizim sayfasındaki büyük başlığın altında yer alan alt başlıktır. Çıktı alınırken görünmez.">Çizim Alt Başlığı</label>
+                                <label class="col-sm-3 control-label" title="{{'SubtitleOfTheGraphDescription'|translate}}">{{'SubtitleOfTheGraph'|translate}}</label>
                                 <div class="col-sm-9">
                                     <textarea rows="3" class="form-control" ng-model="parameters.AltBaslik" ng-init="parameters.AltBaslik = 'OTOMATİK JEOTEKNİK KESİT OLUŞTURAN BULANIK MANTIK TABANLI BİR ARAÇ TASARIMI VE GERÇEKLEŞTİRİMİ'"></textarea>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-3 control-label" title="Çizimdeki çizgilerin görünüp görünmemesi ile ilgili ayardır. Hayır seçilirse sadece üzerine gelinen noktanın birleştiği çizimi gösterir.">Çizimler Görünsün Mü ?</label>
+                                <label class="col-sm-3 control-label" title="{{'WillLinesAppearDescription'|translate}}">{{'WillLinesAppear'|translate}}</label>
                                 <div class="col-sm-9">
-                                    <input type="checkbox" name="" ng-model="parameters.CizimlerGorunsunMu" />{{parameters.CizimlerGorunsunMu ? ' Evet' : ' Hayır'}}
+                                    <input type="checkbox" name="" ng-model="parameters.CizimlerGorunsunMu" /><span ng-show="parameters.CizimlerGorunsunMu"> {{'Yes' | translate}}</span><span ng-show="!parameters.CizimlerGorunsunMu"> {{'No' | translate}}</span>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-3 control-label" title="Çıktı alınacak sayfanın yatay çözünürlük değeridir.">Yatay Çöz. Değeri (pixel)</label>
+                                <label class="col-sm-3 control-label" title="{{'HorizontalResValDescription'|translate}}">{{'HorizontalResVal'|translate}}</label>
                                 <div class="col-sm-9">
                                     <input type="number" name="" class="form-control" ng-model="parameters.CozunurlukX" min="0" max="10000" prevent-typing-greater placeholder="Min. 0 - Max 10000" />
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-3 control-label" title="Çıktı alınacak sayfanın dikey çözünürlük değeridir.">Dikey Çöz. Değeri (pixel)</label>
+                                <label class="col-sm-3 control-label" title="{{'VerticalResValDescription'|translate}}">{{'VerticalResVal'|translate}}</label>
                                 <div class="col-sm-9">
                                     <input type="number" name="" class="form-control" ng-model="parameters.CozunurlukY" min="0" max="10000" prevent-typing-greater placeholder="Min. 0 - Max 10000" />
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-3 control-label" title="Ölçeğin olabileceği minimum yatay aralıktır. Kullanılan monitöre göre değişkenlik gösterebilir.">Yatay Ölçek Aralığı (m)</label>
+                                <label class="col-sm-3 control-label" title="{{'HorizontalScaleRangeDescription'|translate}}">{{'HorizontalScaleRange'|translate}}</label>
                                 <div class="col-sm-9">
                                     <input type="number" name="" class="form-control" ng-model="parameters.OlcekX" min="1" max="1000" prevent-typing-greater placeholder="Min. 1 - Max 1000" />
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-3 control-label" title="Ölçeğin olabileceği minimum dikey aralıktır. Kullanılan monitöre göre değişkenlik gösterebilir.">Dikey Ölçek Aralığı (m)</label>
+                                <label class="col-sm-3 control-label" title="{{'VerticalScaleRangeDescription'|translate}}">{{'VerticalScaleRange'|translate}}</label>
                                 <div class="col-sm-9">
                                     <input type="number" name="" class="form-control" ng-model="parameters.OlcekY" min="1" max="1000" prevent-typing-greater placeholder="Min. 1 - Max 1000" />
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-md-3 control-label" title="Sismik değerlerin birbirine yakınlığı konusunda yapılan hesaplamada kullanılan uygunluk oranıdır.">Sismik Uygunluk Oranı (%)</label>
+                                <label class="col-md-3 control-label" title="{{'SeismicRelevanceRateDescription'|translate}}">{{'SeismicRelevanceRate'|translate}}</label>
                                 <div class="col-md-9">
                                     <input type="number" name="" class="form-control" ng-model="parameters.SismikOran" min="1" max="100" prevent-typing-greater placeholder="Min. 1 - Max 100" />
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-md-3 control-label" title="Bulanık mantık kullanılan özdirenç hesaplamalarında kullanılan yakınlık oranıdır.">Özdirenç Yakınlık Oranı (%)</label>
+                                <label class="col-md-3 control-label" title="{{'ResistivityProximityRateDescription'|translate}}">{{'ResistivityProximityRate'|translate}}</label>
                                 <div class="col-md-9">
                                     <input type="number" name="" class="form-control" ng-model="parameters.OzdirencOran" min="1" max="100" prevent-typing-greater placeholder="Min. 1 - Max 100" />
                                 </div>
@@ -182,27 +190,27 @@
                         </div>
                     </div>
                     @*<div class="col-md-6">
-                        <div class="form-horizontal">
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label" title="El ile yapılan çizimdeki normal çizim sayısıdır.">Normal</label>
-                                <div class="col-sm-9">
-                                    <input type="number" name="" class="form-control" ng-model="sayilar.Normal" ng-init="sayilar.Normal = 24" min="0" max="100" prevent-typing-greater placeholder="Min. 0 - Max 100" />
+                            <div class="form-horizontal">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label" title="El ile yapılan çizimdeki normal çizim sayısıdır.">Normal</label>
+                                    <div class="col-sm-9">
+                                        <input type="number" name="" class="form-control" ng-model="sayilar.Normal" ng-init="sayilar.Normal = 24" min="0" max="100" prevent-typing-greater placeholder="Min. 0 - Max 100" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label" title="El ile yapılan çizimdeki kapatma çizim sayısıdır.">Kapatma</label>
+                                    <div class="col-md-9">
+                                        <input type="number" name="" class="form-control" ng-model="sayilar.Kapatma" ng-init="sayilar.Kapatma = 0" min="0" max="100" prevent-typing-greater placeholder="Min. 0 - Max 100" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label" title="El ile yapılan çizimdeki fay çizim sayısıdır.">Fay</label>
+                                    <div class="col-md-9">
+                                        <input type="number" name="" class="form-control" ng-model="sayilar.Fay" ng-init="sayilar.Fay = 0" min="0" max="100" prevent-typing-greater placeholder="Min. 0 - Max 100" />
+                                    </div>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <label class="col-md-3 control-label" title="El ile yapılan çizimdeki kapatma çizim sayısıdır.">Kapatma</label>
-                                <div class="col-md-9">
-                                    <input type="number" name="" class="form-control" ng-model="sayilar.Kapatma" ng-init="sayilar.Kapatma = 0" min="0" max="100" prevent-typing-greater placeholder="Min. 0 - Max 100" />
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-md-3 control-label" title="El ile yapılan çizimdeki fay çizim sayısıdır.">Fay</label>
-                                <div class="col-md-9">
-                                    <input type="number" name="" class="form-control" ng-model="sayilar.Fay" ng-init="sayilar.Fay = 0" min="0" max="100" prevent-typing-greater placeholder="Min. 0 - Max 100" />
-                                </div>
-                            </div>
-                        </div>
-                    </div>*@
+                        </div>*@
                 </div>
                 <div class="panel-footer">
                     <div class="row">
@@ -210,17 +218,17 @@
                             <button type="button" class="btn btn-labeled btn-success pull-right" style="margin-left: 10px;" ng-click="AyarSecimiVeGrafikOlustur(excel, parameters, sayilar)">
                                 <span class="btn-label">
                                     <i class="fa fa-check"></i>
-                                </span>Kaydet ve Çiz
+                                </span>{{'SaveAndDraw' | translate}}
                             </button>
                             <button type="button" class="btn btn-labeled btn-danger pull-right" style="margin-left: 10px;" ng-click="VarsayilanAyarlaraDon()">
                                 <span class="btn-label">
                                     <i class="fa fa-check"></i>
-                                </span>Varsayılan Ayarlar'a Dön
+                                </span>{{'ResetToDefault' | translate}}
                             </button>
                             <button type="button" class="btn btn-labeled btn-warning pull-right" style="margin-left: 10px;" ng-click="Temizle()">
                                 <span class="btn-label">
                                     <i class="fa fa-check"></i>
-                                </span>Temizle
+                                </span>{{'Clean' | translate}}
                             </button>
                         </div>
                     </div>
@@ -229,14 +237,14 @@
 
             <div class="panel panel-default" ng-show="panelGrafik">
                 <div class="panel-heading">
-                    <span class="panel-title">Sonuç - Grafik </span>
+                    <span class="panel-title">{{'ResultGraph' | translate}}</span>
                     <div class="mt-radio-inline pull-right" style="margin-left: 10px;">
                         <label class="mt-radio">
-                            <input name="optionsRadios" id="optionsRadios26" value="1" ng-checked="true" ng-model="gorunum" ng-init="gorunum = 1" type="radio">Normal Görünüm
+                            <input name="optionsRadios" id="optionsRadios26" value="1" ng-checked="true" ng-model="gorunum" ng-init="gorunum = 1" type="radio">{{'NormalView' | translate}}
                             <span></span>
                         </label>
                         <label class="mt-radio">
-                            <input name="optionsRadios" id="optionsRadios25" value="2" checked="" ng-model="gorunum" type="radio">Detaylı Görünüm
+                            <input name="optionsRadios" id="optionsRadios25" value="2" checked="" ng-model="gorunum" type="radio">{{'DetailedView' | translate}}
                             <span></span>
                         </label>
                     </div>
@@ -250,7 +258,7 @@
             </div>
             <div class="panel panel-default" ng-show="panelGrafik">
                 <div class="panel-heading">
-                    <span class="panel-title">Sonuç - Başarı </span>
+                    <span class="panel-title">{{'ResultSuccess' | translate}}</span>
                 </div>
                 <div class="panel-body">
                     <div class="row">{{sayilar}}</div>
@@ -258,13 +266,13 @@
                         <table class="table table-hover">
                             <thead>
                                 <tr>
-                                    <th class="text-center">Sıra</th>
-                                    <th class="text-center">Birinci Düğüm</th>
-                                    <th class="text-center">İkinci Düğüm</th>
-                                    <th class="text-center">Bağlantı</th>
-                                    <th class="text-center">Normal</th>
-                                    <th class="text-center">Kapatma</th>
-                                    <th class="text-center">Fay</th>
+                                    <th class="text-center">{{'Order' | translate}}</th>
+                                    <th class="text-center">{{'FirstNode' | translate}}</th>
+                                    <th class="text-center">{{'SecondNode' | translate}}</th>
+                                    <th class="text-center">{{'Connection' | translate}}</th>
+                                    <th class="text-center">{{'Normal' | translate}}</th>
+                                    <th class="text-center">{{'Pocket' | translate}}</th>
+                                    <th class="text-center">{{'Fault' | translate}}</th>
                                 </tr>
                             </thead>
                             <tbody>

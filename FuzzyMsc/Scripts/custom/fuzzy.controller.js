@@ -1,5 +1,6 @@
 ﻿angular.module("mainfuzzy")
-    .controller("fuzzycontroller", function ($http, $scope, enums) {
+    .controller("fuzzycontroller", function ($http, $scope, enums, $translate, $rootScope) {
+
         $scope.enums = enums;
         $scope.kumeAdi = "";
         $scope.ozdirencButonIptal = false;
@@ -251,7 +252,7 @@
             $http.post('/Fuzzy/KumeKaydet', kuralKume).then(function successCallback(response) {
                 if (response.data.Sonuc) {
                     $scope.sonucDegerleri = response.data.Nesne;
-                    //window.location.pathname = 'Mazeret/AktifMazeretlerim';
+                    window.location.href = '/Graph/Cizim';
                 }
                 else {
                     $scope.hataMesajlari = [];

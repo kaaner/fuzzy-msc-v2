@@ -8,7 +8,7 @@
 
     <div id="panelPortlet1" class="panel panel-primary">
         <div class="panel-heading">
-            <span>Bulanık Küme Oluşturma Sayfası</span>{{enums.EvrakTuru}}
+            <span>{{'FuzzySetCreationPage'|translate}}</span>
             <paneltool tool-collapse="tool-collapse"></paneltool>
         </div>
         <div collapse="panelPortlet1" class="panel-wrapper">
@@ -19,7 +19,7 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label class="col-sm-6 control-label">Kural Kümesinin Adı</label>
+                                    <label class="col-sm-6 control-label">{{'NameOfTheRuleSet' | translate}}</label>
                                     <div class="col-sm-6">
                                         <input type="text" class="form-control" ng-model="kumeAdi" />
                                     </div>
@@ -36,7 +36,7 @@
 
                         <div id="panelPortlet1" class="panel panel-default">
                             <div class="panel-heading">
-                                <span>Özdirenç Değeri Ve Aralıklarını Giriniz</span>
+                                <span>{{'PleaseEnterTheResistivityValuesAndRanges'|translate}}</span>
                                 <paneltool tool-collapse="tool-collapse"></paneltool>
                             </div>
                             <div collapse="panelPortlet1" class="panel-wrapper">
@@ -44,7 +44,7 @@
                                     <div class="row">
                                         <div class="col-md-3">
                                             <div class="form-group">
-                                                <label class="col-sm-6 control-label">Değer</label>
+                                                <label class="col-sm-6 control-label">{{'Value' | translate}}</label>
                                                 <div class="col-sm-6">
                                                     <input type="text" name="ozdirenc" class="form-control" ng-model="ozdirenc.adi" />
                                                 </div>
@@ -52,7 +52,7 @@
                                         </div>
                                         <div class="col-md-3">
                                             <div class="form-group">
-                                                <label class="col-sm-5 control-label">Min. Değer</label>
+                                                <label class="col-sm-5 control-label">{{'MinValue' | translate}}</label>
                                                 <div class="col-sm-7">
                                                     <input type="number" name="mukavemet" class="form-control" ng-model="ozdirenc.minDeger" min="0" max="1000" prevent-typing-greater placeholder="Min. 0" />
                                                 </div>
@@ -60,7 +60,7 @@
                                         </div>
                                         <div class="col-md-3">
                                             <div class="form-group">
-                                                <label class="col-sm-4 control-label">Max. Değer</label>
+                                                <label class="col-sm-4 control-label">{{'MaxValue' | translate}}</label>
                                                 <div class="col-sm-8">
                                                     <input type="number" name="doygunluk" class="form-control" ng-model="ozdirenc.maxDeger" min="0" max="1000" prevent-typing-greater placeholder="Max. 1000" />
                                                 </div>
@@ -71,17 +71,17 @@
                                                 <button type="button" class="btn btn-labeled btn-info" style="margin-left: 10px;" ng-click="OzdirencGuncelle(ozdirenc)" ng-show="ozdirencButonGuncelle">
                                                     <span class="btn-label">
                                                         <i class="fa fa-check"></i>
-                                                    </span>Güncelle
+                                                    </span>{{'Update' | translate}}
                                                 </button>
                                                 <button type="button" class="btn btn-labeled btn-success" style="margin-left: 10px;" ng-click="OzdirencEkle(ozdirenc)" ng-show="ozdirencButonKaydet">
                                                     <span class="btn-label">
                                                         <i class="fa fa-check"></i>
-                                                    </span>Ekle
+                                                    </span>{{'Add' | translate}}
                                                 </button>
                                                 <button type="button" class="btn btn-labeled btn-danger" style="margin-left: 10px;" ng-click="OzdirencIptal()" ng-show="ozdirencButonIptal">
                                                     <span class="btn-label">
                                                         <i class="fa fa-check"></i>
-                                                    </span>İptal
+                                                    </span>{{'Cancel' | translate}}
                                                 </button>
                                             </div>
                                         </div>
@@ -91,10 +91,10 @@
                                             <table class="table table-hover">
                                                 <thead>
                                                     <tr>
-                                                        <th>Özdirenç</th>
-                                                        <th>Min. Değer</th>
-                                                        <th>Max. Değer</th>
-                                                        <th>İşlem</th>
+                                                        <th>{{'Resistivity' | translate}}</th>
+                                                        <th>{{'MinValue' | translate}}</th>
+                                                        <th>{{'MinValue' | translate}}</th>
+                                                        <th>{{'Operation' | translate}}</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -109,12 +109,12 @@
                                                             <button type="button" class="btn btn-labeled btn-info" ng-click="OzdirencDuzenle(item,$index)">
                                                                 <span class="btn-label">
                                                                     <i class="fa fa-check"></i>
-                                                                </span>Güncelle
+                                                                </span>{{'Update' | translate}}
                                                             </button>
                                                             <button type="button" class="btn btn-labeled btn-danger" ng-click="OzdirencSil($index)">
                                                                 <span class="btn-label">
                                                                     <i class="fa fa-check"></i>
-                                                                </span>Sil
+                                                                </span>{{'Delete' | translate}}
                                                             </button>
                                                         </td>
                                                     </tr>
@@ -129,7 +129,7 @@
                                             <button type="button" class="btn btn-labeled btn-success pull-right" style="margin-left: 10px;" ng-click="OzdirencKaydet(ozdirencList)">
                                                 <span class="btn-label">
                                                     <i class="fa fa-check"></i>
-                                                </span>Kaydet
+                                                </span>{{'Save' | translate}}
                                             </button>
                                         </div>
                                     </div>
@@ -144,7 +144,7 @@
 
                         <div id="panelPortlet1" class="panel panel-default">
                             <div class="panel-heading">
-                                <span>Toprak Sonuç Tipi Ve Aralıklarını Giriniz</span>
+                                <span>{{'PleaseEnterTheGroundResultTypeAndRanges' | translate}}</span>
                                 <paneltool tool-collapse="tool-collapse"></paneltool>
                             </div>
                             <div collapse="panelPortlet1" class="panel-wrapper">
@@ -152,7 +152,7 @@
                                     <div class="row">
                                         <div class="col-md-3">
                                             <div class="form-group">
-                                                <label class="col-sm-6 control-label">Değer</label>
+                                                <label class="col-sm-6 control-label">{{'Value' | translate}}</label>
                                                 <div class="col-sm-6">
                                                     <input type="text" name="ozdirenc" class="form-control" ng-model="toprak.adi" />
                                                 </div>
@@ -160,7 +160,7 @@
                                         </div>
                                         <div class="col-md-3">
                                             <div class="form-group">
-                                                <label class="col-sm-5 control-label">Min. Değer</label>
+                                                <label class="col-sm-5 control-label">{{'MinValue' | translate}}</label>
                                                 <div class="col-sm-7">
                                                     <input type="number" name="mukavemet" class="form-control" ng-model="toprak.minDeger" min="0" max="1000" prevent-typing-greater placeholder="Min. 0" />
                                                 </div>
@@ -168,7 +168,7 @@
                                         </div>
                                         <div class="col-md-3">
                                             <div class="form-group">
-                                                <label class="col-sm-4 control-label">Max. Değer</label>
+                                                <label class="col-sm-4 control-label">{{'MaxValue' | translate}}</label>
                                                 <div class="col-sm-8">
                                                     <input type="number" name="doygunluk" class="form-control" ng-model="toprak.maxDeger" min="0" max="1000" prevent-typing-greater placeholder="Max. 1000" />
                                                 </div>
@@ -179,17 +179,17 @@
                                                 <button type="button" class="btn btn-labeled btn-info" style="margin-left: 10px;" ng-click="ToprakGuncelle(toprak)" ng-show="toprakButonGuncelle">
                                                     <span class="btn-label">
                                                         <i class="fa fa-check"></i>
-                                                    </span>Güncelle
+                                                    </span>{{'Update' | translate}}
                                                 </button>
                                                 <button type="button" class="btn btn-labeled btn-success" style="margin-left: 10px;" ng-click="ToprakEkle(toprak)" ng-show="toprakButonKaydet">
                                                     <span class="btn-label">
                                                         <i class="fa fa-check"></i>
-                                                    </span>Ekle
+                                                    </span>{{'Add' | translate}}
                                                 </button>
                                                 <button type="button" class="btn btn-labeled btn-danger" style="margin-left: 10px;" ng-click="ToprakIptal()" ng-show="toprakButonIptal">
                                                     <span class="btn-label">
                                                         <i class="fa fa-check"></i>
-                                                    </span>İptal
+                                                    </span>{{'Cancel' | translate}}
                                                 </button>
                                             </div>
                                         </div>
@@ -199,10 +199,10 @@
                                             <table class="table table-hover">
                                                 <thead>
                                                     <tr>
-                                                        <th>Toprak</th>
-                                                        <th>Min. Değer</th>
-                                                        <th>Max. Değer</th>
-                                                        <th>İşlem</th>
+                                                        <th>{{'Ground' | translate}}</th>
+                                                        <th>{{'MinValue' | translate}}</th>
+                                                        <th>{{'MaxValue' | translate}}</th>
+                                                        <th>{{'Operation' | translate}}</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -217,12 +217,12 @@
                                                             <button type="button" class="btn btn-labeled btn-info" ng-click="ToprakDuzenle(item,$index)">
                                                                 <span class="btn-label">
                                                                     <i class="fa fa-check"></i>
-                                                                </span>Güncelle
+                                                                </span>{{'Update' | translate}}
                                                             </button>
                                                             <button type="button" class="btn btn-labeled btn-danger" ng-click="ToprakSil($index)">
                                                                 <span class="btn-label">
                                                                     <i class="fa fa-check"></i>
-                                                                </span>Sil
+                                                                </span>{{'Delete' | translate}}
                                                             </button>
                                                         </td>
                                                     </tr>
@@ -237,7 +237,7 @@
                                             <button type="button" class="btn btn-labeled btn-success pull-right" style="margin-left: 10px;" ng-click="ToprakKaydet(toprakList)">
                                                 <span class="btn-label">
                                                     <i class="fa fa-check"></i>
-                                                </span>Kaydet
+                                                </span>{{'Save' | translate}}
                                             </button>
                                         </div>
                                     </div>
@@ -252,7 +252,7 @@
 
                         <div id="panelPortlet1" class="panel panel-default">
                             <div class="panel-heading">
-                                <span>Bulanık Mantık Kural Tanımlamalarını Yapınız</span>
+                                <span>{{'PleaseDefineTheFuzzyLogicRules' | translate}}</span>
                                 <paneltool tool-collapse="tool-collapse"></paneltool>
                             </div>
                             <div collapse="panelPortlet1" class="panel-wrapper">
@@ -264,7 +264,7 @@
                                                 <div class="row">
                                                     <div class="col-md-3">
                                                         <div class="form-group">
-                                                            <label class="col-md-6 control-label">Zemin Tipi</label>
+                                                            <label class="col-md-6 control-label">{{'GroundType' | translate}}</label>
                                                             <div class="col-md-6">
                                                                 <select class="form-control" ng-model="kural.ozdirenc">
                                                                     @*<option value="">Zemin Tipi Seçiniz</option>*@
@@ -274,11 +274,11 @@
                                                         </div>
                                                     </div>
                                                     <div class="col-md-2">
-                                                        <label class="col-md-6 control-label text-center">İse</label>
+                                                        <label class="col-md-6 control-label text-center">{{'Then' | translate}}</label>
                                                     </div>
                                                     <div class="col-md-3">
                                                         <div class="form-group">
-                                                            <label class="col-md-3 control-label">Toprak</label>
+                                                            <label class="col-md-3 control-label">{{'Ground' | translate}}</label>
                                                             <div class="col-md-9 selectContainer">
                                                                 <select class="form-control" ng-model="kural.toprak">
                                                                     <option ng-repeat="item in toprakList" value="{{item.adi}}">{{item.adi}}</option>
@@ -291,22 +291,22 @@
                                                             <button type="button" class="btn btn-labeled btn-info" style="margin-left: 10px;" ng-click="KuralGuncelle(kural)" ng-show="kuralButonGuncelle">
                                                                 <span class="btn-label">
                                                                     <i class="fa fa-check"></i>
-                                                                </span>Güncelle
+                                                                </span>{{'Update' | translate}}
                                                             </button>
                                                             <button type="button" class="btn btn-labeled btn-success" style="margin-left: 10px;" ng-click="KuralEkle(kural)" ng-show="kuralButonKaydet">
                                                                 <span class="btn-label">
                                                                     <i class="fa fa-check"></i>
-                                                                </span>Ekle
+                                                                </span>{{'Add' | translate}}
                                                             </button>
                                                             <button type="button" class="btn btn-labeled btn-danger" style="margin-left: 10px;" ng-click="KuralIptal()" ng-show="kuralButonIptal">
                                                                 <span class="btn-label">
                                                                     <i class="fa fa-check"></i>
-                                                                </span>İptal
+                                                                </span>{{'Cancel' | translate}}
                                                             </button>
                                                             <button type="button" class="btn btn-labeled btn-success" style="margin-left: 10px;" ng-click="OtomatikTanimla()" title="Özdirenç ve Toprak değerleri eşit sayıda ise otomatik kural tanımlaması yapılır.">
                                                                 <span class="btn-label">
                                                                     <i class="fa fa-check"></i>
-                                                                </span>Otomatik Ekle
+                                                                </span>{{'AddAutomatically' | translate}}
                                                             </button>
                                                         </div>
                                                     </div>
@@ -317,7 +317,7 @@
                                                         <table class="table table-hover">
                                                             <thead>
                                                                 <tr>
-                                                                    <th>Kurallar</th>
+                                                                    <th>{{'Rules' | translate}}</th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
@@ -327,12 +327,12 @@
                                                                         <button type="button" class="btn btn-labeled btn-info" ng-click="KuralDuzenle(item,$index)">
                                                                             <span class="btn-label">
                                                                                 <i class="fa fa-check"></i>
-                                                                            </span>Güncelle
+                                                                            </span>{{'Update' | translate}}
                                                                         </button>
                                                                         <button type="button" class="btn btn-labeled btn-danger" ng-click="KuralSil($index)">
                                                                             <span class="btn-label">
                                                                                 <i class="fa fa-check"></i>
-                                                                            </span>Sil
+                                                                            </span>{{'Delete' | translate}}
                                                                         </button>
                                                                     </td>
                                                                 </tr>
@@ -358,7 +358,7 @@
                         <button type="button" class="btn btn-labeled btn-success pull-right" style="margin-left: 10px;" ng-click="KumeKaydet(kuralList)" ng-disabled="kuralList.length == 0">
                             <span class="btn-label">
                                 <i class="fa fa-check"></i>
-                            </span>Kaydet ve Haftalık Liste Oluştur
+                            </span>{{'SaveTheSet' | translate}}
                         </button>
                     </div>
                 </div>

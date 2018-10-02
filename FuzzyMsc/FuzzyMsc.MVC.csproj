@@ -5824,7 +5824,6 @@
     <Content Include="Scripts\assets\global\plugins\wysihtml\minified\wysihtml.min.map" />
     <Content Include="Scripts\assets\global\plugins\wysihtml\minified\wysihtml.table_editing.min.map" />
     <Content Include="Scripts\assets\global\plugins\wysihtml\minified\wysihtml.toolbar.min.map" />
-    <Content Include="Scripts\assets\layouts\layout7\img\Thumbs.db" />
     <Content Include="Scripts\assets\pages\media\blog\Thumbs.db" />
     <Content Include="Scripts\assets\pages\media\pages\Thumbs.db" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
@@ -5835,6 +5834,7 @@
     <Content Include="Scripts\custom\directives\preventtypinggreater.directive.js" />
     <Content Include="Scripts\custom\fuzzy.controller.js" />
     <Content Include="Scripts\custom\index.controller.js" />
+    <Content Include="Scripts\custom\translations.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />

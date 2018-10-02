@@ -1,5 +1,6 @@
 ﻿angular.module("mainfuzzy")
-    .controller("graphcontroller", function ($http, $scope, enums, Upload, $timeout) {
+    .controller("graphcontroller", function ($http, $scope, enums, Upload, $timeout, $translate, $rootScope) {
+        
         $scope.kumeListesi = [];
         $scope.panelExcelSec = false;
         $scope.panelAyarlar = false;
