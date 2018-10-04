@@ -162,7 +162,7 @@ var translationsTR = {
     ResistivityProximityRate: 'Özdirenç Yakınlık Oranı (%)',
     ResistivityProximityRateDescription: 'Bulanık mantık kullanılan özdirenç hesaplamalarında kullanılan yakınlık oranıdır.',
     ClickForGoToPage: 'Sayfaya gitmek için tıklayınız',
-    FuzzyLogicModule: 'Bulanık Mantık Modülü',
+    FuzzyLogicModule: 'Bulanık Küme Modülü',
     GraphModule: 'Çizim Modülü',
     FuzzySetCreationPage: 'Bulanık Küme Oluşturma Sayfası',
     NameOfTheRuleSet: 'Kural Kümesinin Adı',
