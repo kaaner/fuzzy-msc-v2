@@ -165,8 +165,7 @@
                     console.log("$scope.sonucDegerleri", $scope.sonucDegerleri);
                 }
                 else {
-                    $scope.hataMesajlari = [];
-                    $scope.hataMesajlari.push(response.data.Mesaj);
+                    console.log("response.data", response.data);
                 }
             },
                 function errorCallback(response) {

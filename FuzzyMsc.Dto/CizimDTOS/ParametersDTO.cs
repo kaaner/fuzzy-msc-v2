@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace FuzzyMsc.Dto.CizimDTOS
+﻿namespace FuzzyMsc.Dto.CizimDTOS
 {
-    public class ParametersDTO
+	public class ParametersDTO
     {
         public string Baslik { get; set; }
         public int? OzdirencOran { get; set; }
