@@ -5836,6 +5836,7 @@
     <Content Include="Scripts\custom\directives\preventtypinggreater.directive.js" />
     <Content Include="Scripts\custom\fuzzy.controller.js" />
     <Content Include="Scripts\custom\index.controller.js" />
+    <Content Include="Scripts\custom\mlcontroller.js" />
     <Content Include="Scripts\custom\translations.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -5860,6 +5861,7 @@
     <Compile Include="Controllers\FuzzyController.cs" />
     <Compile Include="Controllers\GraphController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\MachineLearningController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -5883,6 +5885,7 @@
     <Content Include="Scripts\vendor\ng-file-upload-bower-12.2.13\bower.json" />
     <Content Include="Scripts\vendor\ng-file-upload-bower-12.2.13\LICENSE" />
     <Content Include="Scripts\vendor\ng-file-upload-bower-12.2.13\README.md" />
+    <Content Include="Views\MachineLearning\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

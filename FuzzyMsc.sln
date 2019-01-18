@@ -29,6 +29,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentatio
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuzzyMsc.FuzzyLibrary", "FuzzyMsc.FuzzyLibrary\FuzzyMsc.FuzzyLibrary.csproj", "{5E119F90-4E53-43DA-93E4-CC255020F16E}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MachineLearning", "MachineLearning", "{098E214B-B3A7-4B10-AA9D-9951EE5F2C53}"
+EndProject
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "FlaskMLApp", "FlaskMLApp\FlaskMLApp.pyproj", "{EB582CB6-DC30-41D7-9EF2-2D7400B069EA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -75,6 +79,10 @@ Global
 		{5E119F90-4E53-43DA-93E4-CC255020F16E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5E119F90-4E53-43DA-93E4-CC255020F16E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5E119F90-4E53-43DA-93E4-CC255020F16E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EB582CB6-DC30-41D7-9EF2-2D7400B069EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EB582CB6-DC30-41D7-9EF2-2D7400B069EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EB582CB6-DC30-41D7-9EF2-2D7400B069EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EB582CB6-DC30-41D7-9EF2-2D7400B069EA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -90,6 +98,7 @@ Global
 		{D4042124-7F34-491E-AA64-87644FC13DCE} = {97E52418-F7B9-4257-9E2E-772F88059CB5}
 		{21667D28-8C06-419D-B725-3CD0A810F4F9} = {58564025-1ABC-4F29-9A5B-366B2285C2F1}
 		{5E119F90-4E53-43DA-93E4-CC255020F16E} = {97E52418-F7B9-4257-9E2E-772F88059CB5}
+		{EB582CB6-DC30-41D7-9EF2-2D7400B069EA} = {098E214B-B3A7-4B10-AA9D-9951EE5F2C53}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8667E666-187A-475E-8E01-FEBC9534BB99}

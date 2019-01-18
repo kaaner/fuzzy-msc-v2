@@ -17,24 +17,24 @@
 
         $scope.zeminList = [];
         $scope.ozdirencList = [{
-            adi: "Düşük",
+            adi: "Low",
             minDeger: 0,
             maxDeger: 30
         }, {
-            adi: "Orta",
+            adi: "Medium",
             minDeger: 30,
             maxDeger: 50
         }, {
-            adi: "Yüksek",
+            adi: "High",
             minDeger: 50,
             maxDeger: 70
         }, {
-            adi: "Çok Yüksek",
+            adi: "Very High",
             minDeger: 70,
             maxDeger: 1000
         }];
         $scope.toprakList = [{
-            adi: "Kil",
+            adi: "Clay",
             minDeger: 0,
             maxDeger: 30
         }, {
@@ -42,11 +42,11 @@
             minDeger: 30,
             maxDeger: 50
         }, {
-            adi: "Kum",
+            adi: "Sand",
             minDeger: 50,
             maxDeger: 70
         }, {
-            adi: "Çakıl",
+            adi: "Gravel",
             minDeger: 70,
             maxDeger: 1000
         }];
@@ -195,7 +195,7 @@
         //Kural Islemleri START
         $scope.KuralEkle = function (kural) {
             $scope.kuralList.push({
-                text: "Özdirenç Değeri " + kural.ozdirenc + " İse Toprak " + kural.toprak + " Olur.",
+                text: "If The Resistivity Is " + kural.ozdirenc + " Then Ground Is " + kural.toprak + ".",
                 kural: kural
             });
             $scope.kural = {};

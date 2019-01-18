@@ -183,7 +183,7 @@
 
                 file.upload.then(function (response) {
                     $timeout(function () {
-                        $scope.excel = { adi: $scope.f.name, data: response.data.Nesne };
+                        $scope.excel = { adi: $scope.f.name, data: response.data.Nesne.data, path: response.data.Nesne.path };
                     });
                 }, function (response) {
                     if (response.status > 0)

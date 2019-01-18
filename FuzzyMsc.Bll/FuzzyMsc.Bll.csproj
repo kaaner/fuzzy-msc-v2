@@ -75,6 +75,7 @@
     <Compile Include="GraphManager.cs" />
     <Compile Include="Interface\IBaseManager.cs" />
     <Compile Include="KullaniciManager.cs" />
+    <Compile Include="MachineLearningManager.cs" />
     <Compile Include="OrtakManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

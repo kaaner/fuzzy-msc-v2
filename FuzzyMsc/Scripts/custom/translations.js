@@ -90,7 +90,9 @@
     AddAutomatically: 'Add Automatically',
     Rules: 'Rules',
     SaveTheSet: 'Save The Set',
-    AutomaticGeotechnicalProfileCreationTool: 'Automatic Geotechnical Profile Creation Tool'
+    AutomaticGeotechnicalProfileCreationTool: 'Automatic Geotechnical Profile Creation Tool',
+    //MachineLearning
+    MachineLearning: 'Machine Learning'
 };
 
 var translationsTR = {
@@ -185,5 +187,7 @@ var translationsTR = {
     AddAutomatically: 'Otomatik Ekle',
     Rules: 'Kurallar',
     SaveTheSet: 'Kümeyi Kaydet',
-    AutomaticGeotechnicalProfileCreationTool: 'Otomatik Jeoteknik Kesit Oluşturma Aracı'
+    AutomaticGeotechnicalProfileCreationTool: 'Otomatik Jeoteknik Kesit Oluşturma Aracı',
+    //MachineLearning
+    MachineLearning: 'Makine Öğrenmesi'
 };

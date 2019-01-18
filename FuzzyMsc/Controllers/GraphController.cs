@@ -76,7 +76,7 @@ namespace FuzzyMsc.Controllers
 			//	System.IO.File.Delete(item.FullName);
 			//}
 
-			return Json(new { Sonuc = true, Mesaj = "Basarili", Nesne = Convert.ToBase64String(entityItem) }, JsonRequestBehavior.AllowGet);
+			return Json(new { Sonuc = true, Mesaj = "Basarili", Nesne = new ExcelModelDTO { adi = fileName, data = Convert.ToBase64String(entityItem), path = path } }, JsonRequestBehavior.AllowGet);
 			//return entityItem;
 		}
 

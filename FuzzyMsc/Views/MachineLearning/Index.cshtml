@@ -1,0 +1,65 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div ng-controller="mlcontroller">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <span class="panel-title">Test Panel</span>
+        </div>
+        <div class="panel-body">
+            <form name="MachineLearningForm" novalidate="novalidate" class="form-horizontal">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12">
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">CSV Dosyası Seçiniz :</label>
+                            <div class="col-sm-7">
+                                <button class="btn btn-default" type="file" ngf-select="uploadFiles($file, $invalidFiles)"
+                                        accept="excel/*" ngf-max-height="1000" ngf-max-size="1MB">
+                                    {{'SelectAnExcelFile' | translate}}
+                                </button>
+                                <span ng-show="f.progress >= 0 && excel.adi && !excelError" style="color:mediumseagreen">
+                                    <i class="fa fa-2x fa-check"></i> {{'LoadingSuccessful' | translate}}
+                                </span>
+                                <span ng-show="f.progress == 0 && excel.adi && !excelError" style="color:darkred">
+                                    <i class="fa fa-2x fa-times"></i> {{'LoadingUnsuccessful' | translate}}
+                                </span>
+                                <span ng-show="excelError" style="color:darkred">
+                                    <i class="fa fa-2x fa-times"></i> {{'ExcelWarning' | translate}}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 col-sm-12">
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Algoritma Seçiniz :</label>
+                            <div class="col-sm-7">
+                                <select class="form-control" ng-model="algorithm" required>
+                                    <option value="">Seçiniz</option>
+                                    <option value=1>Random Forest Classifier</option>
+                                    <option value=2>Decision Tree Classifier</option>
+                                    <option value=3>Gradient Boosting Classifier</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <button type="button" class="btn btn-labeled btn-success pull-right" style="margin-left: 10px;" ng-click="Sonuclar(excel, algorithm)" ng-disabled="!excel.adi && !MachineLearningForm.valid">
+                            <span class="btn-label">
+                                <i class="fa fa-check"></i>
+                            </span>{{'SaveAndContinue' | translate}}
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+

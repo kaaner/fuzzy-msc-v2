@@ -4,5 +4,6 @@
     {
         public string adi { get; set; }
         public string data { get; set; }
-    }
+		public string path { get; set; }
+	}
 }

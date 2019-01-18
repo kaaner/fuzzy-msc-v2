@@ -44,6 +44,8 @@
     <Compile Include="CizimDTOS\CizimDetailedDTO.cs" />
     <Compile Include="CizimDTOS\DugumDTO.cs" />
     <Compile Include="CizimDTOS\ExcelDTO.cs" />
+    <Compile Include="CizimDTOS\MachineLearningDTO.cs" />
+    <Compile Include="CizimDTOS\MachineLearningJsonDTO.cs" />
     <Compile Include="CizimDTOS\ParametersDTO.cs" />
     <Compile Include="CizimDTOS\RGBDTO.cs" />
     <Compile Include="CizimDTOS\SismikDTO.cs" />
