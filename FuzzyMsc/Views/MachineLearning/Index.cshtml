@@ -4,56 +4,170 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<style>
+    input[type="file"] {
+        display: none;
+    }
+
+    .custom-file-upload {
+        border: 1px solid #ccc;
+        display: inline-block;
+        padding: 6px 12px;
+        cursor: pointer;
+    }
+</style>
+
 <div ng-controller="mlcontroller">
-    <div class="panel panel-default">
+    <div class="panel panel-default" ng-show="panelMain">
         <div class="panel-heading">
-            <span class="panel-title">Test Panel</span>
+            <span class="panel-title">Test</span>
         </div>
         <div class="panel-body">
             <form name="MachineLearningForm" novalidate="novalidate" class="form-horizontal">
-                <div class="row">
-                    <div class="col-md-12 col-sm-12">
-                        <div class="form-group">
-                            <label class="col-md-3 control-label">CSV Dosyası Seçiniz :</label>
-                            <div class="col-sm-7">
-                                <button class="btn btn-default" type="file" ngf-select="uploadFiles($file, $invalidFiles)"
-                                        accept="excel/*" ngf-max-height="1000" ngf-max-size="1MB">
-                                    {{'SelectAnExcelFile' | translate}}
-                                </button>
-                                <span ng-show="f.progress >= 0 && excel.adi && !excelError" style="color:mediumseagreen">
-                                    <i class="fa fa-2x fa-check"></i> {{'LoadingSuccessful' | translate}}
-                                </span>
-                                <span ng-show="f.progress == 0 && excel.adi && !excelError" style="color:darkred">
-                                    <i class="fa fa-2x fa-times"></i> {{'LoadingUnsuccessful' | translate}}
-                                </span>
-                                <span ng-show="excelError" style="color:darkred">
-                                    <i class="fa fa-2x fa-times"></i> {{'ExcelWarning' | translate}}
-                                </span>
+                @*<div class="row">
+                        <div class="col-md-12 col-sm-12">
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">CSV Dosyası Seçiniz :</label>
+                                <div class="col-sm-7">
+                                    <button class="btn btn-default" type="file" ngf-select="uploadFiles($file, $invalidFiles)"
+                                            accept="excel/*" ngf-max-height="1000" ngf-max-size="1MB">
+                                        {{'SelectAnExcelFile' | translate}}
+                                    </button>
+                                    <span ng-show="f.progress >= 0 && excel.adi && !excelError" style="color:mediumseagreen">
+                                        <i class="fa fa-2x fa-check"></i> {{'LoadingSuccessful' | translate}}
+                                    </span>
+                                    <span ng-show="f.progress == 0 && excel.adi && !excelError" style="color:darkred">
+                                        <i class="fa fa-2x fa-times"></i> {{'LoadingUnsuccessful' | translate}}
+                                    </span>
+                                    <span ng-show="excelError" style="color:darkred">
+                                        <i class="fa fa-2x fa-times"></i> {{'ExcelWarning' | translate}}
+                                    </span>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>
+                    </div>*@
                 <div class="row">
                     <div class="col-md-12 col-sm-12">
                         <div class="form-group">
-                            <label class="col-md-3 control-label">Algoritma Seçiniz :</label>
+                            <label class="col-md-3 control-label">Algorithm :</label>
                             <div class="col-sm-7">
                                 <select class="form-control" ng-model="algorithm" required>
                                     <option value="">Seçiniz</option>
                                     <option value=1>Random Forest Classifier</option>
                                     <option value=2>Decision Tree Classifier</option>
-                                    <option value=3>Gradient Boosting Classifier</option>
+                                    @*<option value=6>Gradient Boosting Classifier</option>*@
+                                    <option value=3>Extra Trees Classifier</option>
+        @*<option value=4>Ada Boost Classifier</option>
+        <option value=5>Bagging Classifier</option>
+        <option value=7>Voting Classifier</option>
+                                    <option value=8>XGB Classifier</option>*@
+                                    <option value=9>Linear SVC</option>
+                                    <option value=10>SVC</option>
                                 </select>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="row">
+                    <div class="col-md-12 col-sm-12">
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">CSV Dosyası Seçiniz :</label>
+                            <div class="col-sm-7">
+                                <label for="file-upload" class="custom-file-upload">
+                                    {{'SelectAnExcelFile' | translate}}
+                                </label>
+                                <input id="file-upload" type="file" file-reader-directive="fileContent" file-path-directive="filePath" accept=".csv" />
+
+                                <button class="custom-file-upload" ng-click="uploadFile()">
+                                    <i class="fa fa-cloud-upload"></i> Upload
+                                </button>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" ng-show="panelFeatures">
+                    <div class="col-md-12 col-sm-12">
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Target :</label>
+                            <div class="col-sm-7">
+                                <select class="form-control" ng-model="target" required>
+                                    @*<option value="">Zemin Tipi Seçiniz</option>*@
+                                    <option ng-repeat="item in allFeatures" value="{{item}}">{{item}}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" ng-show="panelFeatures">
+                    <div class="col-md-6 col-sm-12">
+
+                        <table class="table table-hover">
+                            <thead>
+                                <tr><th>Features</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr title="Move To Features" ng-repeat="item in features" ng-click="moveToDroppedFeatures(item)" style="cursor: pointer;">
+                                    <td>{{item}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-md-6 col-sm-12">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr><th>Dropped Features</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr title="Move To Dropped Features" ng-repeat="item in droppedFeatures" ng-click="moveToFeatures(item)" style="cursor: pointer;">
+                                    <td>{{item}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="row">
                     <div class="col-md-12">
-                        <button type="button" class="btn btn-labeled btn-success pull-right" style="margin-left: 10px;" ng-click="Sonuclar(excel, algorithm)" ng-disabled="!excel.adi && !MachineLearningForm.valid">
+                        <button type="button" class="btn btn-labeled btn-success pull-right" style="margin-left: 10px;" ng-click="Sonuclar(algorithm, target)" ng-disabled="!MachineLearningForm.$valid">
                             <span class="btn-label">
                                 <i class="fa fa-check"></i>
                             </span>{{'SaveAndContinue' | translate}}
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="panel panel-default" ng-show="panelAccuracy">
+        <div class="panel-heading">
+            <span class="panel-title">Accuracy</span>
+        </div>
+        <div class="panel-body">
+            <form name="AccuracyForm" novalidate="novalidate" class="form-horizontal">
+
+                <div class="row">
+                    <div class="col-md-12 col-sm-12">
+                        <h1><p>Accuracy is {{accuracy}}</p></h1>
+
+                        <p>Click 'Reset' button to restart. Click 'Create Model' to save and create model.</p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <button type="button" class="btn btn-labeled btn-success pull-right" style="margin-left: 10px;" ng-click="CreateAndSaveModel()">
+                            <span class="btn-label">
+                                <i class="fa fa-check"></i>
+                            </span>Create Model
+                        </button>
+                        <button type="button" class="btn btn-labeled btn-danger pull-right" style="margin-left: 10px;" ng-click="Reset()">
+                            <span class="btn-label">
+                                <i class="fa fa-refresh"></i>
+                            </span>Reset
                         </button>
                     </div>
                 </div>

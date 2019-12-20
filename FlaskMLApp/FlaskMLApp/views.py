@@ -42,8 +42,8 @@ def about():
         message='Your application description page.'
     )
 
-@app.route('/postjson', methods=['GET', 'POST'])
-def post():
+@app.route('/calculateaccuracy', methods=['GET', 'POST'])
+def calculateaccuracy():
     if request.method == 'GET':
         return render_template(
             'index.html',
@@ -53,18 +53,38 @@ def post():
         )
         
     if request.method == 'POST':
-        mc.mlPredict(request.json['path'], request.json['algorithm'])
+        #mc.mlTest(request.json['path'])
+        result = mc.mlAccuracy(request.json['path'], request.json['algorithm'], request.json['allFeatures'], request.json['features'], request.json['droppedFeatures'], request.json['target'])
         newResult = {
         'Exception': None,
-        'Mesaj': request.json['path'],
-        'Nesne': None,
+        'Mesaj': 'Accuracy Bulundu',
+        'Nesne': result,
         'Sonuc': True
         }
 
-        results.append(newResult);
+        return jsonify(newResult)
 
-        return jsonify({'result': newResult})
+@app.route('/createandsavemodel', methods=['GET', 'POST'])
+def createandsavemodel():
+    if request.method == 'GET':
+        return render_template(
+            'index.html',
+            title='Home Page',
+            year=datetime.now().year,
+            message= request.get_json()
+        )
+        
+    if request.method == 'POST':
+        
+        result = mc.mlCreateAndSaveModel()
+        newResult = {
+        'Exception': None,
+        'Mesaj': 'Model Oluşturuldu ve Kaydedildi. Dosyayı Proje Dizininde Bulabilirsiniz.',
+        'Nesne': result,
+        'Sonuc': True
+        }
 
+        return jsonify(newResult)
 
 
 

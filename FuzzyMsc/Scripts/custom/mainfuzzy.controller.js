@@ -1,4 +1,4 @@
-﻿angular.module("mainfuzzy", ['ngFileUpload', 'pascalprecht.translate', 'ngCookies'])
+﻿angular.module("mainfuzzy", ['ngFileUpload', 'pascalprecht.translate', 'ngCookies', 'oitozero.ngSweetAlert'])
     .config(['$translateProvider', function ($translateProvider) {
         // add translation tables
         $translateProvider.translations('en', translationsEN);

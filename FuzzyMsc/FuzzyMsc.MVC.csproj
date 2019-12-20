@@ -1,4 +1,6 @@
 ﻿<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\Microsoft.SourceLink.Common.1.0.0\build\Microsoft.SourceLink.Common.props" Condition="Exists('..\packages\Microsoft.SourceLink.Common.1.0.0\build\Microsoft.SourceLink.Common.props')" />
+  <Import Project="..\packages\Microsoft.Build.Tasks.Git.1.0.0\build\Microsoft.Build.Tasks.Git.props" Condition="Exists('..\packages\Microsoft.Build.Tasks.Git.1.0.0\build\Microsoft.Build.Tasks.Git.props')" />
   <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.7\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.7\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
   <Import Project="..\packages\Microsoft.Net.Compilers.2.1.0\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.2.1.0\build\Microsoft.Net.Compilers.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
@@ -5480,6 +5482,7 @@
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
+    <Content Include="Scripts\custom\directives\filereader.directive.js" />
     <Content Include="Scripts\custom\fuzzy.constant.js" />
     <Content Include="Scripts\assets\global\plugins\amcharts\amcharts\plugins\dataloader\examples\data\gauge.json" />
     <Content Include="Scripts\assets\global\plugins\amcharts\amcharts\plugins\dataloader\examples\data\map.json" />
@@ -5837,10 +5840,14 @@
     <Content Include="Scripts\custom\fuzzy.controller.js" />
     <Content Include="Scripts\custom\index.controller.js" />
     <Content Include="Scripts\custom\mlcontroller.js" />
+    <Content Include="Scripts\custom\readfiledata.factory.js" />
     <Content Include="Scripts\custom\translations.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\vendor\kamilkp-ng-nestable\lib\jquery.nestable.css" />
+    <Content Include="Scripts\vendor\kamilkp-ng-nestable\lib\jquery.nestable.js" />
+    <Content Include="Scripts\vendor\kamilkp-ng-nestable\src\angular-nestable.js" />
     <Content Include="Scripts\vendor\ng-file-upload-bower-12.2.13\FileAPI.flash.swf" />
     <Content Include="Scripts\vendor\ng-file-upload-bower-12.2.13\FileAPI.js" />
     <Content Include="Scripts\vendor\ng-file-upload-bower-12.2.13\FileAPI.min.js" />
@@ -5851,6 +5858,8 @@
     <Content Include="Scripts\vendor\ng-file-upload-bower-12.2.13\ng-file-upload.js" />
     <Content Include="Scripts\vendor\ng-file-upload-bower-12.2.13\ng-file-upload.min.js" />
     <Content Include="Scripts\vendor\ng-file-upload-bower-12.2.13\package.js" />
+    <Content Include="Scripts\vendor\ngSweetAlert-master\SweetAlert.js" />
+    <Content Include="Scripts\vendor\ngSweetAlert-master\SweetAlert.min.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -5886,6 +5895,18 @@
     <Content Include="Scripts\vendor\ng-file-upload-bower-12.2.13\LICENSE" />
     <Content Include="Scripts\vendor\ng-file-upload-bower-12.2.13\README.md" />
     <Content Include="Views\MachineLearning\Index.cshtml" />
+    <Content Include="Scripts\vendor\kamilkp-ng-nestable\.gitignore" />
+    <Content Include="Scripts\vendor\kamilkp-ng-nestable\.npmignore" />
+    <Content Include="Scripts\vendor\kamilkp-ng-nestable\bower.json" />
+    <Content Include="Scripts\vendor\kamilkp-ng-nestable\LICENSE" />
+    <Content Include="Scripts\vendor\kamilkp-ng-nestable\package.json" />
+    <Content Include="Scripts\vendor\kamilkp-ng-nestable\README.md" />
+    <Content Include="Scripts\vendor\ngSweetAlert-master\.gitignore" />
+    <Content Include="Scripts\vendor\ngSweetAlert-master\bower.json" />
+    <Content Include="Scripts\vendor\ngSweetAlert-master\CHANGELOG.md" />
+    <Content Include="Scripts\vendor\ngSweetAlert-master\LICENSE" />
+    <Content Include="Scripts\vendor\ngSweetAlert-master\package.json" />
+    <Content Include="Scripts\vendor\ngSweetAlert-master\README.md" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -5967,7 +5988,13 @@
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.2.1.0\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.2.1.0\build\Microsoft.Net.Compilers.props'))" />
     <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.7\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.7\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.Build.Tasks.Git.1.0.0\build\Microsoft.Build.Tasks.Git.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Build.Tasks.Git.1.0.0\build\Microsoft.Build.Tasks.Git.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.Build.Tasks.Git.1.0.0\build\Microsoft.Build.Tasks.Git.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Build.Tasks.Git.1.0.0\build\Microsoft.Build.Tasks.Git.targets'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.SourceLink.Common.1.0.0\build\Microsoft.SourceLink.Common.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.SourceLink.Common.1.0.0\build\Microsoft.SourceLink.Common.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.SourceLink.Common.1.0.0\build\Microsoft.SourceLink.Common.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.SourceLink.Common.1.0.0\build\Microsoft.SourceLink.Common.targets'))" />
   </Target>
+  <Import Project="..\packages\Microsoft.Build.Tasks.Git.1.0.0\build\Microsoft.Build.Tasks.Git.targets" Condition="Exists('..\packages\Microsoft.Build.Tasks.Git.1.0.0\build\Microsoft.Build.Tasks.Git.targets')" />
+  <Import Project="..\packages\Microsoft.SourceLink.Common.1.0.0\build\Microsoft.SourceLink.Common.targets" Condition="Exists('..\packages\Microsoft.SourceLink.Common.1.0.0\build\Microsoft.SourceLink.Common.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

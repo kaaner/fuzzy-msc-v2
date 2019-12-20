@@ -1,4 +1,4 @@
-﻿namespace FuzzyMsc.Dto.CizimDTOS
+﻿namespace FuzzyMsc.Dto.MachineLearningDTOS
 {
 	public class MachineLearningJsonDTO
 	{

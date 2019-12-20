@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace FuzzyMsc.Dto.CizimDTOS
+namespace FuzzyMsc.Dto.MachineLearningDTOS
 {
 	public class MachineLearningDTO
 	{
@@ -9,9 +9,11 @@ namespace FuzzyMsc.Dto.CizimDTOS
 			features = new List<string>();
 			droppedFeatures = new List<string>();
 		}
-		public ExcelModelDTO excel { get; set; }
+		public string path { get; set; }
 		public string algorithm { get; set; }
+		public List<string> allFeatures { get; set; }
 		public List<string> features { get; set; }
 		public List<string> droppedFeatures { get; set; }
+		public string target { get; set; }
 	}
 }

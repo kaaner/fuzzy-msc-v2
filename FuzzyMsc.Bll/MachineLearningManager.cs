@@ -1,6 +1,6 @@
 ﻿using FuzzyMsc.Bll.Interface;
 using FuzzyMsc.Dto;
-using FuzzyMsc.Dto.CizimDTOS;
+using FuzzyMsc.Dto.MachineLearningDTOS;
 using FuzzyMsc.Pattern.UnitOfWork;
 using Newtonsoft.Json;
 using System;
@@ -25,9 +25,9 @@ namespace FuzzyMsc.Bll
 		public SonucDTO Test(MachineLearningDTO datas)
 		{
 			SonucDTO sonuc = new SonucDTO();
-			var postResult = POST("http://localhost:5555/postjson", datas);
+			var postResult = POST("http://localhost:5555/calculateaccuracy", datas);
 
-			return sonuc;
+			return postResult;
 		}
 
 		private SonucDTO POST(string url, MachineLearningDTO datas)
@@ -37,8 +37,7 @@ namespace FuzzyMsc.Bll
 			request.Method = "POST";
 
 			System.Text.UTF8Encoding encoding = new System.Text.UTF8Encoding();
-			datas.excel.data = null;
-			var jsonContent =  JsonConvert.SerializeObject(new MachineLearningJsonDTO { path = datas.excel.path, algorithm = datas.algorithm});
+			var jsonContent =  JsonConvert.SerializeObject(datas);
 			Byte[] byteArray = encoding.GetBytes(jsonContent);
 
 			request.ContentLength = byteArray.Length;
@@ -105,10 +104,19 @@ namespace FuzzyMsc.Bll
 
 			return model;
 		}
+
+		public SonucDTO CreateAndSaveModel()
+		{
+			SonucDTO sonuc = new SonucDTO();
+			var postResult = POST("http://localhost:5555/createandsavemodel", null);
+
+			return postResult;
+		}
 	}
 
 	public interface IMachineLearningManager : IBaseManager
 	{
+		SonucDTO CreateAndSaveModel();
 		SonucDTO Test(MachineLearningDTO datas);
 	}
 }
