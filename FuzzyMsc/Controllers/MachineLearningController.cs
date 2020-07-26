@@ -26,17 +26,17 @@ namespace FuzzyMsc.Controllers
 		[HttpPost]
 		public JsonResult Test(MachineLearningDTO datas)
 		{
-			SonucDTO sonuc = _machineLearningManager.Test(datas);
+			ResultDTO sonuc = _machineLearningManager.Test(datas);
 
-			return Json(new { Sonuc = sonuc.Sonuc, Mesaj = sonuc.Mesaj, Nesne = sonuc.Nesne }, JsonRequestBehavior.AllowGet);
+			return Json(new { Sonuc = sonuc.Result, Mesaj = sonuc.Message, Nesne = sonuc.Object }, JsonRequestBehavior.AllowGet);
 		}
 		[HttpPost]
 
 		public JsonResult CreateAndSaveModel()
 		{
-			SonucDTO sonuc = _machineLearningManager.CreateAndSaveModel();
+			ResultDTO sonuc = _machineLearningManager.CreateAndSaveModel();
 
-			return Json(new { Sonuc = sonuc.Sonuc, Mesaj = sonuc.Mesaj, Nesne = sonuc.Nesne }, JsonRequestBehavior.AllowGet);
+			return Json(new { Sonuc = sonuc.Result, Mesaj = sonuc.Message, Nesne = sonuc.Object }, JsonRequestBehavior.AllowGet);
 		}
 
 		[HttpPost]

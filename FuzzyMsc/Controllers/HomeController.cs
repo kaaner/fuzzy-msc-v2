@@ -6,12 +6,12 @@ namespace FuzzyMsc.Controllers
 {
     public class HomeController : Controller
     {
-        IKullaniciManager _kullaniciManager;
+        IUserManager _userManager;
         IFuzzyManager _fuzzyManager;
-        public HomeController(IKullaniciManager kullaniciManager,
+        public HomeController(IUserManager userManager,
             IFuzzyManager fuzzyManager)
         {
-            _kullaniciManager = kullaniciManager;
+            _userManager = userManager;
             _fuzzyManager = fuzzyManager;
         }
         // GET: Home
@@ -24,8 +24,8 @@ namespace FuzzyMsc.Controllers
         public JsonResult Kaydet() {
 
             _fuzzyManager.Test(12,12,12);
-            SonucDTO sonuc = _kullaniciManager.Getir();
-            return Json(new { Sonuc = sonuc.Sonuc, Mesaj = sonuc.Mesaj, Nesne = sonuc.Nesne, Exception = sonuc.Exception }, JsonRequestBehavior.AllowGet);
+            ResultDTO sonuc = _userManager.Getir();
+            return Json(new { Sonuc = sonuc.Result, Mesaj = sonuc.Message, Nesne = sonuc.Object, Exception = sonuc.Exception }, JsonRequestBehavior.AllowGet);
         }
     }
 }

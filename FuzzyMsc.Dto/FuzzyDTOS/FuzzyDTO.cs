@@ -2,8 +2,17 @@
 {
     public class FuzzyDTO
     {
-        public double Ozdirenc { get; set; }
-        public double Mukavemet { get; set; }
-        public double Doygunluk { get; set; }
+        /// <summary>
+        /// Resistivity (Özdirenç)
+        /// </summary>
+        public double Resistivity { get; set; }
+        /// <summary>
+        /// Resistance (Mukavemet)
+        /// </summary>
+        public double Resistance { get; set; }
+        /// <summary>
+        /// Saturation (Doygunluk)
+        /// </summary>
+        public double Saturation { get; set; }
     }
 }

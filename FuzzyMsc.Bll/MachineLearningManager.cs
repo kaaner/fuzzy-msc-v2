@@ -13,24 +13,24 @@ namespace FuzzyMsc.Bll
 	public class MachineLearningManager : IMachineLearningManager
 	{
 		IUnitOfWorkAsync _unitOfWork;
-		IOrtakManager _ortakManager;
+		ICommonManager _commonManager;
 
 		public MachineLearningManager(IUnitOfWorkAsync unitOfWork,
-			IOrtakManager ortakManager)
+			ICommonManager commonManager)
 		{
 			_unitOfWork = unitOfWork;
-			_ortakManager = ortakManager;
+			_commonManager = commonManager;
 		}
 
-		public SonucDTO Test(MachineLearningDTO datas)
+		public ResultDTO Test(MachineLearningDTO datas)
 		{
-			SonucDTO sonuc = new SonucDTO();
+			ResultDTO sonuc = new ResultDTO();
 			var postResult = POST("http://localhost:5555/calculateaccuracy", datas);
 
 			return postResult;
 		}
 
-		private SonucDTO POST(string url, MachineLearningDTO datas)
+		private ResultDTO POST(string url, MachineLearningDTO datas)
 		{
 			string resultStream = "";
 			HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
@@ -60,7 +60,7 @@ namespace FuzzyMsc.Bll
 					{
 						StreamReader reader = new StreamReader(responseStream, Encoding.GetEncoding("utf-8"));
 						resultStream = reader.ReadToEnd();
-						return JsonConvert.DeserializeObject<SonucDTO>(resultStream);
+						return JsonConvert.DeserializeObject<ResultDTO>(resultStream);
 					}
 				}
 			}
@@ -71,15 +71,15 @@ namespace FuzzyMsc.Bll
 				{
 					StreamReader reader = new StreamReader(responseStream, Encoding.GetEncoding("utf-8"));
 					resultStream = reader.ReadToEnd();
-					return JsonConvert.DeserializeObject<SonucDTO>(resultStream);
+					return JsonConvert.DeserializeObject<ResultDTO>(resultStream);
 				}
 				throw;
 			}
 		}
 
-		public SonucDTO GET(string url)
+		public ResultDTO GET(string url)
 		{
-			SonucDTO model = new SonucDTO();
+			ResultDTO model = new ResultDTO();
 			HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
 			try
 			{
@@ -87,7 +87,7 @@ namespace FuzzyMsc.Bll
 				using (Stream responseStream = response.GetResponseStream())
 				{
 					StreamReader reader = new StreamReader(responseStream, Encoding.UTF8);
-					model = JsonConvert.DeserializeObject<SonucDTO>(reader.ReadToEnd());
+					model = JsonConvert.DeserializeObject<ResultDTO>(reader.ReadToEnd());
 				}
 			}
 			catch (WebException ex)
@@ -105,9 +105,9 @@ namespace FuzzyMsc.Bll
 			return model;
 		}
 
-		public SonucDTO CreateAndSaveModel()
+		public ResultDTO CreateAndSaveModel()
 		{
-			SonucDTO sonuc = new SonucDTO();
+			ResultDTO sonuc = new ResultDTO();
 			var postResult = POST("http://localhost:5555/createandsavemodel", null);
 
 			return postResult;
@@ -116,7 +116,7 @@ namespace FuzzyMsc.Bll
 
 	public interface IMachineLearningManager : IBaseManager
 	{
-		SonucDTO CreateAndSaveModel();
-		SonucDTO Test(MachineLearningDTO datas);
+		ResultDTO CreateAndSaveModel();
+		ResultDTO Test(MachineLearningDTO datas);
 	}
 }

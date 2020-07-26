@@ -44,37 +44,37 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CizimDTOS\CizimCountDTO.cs" />
-    <Compile Include="CizimDTOS\CizimDetailedDTO.cs" />
-    <Compile Include="CizimDTOS\DugumDTO.cs" />
-    <Compile Include="CizimDTOS\ExcelDTO.cs" />
+    <Compile Include="GraphDTOS\GraphCountDTO.cs" />
+    <Compile Include="GraphDTOS\GraphDetailedDTO.cs" />
+    <Compile Include="GraphDTOS\NodeDTO.cs" />
+    <Compile Include="GraphDTOS\ExcelDTO.cs" />
     <Compile Include="MachineLearningDTOS\AccuracyDTO.cs" />
     <Compile Include="MachineLearningDTOS\MachineLearningDTO.cs" />
     <Compile Include="MachineLearningDTOS\MachineLearningJsonDTO.cs" />
-    <Compile Include="CizimDTOS\ParametersDTO.cs" />
-    <Compile Include="CizimDTOS\RGBDTO.cs" />
-    <Compile Include="CizimDTOS\SismikDTO.cs" />
-    <Compile Include="CizimDTOS\SondajDTO.cs" />
-    <Compile Include="FuzzyDTOS\KuralGetirDTO.cs" />
-    <Compile Include="FuzzyDTOS\KuralTextVeOzdirencDTO.cs" />
+    <Compile Include="GraphDTOS\ParametersDTO.cs" />
+    <Compile Include="GraphDTOS\RGBDTO.cs" />
+    <Compile Include="GraphDTOS\SeismicDTO.cs" />
+    <Compile Include="GraphDTOS\DrillDTO.cs" />
+    <Compile Include="FuzzyDTOS\GetRuleDTO.cs" />
+    <Compile Include="FuzzyDTOS\RuleTextAndResistivityDTO.cs" />
     <Compile Include="FuzzySystemResultDTO.cs" />
     <Compile Include="HighchartsDTOS\AnnotationsDTO.cs" />
     <Compile Include="HighchartsDTOS\AxisDTO.cs" />
-    <Compile Include="CizimDTOS\ExcelModelDTO.cs" />
-    <Compile Include="CizimDTOS\KesitDTO.cs" />
+    <Compile Include="GraphDTOS\ExcelModelDTO.cs" />
+    <Compile Include="GraphDTOS\SectionDTO.cs" />
     <Compile Include="HighchartsDTOS\SeriesDTO.cs" />
-    <Compile Include="CizimDTOS\GraphDTO.cs" />
-    <Compile Include="CizimDTOS\OlcekDTO.cs" />
-    <Compile Include="CizimDTOS\RezistiviteDTO.cs" />
+    <Compile Include="GraphDTOS\GraphDTO.cs" />
+    <Compile Include="GraphDTOS\ScaleDTO.cs" />
+    <Compile Include="GraphDTOS\ResistivityDTO.cs" />
     <Compile Include="FuzzyDTOS\ConstantDTO.cs" />
-    <Compile Include="FuzzyDTOS\FuzzyKuralDTO.cs" />
+    <Compile Include="FuzzyDTOS\FuzzyRuleDTO.cs" />
     <Compile Include="FuzzyDTOS\FuzzyResultDTO.cs" />
     <Compile Include="FuzzyDTOS\FuzzyDTO.cs" />
-    <Compile Include="FuzzyDTOS\DegiskenDTO.cs" />
+    <Compile Include="FuzzyDTOS\VariableDTO.cs" />
     <Compile Include="HighchartsDTOS\HighchartsDTO.cs" />
-    <Compile Include="KullaniciDTOS\KullaniciDTO.cs" />
-    <Compile Include="RolDTOS\RolDTO.cs" />
-    <Compile Include="SonucDTO.cs" />
+    <Compile Include="UserDTOS\UserDTO.cs" />
+    <Compile Include="RoleDTOS\RoleDTO.cs" />
+    <Compile Include="ResultDTO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

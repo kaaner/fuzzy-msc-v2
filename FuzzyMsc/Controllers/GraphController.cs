@@ -1,6 +1,6 @@
 ﻿using FuzzyMsc.Bll;
 using FuzzyMsc.Dto;
-using FuzzyMsc.Dto.CizimDTOS;
+using FuzzyMsc.Dto.GraphDTOS;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -16,16 +16,16 @@ namespace FuzzyMsc.Controllers
 	public class GraphController : Controller
 	{
 		IGraphManager _graphManager;
-		IOrtakManager _ortakManager;
+		ICommonManager _commonManager;
 
 		string uploadTmpFolder = "~/App_Data/Tmp";
 		string uploadFolder = "~/App_Data/Tmp/FileUploads";
 
 		public GraphController(IGraphManager graphManager,
-			IOrtakManager ortakManager)
+			ICommonManager commonManager)
 		{
 			_graphManager = graphManager;
-			_ortakManager = ortakManager;
+			_commonManager = commonManager;
 		}
 		// GET: Graph
 		public ActionResult Index()
@@ -41,21 +41,21 @@ namespace FuzzyMsc.Controllers
 		public JsonResult KumeListesiGetir()
 		{
 			var sonuc = _graphManager.KumeListesiGetir();
-			return Json(new { Sonuc = sonuc.Sonuc, Mesaj = sonuc.Mesaj, Nesne = sonuc.Nesne, Exception = sonuc.Exception }, JsonRequestBehavior.AllowGet);
+			return Json(new { Sonuc = sonuc.Result, Mesaj = sonuc.Message, Nesne = sonuc.Object, Exception = sonuc.Exception }, JsonRequestBehavior.AllowGet);
 		}
 
 		[HttpGet]
 		public JsonResult KuralGetir(long kuralID)
 		{
 			var sonuc = _graphManager.KuralGetir(kuralID);
-			return Json(new { Sonuc = sonuc.Sonuc, Mesaj = sonuc.Mesaj, Nesne = sonuc.Nesne, Exception = sonuc.Exception }, JsonRequestBehavior.AllowGet);
+			return Json(new { Sonuc = sonuc.Result, Mesaj = sonuc.Message, Nesne = sonuc.Object, Exception = sonuc.Exception }, JsonRequestBehavior.AllowGet);
 		}
 
 		[HttpGet]
 		public JsonResult KuralTextVeOzdirencGetir(long kuralID)
 		{
 			var sonuc = _graphManager.KuralTextVeOzdirencGetir(kuralID);
-			return Json(new { Sonuc = sonuc.Sonuc, Mesaj = sonuc.Mesaj, Nesne = sonuc.Nesne, Exception = sonuc.Exception }, JsonRequestBehavior.AllowGet);
+			return Json(new { Sonuc = sonuc.Result, Mesaj = sonuc.Message, Nesne = sonuc.Object, Exception = sonuc.Exception }, JsonRequestBehavior.AllowGet);
 		}
 
 		[HttpPost]
@@ -76,7 +76,7 @@ namespace FuzzyMsc.Controllers
 			//	System.IO.File.Delete(item.FullName);
 			//}
 
-			return Json(new { Sonuc = true, Mesaj = "Basarili", Nesne = new ExcelModelDTO { adi = fileName, data = Convert.ToBase64String(entityItem), path = path } }, JsonRequestBehavior.AllowGet);
+			return Json(new { Sonuc = true, Mesaj = "Basarili", Nesne = new ExcelModelDTO { name = fileName, data = Convert.ToBase64String(entityItem), path = path } }, JsonRequestBehavior.AllowGet);
 			//return entityItem;
 		}
 
@@ -84,24 +84,24 @@ namespace FuzzyMsc.Controllers
 		[HttpPost]
 		public JsonResult ExcelKontrolEt(ExcelModelDTO excel)
 		{
-			var path = Path.Combine(Server.MapPath(uploadFolder), excel.adi);
+			var path = Path.Combine(Server.MapPath(uploadFolder), excel.name);
 			var sonuc = _graphManager.ExcelKontrolEt(excel, path);
-			return Json(new { Sonuc = sonuc.Sonuc, Mesaj = sonuc.Mesaj, Nesne = sonuc.Nesne, Exception = sonuc.Exception }, JsonRequestBehavior.AllowGet);
+			return Json(new { Sonuc = sonuc.Result, Mesaj = sonuc.Message, Nesne = sonuc.Object, Exception = sonuc.Exception }, JsonRequestBehavior.AllowGet);
 		}
 
 		[HttpPost]
 		public JsonResult GraphOlustur(GraphDTO graph)
 		{
-			SonucDTO sonuc = new SonucDTO();
+			ResultDTO sonuc = new ResultDTO();
 			try
 			{
-				var path = Path.Combine(Server.MapPath(uploadFolder), graph.excel.adi);
+				var path = Path.Combine(Server.MapPath(uploadFolder), graph.excel.name);
 				sonuc = _graphManager.GraphOlustur(graph, path);
-				return Json(new { Sonuc = sonuc.Sonuc, Mesaj = sonuc.Mesaj, Nesne = sonuc.Nesne, Exception = sonuc.Exception.ToString() }, JsonRequestBehavior.AllowGet);
+				return Json(new { Sonuc = sonuc.Result, Mesaj = sonuc.Message, Nesne = sonuc.Object, Exception = sonuc.Exception.ToString() }, JsonRequestBehavior.AllowGet);
 			}
 			catch (Exception ex)
 			{
-				return Json(new { Sonuc = sonuc.Sonuc, Mesaj = ex.Message, Nesne = sonuc.Nesne, Exception = ex.ToString() }, JsonRequestBehavior.AllowGet);
+				return Json(new { Sonuc = sonuc.Result, Mesaj = ex.Message, Nesne = sonuc.Object, Exception = ex.ToString() }, JsonRequestBehavior.AllowGet);
 			}
 		}
 	}

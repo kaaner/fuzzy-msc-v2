@@ -8,12 +8,12 @@ namespace FuzzyMsc.Controllers
 {
 	public class FuzzyController : Controller
 	{
-		IKullaniciManager _kullaniciManager;
+		IUserManager _userManager;
 		IFuzzyManager _fuzzyManager;
-		public FuzzyController(IKullaniciManager kullaniciManager,
+		public FuzzyController(IUserManager userManager,
 			IFuzzyManager fuzzyManager)
 		{
-			_kullaniciManager = kullaniciManager;
+			_userManager = userManager;
 			_fuzzyManager = fuzzyManager;
 		}
 		// GET: Fuzzy
@@ -26,8 +26,8 @@ namespace FuzzyMsc.Controllers
 		public JsonResult Test()
 		{
 			_fuzzyManager.Test(12, 12, 12);
-			SonucDTO sonuc = _kullaniciManager.Getir();
-			return Json(new { Sonuc = sonuc.Sonuc, Mesaj = sonuc.Mesaj, Nesne = sonuc.Nesne, Exception = sonuc.Exception }, JsonRequestBehavior.AllowGet);
+			ResultDTO sonuc = _userManager.Getir();
+			return Json(new { Sonuc = sonuc.Result, Mesaj = sonuc.Message, Nesne = sonuc.Object, Exception = sonuc.Exception }, JsonRequestBehavior.AllowGet);
 		}
 
 		[HttpPost]
@@ -38,8 +38,8 @@ namespace FuzzyMsc.Controllers
 			{
 				foreach (var item in zeminList)
 				{
-					var donenDeger = _fuzzyManager.Test(item.Ozdirenc, item.Mukavemet, item.Doygunluk);
-					donenDegerList.Add(new FuzzyResultDTO { Sonuc = donenDeger });
+					var donenDeger = _fuzzyManager.Test(item.Resistivity, item.Resistance, item.Saturation);
+					donenDegerList.Add(new FuzzyResultDTO { Result = donenDeger });
 				}
 				return Json(new { Sonuc = true, Mesaj = "İşlem Başarılı", Nesne = donenDegerList, }, JsonRequestBehavior.AllowGet);
 			}
@@ -55,11 +55,11 @@ namespace FuzzyMsc.Controllers
 		}
 
 		[HttpPost]
-		public JsonResult KumeKaydet(KuralKumeDTO kuralKume)
+		public JsonResult KumeKaydet(RuleClusterDTO kuralKume)
 		{
 			var sonuc = _fuzzyManager.KumeKaydet(kuralKume);
 
-			return Json(new { Sonuc = sonuc.Sonuc, Nesne = sonuc.Nesne, Mesaj = sonuc.Mesaj, Exception = sonuc.Exception }, JsonRequestBehavior.AllowGet);
+			return Json(new { Sonuc = sonuc.Result, Nesne = sonuc.Object, Mesaj = sonuc.Message, Exception = sonuc.Exception }, JsonRequestBehavior.AllowGet);
 
 		}
 	}
