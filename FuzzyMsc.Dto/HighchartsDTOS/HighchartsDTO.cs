@@ -1,4 +1,4 @@
-﻿using FuzzyMsc.Dto.CizimDTOS;
+﻿using FuzzyMsc.Dto.GraphDTOS;
 using System.Collections.Generic;
 
 namespace FuzzyMsc.Dto.HighchartsDTOS
@@ -9,14 +9,14 @@ namespace FuzzyMsc.Dto.HighchartsDTOS
         {
             series = new List<SeriesDTO>();
             annotations = new List<AnnotationsDTO>();
-            cizimBilgileri = new List<CizimDetailedDTO>();
+            cizimBilgileri = new List<GraphDetailedDTO>();
         }
         public List<SeriesDTO> series { get; set; }
         public AxisDTO xAxis { get; set; }
         public AxisDTO yAxis { get; set; }
         public List<AnnotationsDTO> annotations { get; set; }
         public ParametersDTO parameters { get; set; }
-        public CizimCountDTO sayilar { get; set; }
-        public List<CizimDetailedDTO> cizimBilgileri { get; set; }
+        public GraphCountDTO sayilar { get; set; }
+        public List<GraphDetailedDTO> cizimBilgileri { get; set; }
     }
 }

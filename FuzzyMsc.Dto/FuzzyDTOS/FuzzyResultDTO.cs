@@ -8,6 +8,6 @@ namespace FuzzyMsc.Dto.FuzzyDTOS
 {
     public class FuzzyResultDTO
     {
-            public double Sonuc { get; set; }
+            public double Result { get; set; }
     }
 }

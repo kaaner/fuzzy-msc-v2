@@ -2,7 +2,7 @@
 {
     public class Enums
     {
-        public enum Roller
+        public enum Roles
         {
             Admin = 1
         }
@@ -13,29 +13,29 @@
             Or = 2
         }
 
-        public enum DegiskenTip
+        public enum VariableType
         {
             Input = 1,
             Output = 2
         }
 
-        public enum SheetTuru
+        public enum SheetType
         {
-            Rezistivite = 1,
-            Sismik = 2,
-            Sondaj = 3
+            Resistivity = 1,
+            Seismic = 2,
+            Drill = 3
         }
 
-        public enum YonDegeri
+        public enum DirectionValue
         {
-            Sol = 1,
-            Sag = 2
+            Left = 1,
+            Right = 2
         }
 
-        public enum ExcelDataTipi
+        public enum ExcelDataType
         {
-            Gercek = 1,
-            Yapay = 2
+            Real = 1,
+            Artificial = 2
         }
     }
 }
