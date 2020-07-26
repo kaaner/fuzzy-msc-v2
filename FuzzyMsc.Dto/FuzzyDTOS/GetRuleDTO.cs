@@ -15,7 +15,7 @@ namespace FuzzyMsc.Dto.FuzzyDTOS
             VariableList = new List<Degisken>();
             VariableItemList = new List<DegiskenItem>();
         }
-        public Kural Kural { get; set; }
+        public Kural Rule { get; set; }
         public List<KuralListText> RuleListText { get; set; }
         public List<Degisken> VariableList { get; set; }
         public List<DegiskenItem> VariableItemList { get; set; }

@@ -11,7 +11,7 @@ namespace FuzzyMsc.Bll
     {
         ResultDTO Save(int parametre1, string parametre2);
 
-        ResultDTO Getir();
+        ResultDTO Get();
     }
 
     public class UserManager : IUserManager
@@ -58,7 +58,7 @@ namespace FuzzyMsc.Bll
         }
 
 
-        public ResultDTO Getir()
+        public ResultDTO Get()
         {
             ResultDTO sonuc = new ResultDTO();
             try

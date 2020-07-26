@@ -13,9 +13,9 @@ namespace FuzzyMsc.Dto.GraphDTOS
         public string Connection { get; set; }
         public bool Normal { get; set; }
         /// <summary>
-        /// Closure (Kapatma)
+        /// Pocket (Kapatma)
         /// </summary>
-        public bool Closure { get; set; }
+        public bool Pocket { get; set; }
         /// <summary>
         /// Fault (Fay)
         /// </summary>

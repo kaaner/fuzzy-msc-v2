@@ -40,21 +40,21 @@ namespace FuzzyMsc.Controllers
 		[HttpGet]
 		public JsonResult KumeListesiGetir()
 		{
-			var sonuc = _graphManager.KumeListesiGetir();
+			var sonuc = _graphManager.GetClusterList();
 			return Json(new { Sonuc = sonuc.Result, Mesaj = sonuc.Message, Nesne = sonuc.Object, Exception = sonuc.Exception }, JsonRequestBehavior.AllowGet);
 		}
 
 		[HttpGet]
 		public JsonResult KuralGetir(long kuralID)
 		{
-			var sonuc = _graphManager.KuralGetir(kuralID);
+			var sonuc = _graphManager.GetRule(kuralID);
 			return Json(new { Sonuc = sonuc.Result, Mesaj = sonuc.Message, Nesne = sonuc.Object, Exception = sonuc.Exception }, JsonRequestBehavior.AllowGet);
 		}
 
 		[HttpGet]
 		public JsonResult KuralTextVeOzdirencGetir(long kuralID)
 		{
-			var sonuc = _graphManager.KuralTextVeOzdirencGetir(kuralID);
+			var sonuc = _graphManager.GetRuleTextAndResistivity(kuralID);
 			return Json(new { Sonuc = sonuc.Result, Mesaj = sonuc.Message, Nesne = sonuc.Object, Exception = sonuc.Exception }, JsonRequestBehavior.AllowGet);
 		}
 
@@ -85,7 +85,7 @@ namespace FuzzyMsc.Controllers
 		public JsonResult ExcelKontrolEt(ExcelModelDTO excel)
 		{
 			var path = Path.Combine(Server.MapPath(uploadFolder), excel.name);
-			var sonuc = _graphManager.ExcelKontrolEt(excel, path);
+			var sonuc = _graphManager.CheckExcel(excel, path);
 			return Json(new { Sonuc = sonuc.Result, Mesaj = sonuc.Message, Nesne = sonuc.Object, Exception = sonuc.Exception }, JsonRequestBehavior.AllowGet);
 		}
 
@@ -96,7 +96,7 @@ namespace FuzzyMsc.Controllers
 			try
 			{
 				var path = Path.Combine(Server.MapPath(uploadFolder), graph.excel.name);
-				sonuc = _graphManager.GraphOlustur(graph, path);
+				sonuc = _graphManager.GenerateGraph(graph, path);
 				return Json(new { Sonuc = sonuc.Result, Mesaj = sonuc.Message, Nesne = sonuc.Object, Exception = sonuc.Exception.ToString() }, JsonRequestBehavior.AllowGet);
 			}
 			catch (Exception ex)

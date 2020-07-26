@@ -7,7 +7,7 @@ namespace FuzzyMsc.Bll
 {
     public class CommonManager : ICommonManager
     {
-        public List<VariableDTO> Mukavemet
+        public List<VariableDTO> Resistance
         {
             get
             {
@@ -21,7 +21,7 @@ namespace FuzzyMsc.Bll
             }
             set { }
         }
-        public List<VariableDTO> Doygunluk
+        public List<VariableDTO> Saturation
         {
             get
             {
@@ -42,7 +42,8 @@ namespace FuzzyMsc.Bll
                 return liste;
             } set { }
         }
-        public List<ConstantDTO> MukavemetList {
+        public List<ConstantDTO> ResistanceList
+        {
             get
             {
                 var liste = new List<ConstantDTO>();
@@ -55,7 +56,7 @@ namespace FuzzyMsc.Bll
             }
             set { }
         }
-        public List<ConstantDTO> DoygunlukList {
+        public List<ConstantDTO> SaturationList {
             get
             {
                 var liste = new List<ConstantDTO>();
@@ -66,7 +67,7 @@ namespace FuzzyMsc.Bll
             }
             set { }
         }
-        public List<ConstantDTO> EsitlikList {
+        public List<ConstantDTO> EqualityList {
             get
             {
                 var liste = new List<ConstantDTO>();
@@ -93,13 +94,28 @@ namespace FuzzyMsc.Bll
 
     public interface ICommonManager : IBaseManager
     {
-        List<VariableDTO> Mukavemet { get; set; }
-        List<VariableDTO> Doygunluk { get; set; }
+        /// <summary>
+        /// Resistance (Mukavemet)
+        /// </summary>
+        List<VariableDTO> Resistance { get; set; }
+        /// <summary>
+        /// Saturation (Doygunluk)
+        /// </summary>
+        List<VariableDTO> Saturation { get; set; }
         
         List<ConstantDTO> OperatorList { get; set; }
-        List<ConstantDTO> MukavemetList { get; set; }
-        List<ConstantDTO> DoygunlukList { get; set; }
-        List<ConstantDTO> EsitlikList { get; set; }
+        /// <summary>
+        /// ResistanceList (MukavemetList)
+        /// </summary>
+        List<ConstantDTO> ResistanceList { get; set; }
+        /// <summary>
+        /// SaturationList (DoygunlukList)
+        /// </summary>
+        List<ConstantDTO> SaturationList { get; set; }
+        /// <summary>
+        /// EqualityList (EsitlikList)
+        /// </summary>
+        List<ConstantDTO> EqualityList { get; set; }
 
         byte[] StringToByteArray(string value);
     }

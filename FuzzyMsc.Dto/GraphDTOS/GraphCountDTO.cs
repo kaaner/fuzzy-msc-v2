@@ -4,9 +4,9 @@
     {
         public int Normal { get; set; }
         /// <summary>
-        /// Closure (Kapatma)
+        /// Pocket (Kapatma)
         /// </summary>
-        public int Closure { get; set; }
+        public int Pocket { get; set; }
         /// <summary>
         /// Fault (Fay)
         /// </summary>

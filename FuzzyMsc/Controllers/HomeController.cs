@@ -24,7 +24,7 @@ namespace FuzzyMsc.Controllers
         public JsonResult Kaydet() {
 
             _fuzzyManager.Test(12,12,12);
-            ResultDTO sonuc = _userManager.Getir();
+            ResultDTO sonuc = _userManager.Get();
             return Json(new { Sonuc = sonuc.Result, Mesaj = sonuc.Message, Nesne = sonuc.Object, Exception = sonuc.Exception }, JsonRequestBehavior.AllowGet);
         }
     }

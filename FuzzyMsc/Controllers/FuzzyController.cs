@@ -26,7 +26,7 @@ namespace FuzzyMsc.Controllers
 		public JsonResult Test()
 		{
 			_fuzzyManager.Test(12, 12, 12);
-			ResultDTO sonuc = _userManager.Getir();
+			ResultDTO sonuc = _userManager.Get();
 			return Json(new { Sonuc = sonuc.Result, Mesaj = sonuc.Message, Nesne = sonuc.Object, Exception = sonuc.Exception }, JsonRequestBehavior.AllowGet);
 		}
 
@@ -57,7 +57,7 @@ namespace FuzzyMsc.Controllers
 		[HttpPost]
 		public JsonResult KumeKaydet(RuleClusterDTO kuralKume)
 		{
-			var sonuc = _fuzzyManager.KumeKaydet(kuralKume);
+			var sonuc = _fuzzyManager.SaveCluster(kuralKume);
 
 			return Json(new { Sonuc = sonuc.Result, Nesne = sonuc.Object, Mesaj = sonuc.Message, Exception = sonuc.Exception }, JsonRequestBehavior.AllowGet);
 
