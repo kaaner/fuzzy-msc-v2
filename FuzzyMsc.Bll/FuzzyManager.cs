@@ -50,51 +50,51 @@ namespace FuzzyMsc.Bll
             _ruleListItemService = ruleListItemService;
         }
 
-        public ResultDTO KumeKaydet(RuleClusterDTO kuralKume)
+        public ResultDTO SaveCluster(RuleClusterDTO ruleCluster)
         {
             ResultDTO sonuc = new ResultDTO();
-            var ozdirenc = GorunenAdDuzenle(kuralKume.ResistivityList);
-            var toprak = GorunenAdDuzenle(kuralKume.SoilList);
+            var resistivity = EditVisibleName(ruleCluster.ResistivityList);
+            var soil = EditVisibleName(ruleCluster.SoilList);
 
-            #region Database Kayit Islemleri
+            #region Database Operations
 
             try
             {
                 _unitOfWork.BeginTransaction(System.Data.IsolationLevel.ReadUncommitted);
 
-                #region Kural
-                Kural kural = new Kural
+                #region Rule
+                Kural rule = new Kural
                 {
-                    KuralAdi = kuralKume.RuleName,
+                    KuralAdi = ruleCluster.RuleName,
                     AktifMi = true,
                     EklenmeTarihi = DateTime.Now
                 };
-                _ruleService.BulkInsert(kural);
+                _ruleService.BulkInsert(rule);
                 #endregion
 
-                #region KuralListText
-                List<KuralListText> kurallar = new List<KuralListText>();
-                foreach (var KuralListItem in kuralKume.RuleList)
+                #region RuleListText
+                List<KuralListText> rules = new List<KuralListText>();
+                foreach (var ruleListItem2 in ruleCluster.RuleList)
                 {
-                    string ruleText = KuralOlustur(KuralListItem);
-                    kurallar.Add(new KuralListText { KuralID = kural.KuralID, KuralText = ruleText });
+                    string ruleText = GenerateRule(ruleListItem2);
+                    rules.Add(new KuralListText { KuralID = rule.KuralID, KuralText = ruleText });
                 }
-                _ruleListTextService.BulkInsertRange(kurallar);
+                _ruleListTextService.BulkInsertRange(rules);
                 #endregion
 
-                #region Input Degisken
-                Degisken ozdirencDegisken = new Degisken
+                #region Input Variable
+                Degisken resistivityVariable = new Degisken
                 {
-                    KuralID = kural.KuralID,
+                    KuralID = rule.KuralID,
                     DegiskenTipID = (byte)Enums.VariableType.Input,
                     DegiskenAdi = "Özdirenç",
                     DegiskenGorunenAdi = "Ozdirenc"
                 };
-                _variableService.BulkInsert(ozdirencDegisken);
-                var ozdirencItem = (from a in ozdirenc
+                _variableService.BulkInsert(resistivityVariable);
+                var ozdirencItem = (from a in resistivity
                                     select new DegiskenItem()
                                     {
-                                        DegiskenID = ozdirencDegisken.DegiskenID,
+                                        DegiskenID = resistivityVariable.DegiskenID,
                                         DegiskenItemAdi = a.Name,
                                         DegiskenItemGorunenAdi = a.VisibleName,
                                         MinDeger = a.MinValue,
@@ -103,51 +103,49 @@ namespace FuzzyMsc.Bll
                 _variableItemService.BulkInsertRange(ozdirencItem);
                 #endregion
 
-                #region Output Degisken
-                Degisken toprakDegisken = new Degisken
+                #region Output Variable
+                Degisken soilVariable = new Degisken
                 {
-                    KuralID = kural.KuralID,
+                    KuralID = rule.KuralID,
                     DegiskenTipID = (byte)Enums.VariableType.Output,
                     DegiskenAdi = "Toprak",
                     DegiskenGorunenAdi = "Toprak"
                 };
-                _variableService.BulkInsert(toprakDegisken);
-                var toprakItem = (from a in toprak
+                _variableService.BulkInsert(soilVariable);
+                var soilItem = (from a in soil
                                   select new DegiskenItem()
                                   {
-                                      DegiskenID = toprakDegisken.DegiskenID,
+                                      DegiskenID = soilVariable.DegiskenID,
                                       DegiskenItemAdi = a.Name,
                                       DegiskenItemGorunenAdi = a.VisibleName,
                                       MinDeger = a.MinValue,
                                       MaxDeger = a.MaxValue
                                   });
-                _variableItemService.BulkInsertRange(toprakItem);
+                _variableItemService.BulkInsertRange(soilItem);
                 #endregion
 
-
-
-                #region KuralList
-                List<KuralListItem> kuralListItem = new List<KuralListItem>();
-                for (int i = 0; i < kuralKume.RuleList.Count; i++)
+                #region RuleList
+                List<KuralListItem> ruleListItem = new List<KuralListItem>();
+                for (int i = 0; i < ruleCluster.RuleList.Count; i++)
                 {
-                    var kuralList = (new KuralList { KuralID = kural.KuralID, SiraNo = (byte)(i + 1) });
-                    _ruleListService.BulkInsert(kuralList);
+                    var ruleList = (new KuralList { KuralID = rule.KuralID, SiraNo = (byte)(i + 1) });
+                    _ruleListService.BulkInsert(ruleList);
 
-                    foreach (var item in kuralKume.RuleList)
+                    foreach (var item in ruleCluster.RuleList)
                     {
-                        var InputDegiskenID = _variableItemService.Queryable().FirstOrDefault(d => d.Degisken.DegiskenTipID == (byte)Enums.VariableType.Input && d.DegiskenItemAdi == item.Rule.Resistivity).DegiskenItemID;
-                        kuralListItem.Add(new KuralListItem { KuralListID = kuralList.KuralListID, DegiskenItemID = InputDegiskenID });
+                        var InputVariableId = _variableItemService.Queryable().FirstOrDefault(d => d.Degisken.DegiskenTipID == (byte)Enums.VariableType.Input && d.DegiskenItemAdi == item.Rule.Resistivity).DegiskenItemID;
+                        ruleListItem.Add(new KuralListItem { KuralListID = ruleList.KuralListID, DegiskenItemID = InputVariableId });
 
-                        var OutputDegiskenID = _variableItemService.Queryable().FirstOrDefault(d => d.Degisken.DegiskenTipID == (byte)Enums.VariableType.Output && d.DegiskenItemAdi == item.Rule.Soil).DegiskenItemID;
-                        kuralListItem.Add(new KuralListItem { KuralListID = kuralList.KuralListID, DegiskenItemID = InputDegiskenID });
+                        var OutputVariableId = _variableItemService.Queryable().FirstOrDefault(d => d.Degisken.DegiskenTipID == (byte)Enums.VariableType.Output && d.DegiskenItemAdi == item.Rule.Soil).DegiskenItemID;
+                        ruleListItem.Add(new KuralListItem { KuralListID = ruleList.KuralListID, DegiskenItemID = InputVariableId });
                     }
                 }
-                _ruleListItemService.BulkInsertRange(kuralListItem);
+                _ruleListItemService.BulkInsertRange(ruleListItem);
                 #endregion
 
                 _unitOfWork.Commit();
                 sonuc.Result = true;
-                sonuc.Message = "Kural Kümesi Başarı İle Kaydedildi.";
+                sonuc.Message = "Save Successful For Rule Cluster.";
                 sonuc.Object = null;
                 return sonuc;
             }
@@ -155,7 +153,7 @@ namespace FuzzyMsc.Bll
             {
                 _unitOfWork.Rollback();
                 sonuc.Result = false;
-                sonuc.Message = "Kural Kümesi Kaydedilirken Hata Oluştu. Hata Açıklaması: " + ex.Message;
+                sonuc.Message = "An Error Occured While Saving Rule Cluster. Error: " + ex.Message;
                 sonuc.Object = null;
                 return sonuc;
             }
@@ -163,18 +161,18 @@ namespace FuzzyMsc.Bll
             #endregion
         }
 
-        public string FuzzyKuralOlusturVeSonucGetirFLL(GetRuleDTO kurallar, double inputValue)
+        public string FuzzyGenerateRulesAndGetResultFLL(GetRuleDTO rules, double inputValue)
         {
             //var ozdirenc = GorunenAdDuzenle(kuralKume.OzdirencList);
             //var toprak = GorunenAdDuzenle(kuralKume.ToprakList);
             FuzzySystemResultDTO system = new FuzzySystemResultDTO();
-            system = SistemOlustur(kurallar, inputValue);
+            system = GenerateSystem(rules, inputValue);
             _fsSoil = system.System;
             inputValue = system.InputValue;
 
 
-            FuzzyVariable fvInput = _fsSoil.InputByName(kurallar.VariableList.FirstOrDefault(d => d.DegiskenTipID == (byte)Enums.VariableType.Input).DegiskenGorunenAdi);
-            FuzzyVariable fvOutput = _fsSoil.OutputByName(kurallar.VariableList.FirstOrDefault(d => d.DegiskenTipID == (byte)Enums.VariableType.Output).DegiskenGorunenAdi);
+            FuzzyVariable fvInput = _fsSoil.InputByName(rules.VariableList.FirstOrDefault(d => d.DegiskenTipID == (byte)Enums.VariableType.Input).DegiskenGorunenAdi);
+            FuzzyVariable fvOutput = _fsSoil.OutputByName(rules.VariableList.FirstOrDefault(d => d.DegiskenTipID == (byte)Enums.VariableType.Output).DegiskenGorunenAdi);
 
             Dictionary<FuzzyVariable, double> inputValues = new Dictionary<FuzzyVariable, double>();
             inputValues.Add(fvInput, inputValue);
@@ -183,7 +181,7 @@ namespace FuzzyMsc.Bll
             _fsSoil.DefuzzificationMethod = DefuzzificationMethod.Centroid;
 
             double outputValue = result[fvOutput];
-            string outputType = SonucGetirYakinSiniraGore(kurallar, outputValue);
+            string outputType = GetResultForCloseLine(rules, outputValue);
 
             return outputType;
 
@@ -229,15 +227,15 @@ namespace FuzzyMsc.Bll
             #endregion            
         }
 
-        public bool FuzzyKuralOlusturVeSonucGetirFLLKarsilastirma(GetRuleDTO kurallar, double inputValue1, double inputValue2, int oran)
+        public bool FuzzyGenerateRulesAndGetResultFLLComparison(GetRuleDTO rules, double inputValue1, double inputValue2, int rate)
         {
             FuzzySystemResultDTO system = new FuzzySystemResultDTO();
-            system = SistemOlustur(kurallar, inputValue1);
+            system = GenerateSystem(rules, inputValue1);
             _fsSoil = system.System;
             inputValue1 = system.InputValue;
 
-            FuzzyVariable fvInput1 = _fsSoil.InputByName(kurallar.VariableList.FirstOrDefault(d => d.DegiskenTipID == (byte)Enums.VariableType.Input).DegiskenGorunenAdi);
-            FuzzyVariable fvOutput1 = _fsSoil.OutputByName(kurallar.VariableList.FirstOrDefault(d => d.DegiskenTipID == (byte)Enums.VariableType.Output).DegiskenGorunenAdi);
+            FuzzyVariable fvInput1 = _fsSoil.InputByName(rules.VariableList.FirstOrDefault(d => d.DegiskenTipID == (byte)Enums.VariableType.Input).DegiskenGorunenAdi);
+            FuzzyVariable fvOutput1 = _fsSoil.OutputByName(rules.VariableList.FirstOrDefault(d => d.DegiskenTipID == (byte)Enums.VariableType.Output).DegiskenGorunenAdi);
 
             Dictionary<FuzzyVariable, double> inputValues1 = new Dictionary<FuzzyVariable, double>();
             inputValues1.Add(fvInput1, inputValue1);
@@ -248,12 +246,12 @@ namespace FuzzyMsc.Bll
             double outputValue1 = result1[fvOutput1];
 
             _fsSoil = null;
-            system = SistemOlustur(kurallar, inputValue2);
+            system = GenerateSystem(rules, inputValue2);
             _fsSoil = system.System;
             inputValue2 = system.InputValue;
 
-            FuzzyVariable fvInput2 = _fsSoil.InputByName(kurallar.VariableList.FirstOrDefault(d => d.DegiskenTipID == (byte)Enums.VariableType.Input).DegiskenGorunenAdi);
-            FuzzyVariable fvOutput2 = _fsSoil.OutputByName(kurallar.VariableList.FirstOrDefault(d => d.DegiskenTipID == (byte)Enums.VariableType.Output).DegiskenGorunenAdi);
+            FuzzyVariable fvInput2 = _fsSoil.InputByName(rules.VariableList.FirstOrDefault(d => d.DegiskenTipID == (byte)Enums.VariableType.Input).DegiskenGorunenAdi);
+            FuzzyVariable fvOutput2 = _fsSoil.OutputByName(rules.VariableList.FirstOrDefault(d => d.DegiskenTipID == (byte)Enums.VariableType.Output).DegiskenGorunenAdi);
 
             Dictionary<FuzzyVariable, double> inputValues2 = new Dictionary<FuzzyVariable, double>();
             inputValues2.Add(fvInput2, inputValue2);
@@ -263,79 +261,79 @@ namespace FuzzyMsc.Bll
 
             double outputValue2 = result2[fvOutput2];
 
-            var result = SonucGetirYakinligaGore(outputValue1, outputValue2, oran);
+            var result = GetResultForProximity(outputValue1, outputValue2, rate);
 
             return result;
         }
 
-        private FuzzySystemResultDTO SistemOlustur(GetRuleDTO kurallar, double inputValue)
+        private FuzzySystemResultDTO GenerateSystem(GetRuleDTO rules, double inputValue)
         {
             FuzzySystemResultDTO result = new FuzzySystemResultDTO();
-            MamdaniFuzzySystem fsToprak = new MamdaniFuzzySystem();
+            MamdaniFuzzySystem fsSoil = new MamdaniFuzzySystem();
 
-            foreach (var degisken in kurallar.VariableList)
+            foreach (var variable in rules.VariableList)
             {
-                if (degisken.DegiskenTipID == (byte)Enums.VariableType.Input)
+                if (variable.DegiskenTipID == (byte)Enums.VariableType.Input)
                 {
                     
-                    FuzzyVariable fvInput = new FuzzyVariable(degisken.DegiskenGorunenAdi, 0.0, 1000.0);
-                    var degiskenItemler = kurallar.VariableItemList.Where(k => k.DegiskenID == degisken.DegiskenID).ToList();
-                    for (int i = 0; i < degiskenItemler.Count; i++)
+                    FuzzyVariable fvInput = new FuzzyVariable(variable.DegiskenGorunenAdi, 0.0, 1000.0);
+                    var variableItems = rules.VariableItemList.Where(k => k.DegiskenID == variable.DegiskenID).ToList();
+                    for (int i = 0; i < variableItems.Count; i++)
                     {
-                        if (inputValue == degiskenItemler[i].MinDeger)
+                        if (inputValue == variableItems[i].MinDeger)
                         {
                             inputValue++;
                         }
                         double maxValue;
-                        if (i != degiskenItemler.Count - 1)
+                        if (i != variableItems.Count - 1)
                         {
-                            if (degiskenItemler[i].MaxDeger == degiskenItemler[i + 1].MinDeger)
-                                maxValue = degiskenItemler[i].MaxDeger - 1;
+                            if (variableItems[i].MaxDeger == variableItems[i + 1].MinDeger)
+                                maxValue = variableItems[i].MaxDeger - 1;
                             else
-                                maxValue = degiskenItemler[i].MaxDeger;
+                                maxValue = variableItems[i].MaxDeger;
                         }
                         else
-                            maxValue = degiskenItemler[i].MaxDeger;
+                            maxValue = variableItems[i].MaxDeger;
 
-                        fvInput.Terms.Add(new FuzzyTerm(degiskenItemler[i].DegiskenItemGorunenAdi, new TriangularMembershipFunction(degiskenItemler[i].MinDeger, (degiskenItemler[i].MinDeger + degiskenItemler[i].MaxDeger) / 2, maxValue)));
+                        fvInput.Terms.Add(new FuzzyTerm(variableItems[i].DegiskenItemGorunenAdi, new TriangularMembershipFunction(variableItems[i].MinDeger, (variableItems[i].MinDeger + variableItems[i].MaxDeger) / 2, maxValue)));
                     }
-                    fsToprak.Input.Add(fvInput);
+                    fsSoil.Input.Add(fvInput);
                 }
                 else
                 {
-                    FuzzyVariable fvOutput = new FuzzyVariable(degisken.DegiskenGorunenAdi, 0.0, 1000.0);
-                    var degiskenItemler = kurallar.VariableItemList.Where(k => k.DegiskenID == degisken.DegiskenID).ToList();
-                    for (int i = 0; i < degiskenItemler.Count; i++)
+                    FuzzyVariable fvOutput = new FuzzyVariable(variable.DegiskenGorunenAdi, 0.0, 1000.0);
+                    var variableItems = rules.VariableItemList.Where(k => k.DegiskenID == variable.DegiskenID).ToList();
+                    for (int i = 0; i < variableItems.Count; i++)
                     {
                         double maxValue;
-                        if (i != degiskenItemler.Count - 1)
+                        if (i != variableItems.Count - 1)
                         {
-                            if (degiskenItemler[i].MaxDeger == degiskenItemler[i + 1].MinDeger)
-                                maxValue = degiskenItemler[i].MaxDeger - 1;
+                            if (variableItems[i].MaxDeger == variableItems[i + 1].MinDeger)
+                                maxValue = variableItems[i].MaxDeger - 1;
                             else
-                                maxValue = degiskenItemler[i].MaxDeger;
+                                maxValue = variableItems[i].MaxDeger;
                         }
                         else
-                            maxValue = degiskenItemler[i].MaxDeger;
+                            maxValue = variableItems[i].MaxDeger;
 
-                        fvOutput.Terms.Add(new FuzzyTerm(degiskenItemler[i].DegiskenItemGorunenAdi, new TriangularMembershipFunction(degiskenItemler[i].MinDeger, (degiskenItemler[i].MinDeger + degiskenItemler[i].MaxDeger) / 2, maxValue)));
+                        fvOutput.Terms.Add(new FuzzyTerm(variableItems[i].DegiskenItemGorunenAdi, new TriangularMembershipFunction(variableItems[i].MinDeger, (variableItems[i].MinDeger + variableItems[i].MaxDeger) / 2, maxValue)));
                     }
-                    fsToprak.Output.Add(fvOutput);
+                    fsSoil.Output.Add(fvOutput);
                 }
             }
 
-            foreach (var kuralText in kurallar.RuleListText)
+            foreach (var ruleText in rules.RuleListText)
             {
-                MamdaniFuzzyRule rule = fsToprak.ParseRule(kuralText.KuralText);
-                fsToprak.Rules.Add(rule);
+                MamdaniFuzzyRule rule = fsSoil.ParseRule(ruleText.KuralText);
+                fsSoil.Rules.Add(rule);
             }
 
-            result.System = fsToprak;
+            result.System = fsSoil;
             result.InputValue = inputValue;
             return result;
         }
 
-        public void KurallariOlusturFLS(RuleClusterDTO kuralKume)
+        public void GenerateRulesFLS(RuleClusterDTO kuralKume)
         {
             //var ozdirenc = GorunenAdDuzenle(kuralKume.OzdirencList);
             //#region Inputs
@@ -438,11 +436,11 @@ namespace FuzzyMsc.Bll
             return 0;
         }
 
-        private List<VariableDTO> GorunenAdDuzenle(List<VariableDTO> degisken)
+        private List<VariableDTO> EditVisibleName(List<VariableDTO> variable)
         {
             string TrChar = "ığüşöçĞÜŞİÖÇ";
             string EnChar = "igusocGUSIOC";
-            foreach (var item in degisken)
+            foreach (var item in variable)
             {
                 item.VisibleName = item.Name.Replace(" ", "");
                 for (int i = 0; i < TrChar.Length; i++)
@@ -452,19 +450,19 @@ namespace FuzzyMsc.Bll
                 //        var unaccentedText = String.Join("", item.Adi.Normalize(NormalizationForm.FormD)
                 //.Where(c => char.GetUnicodeCategory(c) != UnicodeCategory.NonSpacingMark));
             }
-            return degisken;
+            return variable;
         }
 
-        private string KuralOlustur(RuleListDTO kuralList)
+        private string GenerateRule(RuleListDTO ruleList)
         {
-            var ozdirenc = TurkceKarakter(kuralList.Rule.Resistivity);
-            var toprak = TurkceKarakter(kuralList.Rule.Soil);
+            var resistivity = TurkishCharacter(ruleList.Rule.Resistivity);
+            var soil = TurkishCharacter(ruleList.Rule.Soil);
 
-            return "if (Ozdirenc is " + ozdirenc + ") then (Toprak is " + toprak + ")";
+            return "if (Ozdirenc is " + resistivity + ") then (Toprak is " + soil + ")";
 
         }
 
-        private string TurkceKarakter(string text)
+        private string TurkishCharacter(string text)
         {
             string TrChar = "ığüşöçĞÜŞİÖÇ";
             string EnChar = "igusocGUSIOC";
@@ -476,33 +474,33 @@ namespace FuzzyMsc.Bll
             return text.Replace(" ", "");
         }
 
-        public GetRuleDTO KuralGetir(long kuralID)
+        public GetRuleDTO GetRule(long kuralID)
         {
-            GetRuleDTO kuralGetir = new GetRuleDTO();
-            List<DegiskenItem> degiskenItemList = new List<DegiskenItem>();
-            var kural = _ruleService.Queryable().FirstOrDefault(k => k.KuralID == kuralID && k.AktifMi == true);
-            var kuralListText = kural.KuralListTexts.ToList();
-            var degiskenler = kural.Degiskens.ToList();
-            foreach (var item in degiskenler)
+            GetRuleDTO getRule = new GetRuleDTO();
+            List<DegiskenItem> variableItemList = new List<DegiskenItem>();
+            var rule = _ruleService.Queryable().FirstOrDefault(k => k.KuralID == kuralID && k.AktifMi == true);
+            var ruleListText = rule.KuralListTexts.ToList();
+            var variables = rule.Degiskens.ToList();
+            foreach (var item in variables)
             {
                 var degiskenItems = _variableItemService.Queryable().Where(d => d.DegiskenID == item.DegiskenID).ToList();
-                degiskenItemList.AddRange(degiskenItems);
+                variableItemList.AddRange(degiskenItems);
             }
 
-            kuralGetir.Kural = kural;
-            kuralGetir.RuleListText = kuralListText;
-            kuralGetir.VariableList = degiskenler;
-            kuralGetir.VariableItemList = degiskenItemList;
+            getRule.Rule = rule;
+            getRule.RuleListText = ruleListText;
+            getRule.VariableList = variables;
+            getRule.VariableItemList = variableItemList;
 
-            return kuralGetir;
+            return getRule;
         }
 
-        private string SonucGetirYakinSiniraGore(GetRuleDTO kurallar, double outputValue)
+        private string GetResultForCloseLine(GetRuleDTO rules, double outputValue)
         {
             string sonuc = "";
 
-            var degiskenID = kurallar.VariableList.FirstOrDefault(dl => dl.DegiskenTipID == (byte)Enums.VariableType.Output).DegiskenID;
-            var OutputList = _variableItemService.Queryable().Where(d => d.DegiskenID == degiskenID).ToList();
+            var variableId = rules.VariableList.FirstOrDefault(dl => dl.DegiskenTipID == (byte)Enums.VariableType.Output).DegiskenID;
+            var OutputList = _variableItemService.Queryable().Where(d => d.DegiskenID == variableId).ToList();
 
             for (int i = 0; i < OutputList.Count; i++)
             {
@@ -516,7 +514,7 @@ namespace FuzzyMsc.Bll
                 }
                 else
                 {
-                    if (OutputList[i].MaxDeger > OutputList[i + 1].MinDeger) //Bir sonraki tanım aralığı ile kesişimi var demektir
+                    if (OutputList[i].MaxDeger > OutputList[i + 1].MinDeger) //Means that has intersection with next definition range (Bir sonraki tanım aralığı ile kesişimi var demektir)
                     {
                         if (outputValue <= OutputList[i].MaxDeger && outputValue >= OutputList[i + 1].MinDeger)
                         {
@@ -539,18 +537,18 @@ namespace FuzzyMsc.Bll
             return sonuc;
         }
 
-        private bool SonucGetirYakinligaGore(double outputValue1, double outputValue2, int oran)
+        private bool GetResultForProximity(double outputValue1, double outputValue2, int rate)
         {
             if (outputValue1 > outputValue2)
             {
-                if (outputValue1 * oran / 100 > outputValue2)
+                if (outputValue1 * rate / 100 > outputValue2)
                 {
                     return false;
                 }
             }
             else if (outputValue2 > outputValue1)
             {
-                if (outputValue2 * oran / 100 > outputValue1)
+                if (outputValue2 * rate / 100 > outputValue1)
                 {
                     return false;
                 }
@@ -568,14 +566,14 @@ namespace FuzzyMsc.Bll
     {
         double Test(double deger1, double deger2, double deger3);
 
-        void KurallariOlusturFLS(RuleClusterDTO kuralKume);
+        void GenerateRulesFLS(RuleClusterDTO ruleCluster);
 
-        string FuzzyKuralOlusturVeSonucGetirFLL(GetRuleDTO kurallar, double inputValue);
+        string FuzzyGenerateRulesAndGetResultFLL(GetRuleDTO rules, double inputValue);
 
-        bool FuzzyKuralOlusturVeSonucGetirFLLKarsilastirma(GetRuleDTO kurallar, double inputValue1, double inputValue2, int oran);
+        bool FuzzyGenerateRulesAndGetResultFLLComparison(GetRuleDTO rules, double inputValue1, double inputValue2, int rate);
 
-        ResultDTO KumeKaydet(RuleClusterDTO kuralKume);
+        ResultDTO SaveCluster(RuleClusterDTO ruleCluster);
 
-        GetRuleDTO KuralGetir(long kuralID);
+        GetRuleDTO GetRule(long ruleId);
     }
 }

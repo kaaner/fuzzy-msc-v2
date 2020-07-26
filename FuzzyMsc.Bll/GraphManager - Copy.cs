@@ -116,8 +116,8 @@ namespace FuzzyMsc.Bll
                 highcharts.yAxis = new AxisDTO { min = (int)minX - 5, minTickInterval = (int)graph.parameters.ScaleY, offset = 20, title = new AxisTitleDTO { text = "Yükseklik" }, labels = new AxisLabelsDTO { format = "{value} m" } };
 
                 highcharts.parameters = graph.parameters;
-                highcharts.sayilar = cizimCount;
-                highcharts.sayilar.successRate = BasariHesapla(cizimCount, graph.numbers);
+                highcharts.numbers = cizimCount;
+                highcharts.numbers.successRate = BasariHesapla(cizimCount, graph.numbers);
                 sonuc.Object = highcharts;
                 sonuc.Result = true;
                 return sonuc;
@@ -137,7 +137,7 @@ namespace FuzzyMsc.Bll
             double oran = 100.0;
 
             int normalFarki = Math.Abs(cizimCount.Normal - varsayilanCount.Normal);
-            int kapatmaFarki = Math.Abs(cizimCount.Closure - varsayilanCount.Closure);
+            int kapatmaFarki = Math.Abs(cizimCount.Pocket - varsayilanCount.Pocket);
             int fayFarki = Math.Abs(cizimCount.Fault - varsayilanCount.Fault);
 
             for (int i = 0; i < fayFarki; i++)
@@ -776,7 +776,7 @@ namespace FuzzyMsc.Bll
 
         public List<SeriesDTO> GraphDataOlustur(long kuralID, SectionDTO kesitDTO, ParametersDTO parameters)
         {
-            GetRuleDTO kuralGetir = _fuzzyManager.KuralGetir(kuralID);
+            GetRuleDTO kuralGetir = _fuzzyManager.GetRule(kuralID);
 
             List<SeriesDTO> datasetList = new List<SeriesDTO>();
             SeriesDTO dataset;
@@ -840,10 +840,10 @@ namespace FuzzyMsc.Bll
                         {
                             //if (!kesitDTO.RezGenelList[i][j].Checked && kesitDTO.RezGenelList[i][j].TypeID == (byte)Enums.ExcelDataTipi.Gercek)
                             //{
-                            var ilkDugum = _fuzzyManager.FuzzyKuralOlusturVeSonucGetirFLL(kuralGetir, (double)kesitDTO.ResistivityGeneralList[i][j].R);
-                            var ikinciDugum = _fuzzyManager.FuzzyKuralOlusturVeSonucGetirFLL(kuralGetir, (double)kesitDTO.ResistivityGeneralList[i][j + 1].R);
+                            var ilkDugum = _fuzzyManager.FuzzyGenerateRulesAndGetResultFLL(kuralGetir, (double)kesitDTO.ResistivityGeneralList[i][j].R);
+                            var ikinciDugum = _fuzzyManager.FuzzyGenerateRulesAndGetResultFLL(kuralGetir, (double)kesitDTO.ResistivityGeneralList[i][j + 1].R);
 
-                            var ikiDugumKarsilastirma = _fuzzyManager.FuzzyKuralOlusturVeSonucGetirFLLKarsilastirma(kuralGetir, (double)kesitDTO.ResistivityGeneralList[i][j].R, (double)kesitDTO.ResistivityGeneralList[i][j + 1].R, (int)parameters.ResistivityRatio);
+                            var ikiDugumKarsilastirma = _fuzzyManager.FuzzyGenerateRulesAndGetResultFLLComparison(kuralGetir, (double)kesitDTO.ResistivityGeneralList[i][j].R, (double)kesitDTO.ResistivityGeneralList[i][j + 1].R, (int)parameters.ResistivityRatio);
 
                             //if (ilkDugum == ikinciDugum) //iki özdirenç değeri de aynı aralıktaysa bu sefer hız değerlerine bakılır
                             if (ikiDugumKarsilastirma) //iki özdirenç değeri de aynı aralıktaysa bu sefer hız değerlerine bakılır
@@ -869,20 +869,20 @@ namespace FuzzyMsc.Bll
                                         dataset.data.Add(coordinates);
                                         KapatmaOlustur(datasetList, dataset, kesitDTO.ResistivityGeneralList, i, j);
                                         if (i < kesitDTO.ResistivityGeneralList.Count - 1)
-                                            cizimCount.Closure++;
+                                            cizimCount.Pocket++;
                                         continue;
                                     }
                                     else
                                     {
-                                        var birOncekiDugum = _fuzzyManager.FuzzyKuralOlusturVeSonucGetirFLL(kuralGetir, (double)kesitDTO.ResistivityGeneralList[i][j - 1].R);
-                                        var cukurKarsilastirma = _fuzzyManager.FuzzyKuralOlusturVeSonucGetirFLLKarsilastirma(kuralGetir, (double)kesitDTO.ResistivityGeneralList[i][j - 1].R, (double)kesitDTO.ResistivityGeneralList[i][j + 1].R, (int)parameters.ResistivityRatio);
+                                        var birOncekiDugum = _fuzzyManager.FuzzyGenerateRulesAndGetResultFLL(kuralGetir, (double)kesitDTO.ResistivityGeneralList[i][j - 1].R);
+                                        var cukurKarsilastirma = _fuzzyManager.FuzzyGenerateRulesAndGetResultFLLComparison(kuralGetir, (double)kesitDTO.ResistivityGeneralList[i][j - 1].R, (double)kesitDTO.ResistivityGeneralList[i][j + 1].R, (int)parameters.ResistivityRatio);
                                         if (cukurKarsilastirma)
                                         {
                                             //Çukur oluştur
                                             var cukurDataset = CukurOlustur(dataset, kesitDTO.ResistivityGeneralList, i, j);
                                             datasetList.Add(cukurDataset);
                                             if (i < kesitDTO.ResistivityGeneralList.Count - 1)
-                                                cizimCount.Closure++;
+                                                cizimCount.Pocket++;
                                             continue;
                                         }
                                         else
@@ -893,7 +893,7 @@ namespace FuzzyMsc.Bll
                                             dataset.data.Add(coordinates);
                                             KapatmaOlustur(datasetList, dataset, kesitDTO.ResistivityGeneralList, i, j);
                                             if (i < kesitDTO.ResistivityGeneralList.Count - 1)
-                                                cizimCount.Closure++;
+                                                cizimCount.Pocket++;
                                             continue;
                                         }
                                     }
@@ -909,7 +909,7 @@ namespace FuzzyMsc.Bll
                                     dataset.data.Add(coordinates);
                                     KapatmaOlustur(datasetList, dataset, kesitDTO.ResistivityGeneralList, i, j);
                                     if (i < kesitDTO.ResistivityGeneralList.Count - 1)
-                                        cizimCount.Closure++;
+                                        cizimCount.Pocket++;
                                     continue;
                                 }
                                 else
@@ -927,8 +927,8 @@ namespace FuzzyMsc.Bll
                                     }
                                     else
                                     {
-                                        var birOncekiDugum = _fuzzyManager.FuzzyKuralOlusturVeSonucGetirFLL(kuralGetir, (double)kesitDTO.ResistivityGeneralList[i][j - 1].R);
-                                        var cukurKarsilastirma = _fuzzyManager.FuzzyKuralOlusturVeSonucGetirFLLKarsilastirma(kuralGetir, (double)kesitDTO.ResistivityGeneralList[i][j - 1].R, (double)kesitDTO.ResistivityGeneralList[i][j + 1].R, (int)parameters.ResistivityRatio);
+                                        var birOncekiDugum = _fuzzyManager.FuzzyGenerateRulesAndGetResultFLL(kuralGetir, (double)kesitDTO.ResistivityGeneralList[i][j - 1].R);
+                                        var cukurKarsilastirma = _fuzzyManager.FuzzyGenerateRulesAndGetResultFLLComparison(kuralGetir, (double)kesitDTO.ResistivityGeneralList[i][j - 1].R, (double)kesitDTO.ResistivityGeneralList[i][j + 1].R, (int)parameters.ResistivityRatio);
 
                                         //if (birOncekiDugum == ikinciDugum)
                                         if (cukurKarsilastirma)
@@ -939,7 +939,7 @@ namespace FuzzyMsc.Bll
                                             dataset.data.Add(coordinates);
                                             KapatmaOlustur(datasetList, dataset, kesitDTO.ResistivityGeneralList, i, j);
                                             if (i < kesitDTO.ResistivityGeneralList.Count - 1)
-                                                cizimCount.Closure++;
+                                                cizimCount.Pocket++;
                                             break;
                                         }
                                         else
@@ -950,7 +950,7 @@ namespace FuzzyMsc.Bll
                                             dataset.data.Add(coordinates);
                                             KapatmaOlustur(datasetList, dataset, kesitDTO.ResistivityGeneralList, i, j);
                                             if (i < kesitDTO.ResistivityGeneralList.Count - 1)
-                                                cizimCount.Closure++;
+                                                cizimCount.Pocket++;
                                             break;
 
                                         }
@@ -1000,12 +1000,12 @@ namespace FuzzyMsc.Bll
             //Sonuçlar False Dönmeli
             if (i + 1 < (double)kesitDTO.ResistivityGeneralList.Count)
             {
-                ikiOzdirencKarsilastirma = _fuzzyManager.FuzzyKuralOlusturVeSonucGetirFLLKarsilastirma(kuralGetir, (double)kesitDTO.ResistivityGeneralList[i][j].R, (double)kesitDTO.ResistivityGeneralList[i][j + 1].R, (int)parameters.ResistivityRatio);
+                ikiOzdirencKarsilastirma = _fuzzyManager.FuzzyGenerateRulesAndGetResultFLLComparison(kuralGetir, (double)kesitDTO.ResistivityGeneralList[i][j].R, (double)kesitDTO.ResistivityGeneralList[i][j + 1].R, (int)parameters.ResistivityRatio);
                 VpUygunMu = SismikKontroluVp(kesitDTO, i, j, (int)parameters.SeismicRatio);
                 VsUygunMu = SismikKontroluVs(kesitDTO, i, j, (int)parameters.SeismicRatio);
 
                 //Sonuçlar False Dönmeli
-                altIkiOzdirencKarsilastirma = _fuzzyManager.FuzzyKuralOlusturVeSonucGetirFLLKarsilastirma(kuralGetir, (double)kesitDTO.ResistivityGeneralList[i + 1][j].R, (double)kesitDTO.ResistivityGeneralList[i + 1][j + 1].R, (int)parameters.ResistivityRatio);
+                altIkiOzdirencKarsilastirma = _fuzzyManager.FuzzyGenerateRulesAndGetResultFLLComparison(kuralGetir, (double)kesitDTO.ResistivityGeneralList[i + 1][j].R, (double)kesitDTO.ResistivityGeneralList[i + 1][j + 1].R, (int)parameters.ResistivityRatio);
                 altVpUygunMu = SismikKontroluVp(kesitDTO, i + 1, j, (int)parameters.SeismicRatio);
                 altVsUygunMu = SismikKontroluVs(kesitDTO, i + 1, j, (int)parameters.SeismicRatio);
             }
@@ -1016,7 +1016,7 @@ namespace FuzzyMsc.Bll
                 {
                     if ((double)kesitDTO.ResistivityGeneralList[i][k].TypeID == (byte)Enums.ExcelDataType.Real)
                     {
-                        ilkOzdirencIleAlttakiUyumlumu = _fuzzyManager.FuzzyKuralOlusturVeSonucGetirFLLKarsilastirma(kuralGetir, (double)kesitDTO.ResistivityGeneralList[i][j].R, (double)kesitDTO.ResistivityGeneralList[i + 2][j + 1].R, (int)parameters.ResistivityRatio);
+                        ilkOzdirencIleAlttakiUyumlumu = _fuzzyManager.FuzzyGenerateRulesAndGetResultFLLComparison(kuralGetir, (double)kesitDTO.ResistivityGeneralList[i][j].R, (double)kesitDTO.ResistivityGeneralList[i + 2][j + 1].R, (int)parameters.ResistivityRatio);
                         break;
                     }
                 }
@@ -1027,7 +1027,7 @@ namespace FuzzyMsc.Bll
                 {
                     if ((double)kesitDTO.ResistivityGeneralList[i + 1][k].TypeID == (byte)Enums.ExcelDataType.Real)
                     {
-                        ikinciOzdirencIleAlttakiUyumlumu = _fuzzyManager.FuzzyKuralOlusturVeSonucGetirFLLKarsilastirma(kuralGetir, (double)kesitDTO.ResistivityGeneralList[i + 1][j].R, (double)kesitDTO.ResistivityGeneralList[i + 3][j + 1].R, (int)parameters.ResistivityRatio);
+                        ikinciOzdirencIleAlttakiUyumlumu = _fuzzyManager.FuzzyGenerateRulesAndGetResultFLLComparison(kuralGetir, (double)kesitDTO.ResistivityGeneralList[i + 1][j].R, (double)kesitDTO.ResistivityGeneralList[i + 3][j + 1].R, (int)parameters.ResistivityRatio);
                         break;
                     }
                 }

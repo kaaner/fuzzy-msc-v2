@@ -88,7 +88,6 @@
     GroundType: 'Ground Type',
     Then: 'Then',
     AddAutomatically: 'Add Automatically',
-    Rules: 'Rules',
     SaveTheSet: 'Save The Set',
     AutomaticGeotechnicalProfileCreationTool: 'Automatic Geotechnical Profile Creation Tool',
     //MachineLearning
@@ -185,7 +184,6 @@ var translationsTR = {
     GroundType: 'Zemin Tipi',
     Then: 'İse',
     AddAutomatically: 'Otomatik Ekle',
-    Rules: 'Kurallar',
     SaveTheSet: 'Kümeyi Kaydet',
     AutomaticGeotechnicalProfileCreationTool: 'Otomatik Jeoteknik Kesit Oluşturma Aracı',
     //MachineLearning
